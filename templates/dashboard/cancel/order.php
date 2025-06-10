@@ -1,6 +1,7 @@
 <?php
 
 use samyar\Service;
+use samyar\serviceController;
 
 $options = settingsController::getInstance();
 

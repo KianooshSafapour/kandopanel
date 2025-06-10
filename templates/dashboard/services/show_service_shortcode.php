@@ -4,17 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 use kandopanel\currencyController;
-use samyar\priceController;
+use samyar\priceController;use samyar\serviceController;
 
 $options = settingsController::getInstance();
 $enable_average_time = kando_get_option('enable-average-time', 1);
 
 $stranslates = \samyar\serviceController::getInstance()->get_translates();
 
-// استفاده از حافظه موقت برای جلوگیری از فراخوانی مکرر تنظیمات
-//$singlePriceSettings = wp_cache_get('singlePriceSettings', 'single_service_shortcode_cache');
-//
-//if (false === $singlePriceSettings) {
+
     $settings = [
         'enable_average_time' => kando_get_option('enable-average-time', 1),
         'enable_order_btn_notloginuser' => kando_get_option('enable-order-btn-notloginuser', 1),
@@ -25,10 +22,7 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
         'base_currency_data' => currencyController::getInstance()->getCurrencyByCode(get_option('base_currency', "IRT")),
         'user_prices' => [],
     ];
-//
-//    // ذخیره تنظیمات در حافظه موقت به مدت 12 ساعت
-//    wp_cache_set('singlePriceSettings', $singlePriceSettings, 'single_service_shortcode_cache', HOUR_IN_SECONDS);
-//}
+
 
 if (isset($atts['id'])) {
 

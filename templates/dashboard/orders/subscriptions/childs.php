@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 use samyar\Order;
 use samyar\Provider;
 use samyar\Service;
+use samyar\serviceController;
 
 $title = __("Subscription orders", SAMYAR_TEXT_DOMAIN);
 $stranslates = \samyar\serviceController::getInstance()->get_translates();

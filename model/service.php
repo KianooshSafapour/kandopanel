@@ -125,7 +125,7 @@ class Service extends DataModel
         );
 
         // اضافه کردن شرایط برای کاربران غیرادمین
-        if (!$is_admin) {
+//        if (!$is_admin) {
             $query .= " AND s.status = 1";
             if ($user_id) {
                 $user_id = (int)$user_id;
@@ -134,7 +134,7 @@ class Service extends DataModel
                     $user_id
                 );
             }
-        }
+//        }
 
         // مرتب‌سازی نتایج
         $query .= " ORDER BY s.sort ASC";
@@ -255,8 +255,73 @@ class Service extends DataModel
         return [];
     }
 
+    public static function getServicesListByInfo($args = []) {
+        global $wpdb;
 
-    public function getServicesListByInfo() {
+        // لیست ستون‌های مجاز برای مرتب‌سازی
+        $allowed_orderby_columns = [
+            'id' => 's.id',
+            'name' => 's.name',
+            'price' => 's.price',
+            'sort' => 's.sort',
+            'category' => 'c.name' // نگاشت صحیح برای category
+        ];
+
+        // کوئری با ستون‌های مشخص
+        $sql = "
+    SELECT 
+        s.*,
+        c.name AS category,
+        soc.name AS brand
+    FROM 
+        {$wpdb->prefix}samyar_services s
+    JOIN 
+        {$wpdb->prefix}samyar_categories c ON s.cate_id = c.id
+    LEFT JOIN 
+        {$wpdb->prefix}samyar_social soc ON c.social_id = soc.id AND soc.status = 1
+    LEFT JOIN 
+        {$wpdb->prefix}samyar_api_provider p ON s.api_provider_id = p.id
+    LEFT JOIN 
+        {$wpdb->prefix}samyar_user_disable_service uds ON s.id = uds.service_id
+    WHERE 
+        c.status = 1 
+        AND (p.status = 1 OR s.api_provider_id = 0) 
+        AND s.status = 1 
+        AND uds.service_id IS NULL
+    ";
+
+        // ساخت ORDER BY به صورت امن
+        $orderby_clauses = [];
+        if (!empty($args['orderby']) && is_array($args['orderby'])) {
+            foreach ($args['orderby'] as $column => $direction) {
+                if (isset($allowed_orderby_columns[$column])) {
+                    $direction = (strtoupper($direction) === 'DESC') ? 'DESC' : 'ASC';
+                    $orderby_clauses[] = esc_sql($allowed_orderby_columns[$column]) . " {$direction}";
+                }
+            }
+        }
+
+        // ORDER BY پیش‌فرض
+        if (empty($orderby_clauses)) {
+            $orderby_clauses[] = 'c.name ASC, s.id ASC';
+        }
+
+        $sql .= " ORDER BY " . implode(', ', $orderby_clauses);
+
+        // اجرای کوئری
+        $results = $wpdb->get_results($sql, OBJECT);
+
+        // بررسی خطاها
+        if ($wpdb->last_error) {
+            error_log('SQL Error in getServicesListByInfo: ' . $wpdb->last_error);
+            return [];
+        }
+
+        return $results ?: [];
+    }
+
+
+    public function getServicesListByInfo_old() {
         global $wpdb;
 
         $sql = "

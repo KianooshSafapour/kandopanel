@@ -65,7 +65,6 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
                 // var now = new Date();
 
                 let now = new Date();
-                now.setHours(now.getHours() + 1); //اختلاف ساعت ایران رو درست میکنه
 
 
                 // Find the distance between now and the count down date

@@ -57,7 +57,8 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
             <div class="dashboard-box dashboard-box-profit">
                 <a class="dashboard-box-inner" href="#" data-wpel-link="internal">
                     <span class="dashboard-box-text">
-                        &lt;<span class="woocommerce-Price-amount amount"><?= priceController::kandoFormatPrice($total_service)['price_for_show_formatted'] ?>&nbsp;</span>
+                        &lt;<span
+                                class="woocommerce-Price-amount amount"><?= priceController::kandoFormatPrice($total_service)['price_for_show_formatted'] ?>&nbsp;</span>
                     </span>
                     <i class="fal fa-money-bill dashboard-box-icon"></i>
                 </a>
@@ -75,7 +76,8 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
             <div id="insert-order-data">
                 <div class="order-default-link">
                     <label><?php _e("Link", SAMYAR_TEXT_DOMAIN); ?></label>
-                    <input type="text" name="link" dir="ltr" placeholder="<?php _e("Enter the link", SAMYAR_TEXT_DOMAIN); ?>"/>
+                    <input type="text" name="link" dir="ltr"
+                           placeholder="<?php _e("Enter the link", SAMYAR_TEXT_DOMAIN); ?>"/>
                 </div>
                 <div class="process-link-result"></div>
 
@@ -86,7 +88,8 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
                         ?>
                         <div class="order-comments">
                             <label for=""><?php _e("Comments", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
-                            <textarea rows="10" name="comments" class="form-control square ajax_custom_comments"></textarea>
+                            <textarea rows="10" name="comments"
+                                      class="form-control square ajax_custom_comments"></textarea>
                         </div>
                         <?php
                         break;
@@ -104,11 +107,13 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
                         ?>
                         <div class="order-usernames">
                             <label for=""><?php _e("Usernames", SAMYAR_TEXT_DOMAIN) ?></label>
-                            <input type="text" class="form-control input-tags" dir="ltr" name="usernames" value="usenameA,usenameB,usenameC,usenameD">
+                            <input type="text" class="form-control input-tags" dir="ltr" name="usernames"
+                                   value="usenameA,usenameB,usenameC,usenameD">
                         </div>
                         <div class="order-hashtags">
                             <label for=""><?php _e("Hashtags (Format: #hashtag)", SAMYAR_TEXT_DOMAIN) ?></label>
-                            <input type="text" class="form-control input-tags" name="hashtags" value="#goodphoto,#love,#nice,#sunny">
+                            <input type="text" class="form-control input-tags" name="hashtags"
+                                   value="#goodphoto,#love,#nice,#sunny">
                         </div>
                         <?php
                         break;
@@ -118,7 +123,8 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
                         ?>
                         <div class="order-usernames-custom">
                             <label for=""><?php _e("Usernames", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
-                            <textarea rows="10" name="usernames_custom" dir="ltr" class="form-control square ajax_custom_lists"></textarea>
+                            <textarea rows="10" name="usernames_custom" dir="ltr"
+                                      class="form-control square ajax_custom_lists"></textarea>
                         </div>
                         <?php
                         break;
@@ -170,7 +176,7 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
     <tbody>
         <tr class="cart_item">
             <td class="product-name">
-                <span class="product-title">' . esc_attr(\samyar\serviceController::getInstance()->get_title($stranslates,$service)) . '&nbsp;<strong class="product-quantity"> &times; ' . $quantity . '</strong></span>
+                <span class="product-title">' . esc_attr(\samyar\serviceController::getInstance()->get_title($stranslates, $service)) . '&nbsp;<strong class="product-quantity"> &times; ' . $quantity . '</strong></span>
             </td>
             <td class="product-total">' . priceController::kandoFormatPrice($total_service)['price_for_show_formatted'] . '</td>
         </tr>
@@ -189,11 +195,11 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
         <td><strong>' . priceController::kandoFormatPrice($total_payment)['price_for_show_formatted'] . '</strong></td>
     </tr>';
 
-//                    if (round($total_payment) > 0) {
-//                        $basket_html .= '<tr>
-//            <th colspan="2">' . __('In Words:', SAMYAR_TEXT_DOMAIN) . ' <strong>' . esc_html($total_payment_words) . ' ' . __('Toman', SAMYAR_TEXT_DOMAIN) . '</strong></th>
-//        </tr>';
-//                    }
+                    //                    if (round($total_payment) > 0) {
+                    //                        $basket_html .= '<tr>
+                    //            <th colspan="2">' . __('In Words:', SAMYAR_TEXT_DOMAIN) . ' <strong>' . esc_html($total_payment_words) . ' ' . __('Toman', SAMYAR_TEXT_DOMAIN) . '</strong></th>
+                    //        </tr>';
+                    //                    }
 
                     $basket_html .= '</tfoot>';
                     echo $basket_html;
@@ -202,25 +208,33 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
 
                 <?php if (!is_user_logged_in()): ?>
                     <?php
-                    $enable_otp_order = kando_get_option('enable-otp-order', 1);
-                    if ($enable_otp_order === "1" || $enable_otp_order):
+                    $enable_otp_order = (bool)kando_get_option('enable-otp-order', 1);
+                    if ($enable_otp_order) {
                         ?>
                         <p style="margin-top:20px;color:#AF0000">
                             <?php _e("Note: If you do not want to verify your phone number every time you place an order, simply register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN); ?>
                         </p>
-                        <div class="checkout_coupon" style="margin-top:30px">
-                            <p class="form-row form-row-first">
-                                <input type="text" name="mobile" dir="ltr" class="input-text" placeholder="<?php _e("Phone Number", SAMYAR_TEXT_DOMAIN); ?>" id="mobile-number" value=""/>
-                            </p>
+                    <?php } ?>
+                    <div class="checkout_coupon" style="margin-top:30px">
+                        <p class="form-row form-row-first">
+                            <input type="text" name="mobile" dir="ltr" class="input-text"
+                                   placeholder="<?php _e("Phone Number", SAMYAR_TEXT_DOMAIN); ?>" id="mobile-number"
+                                   value=""/>
+                        </p>
+                        <?php if ($enable_otp_order) { ?>
                             <p class="form-row form-row-last">
-                                <a href="#" class="button button-red kt-ajax-button samyar-verify-send" style="margin-top:-10px;line-height: 28px;"><?php _e("Send Verification Code", SAMYAR_TEXT_DOMAIN); ?></a>
+                                <a href="#" class="button button-red kt-ajax-button samyar-verify-send"
+                                   style="margin-top:-10px;line-height: 28px;"><?php _e("Send Verification Code", SAMYAR_TEXT_DOMAIN); ?></a>
                             </p>
                             <div class="clear"></div>
                             <p class="form-row form-row-first">
-                                <input type="text" name="verify-code" class="input-text" placeholder="<?php _e("Received Verification Code", SAMYAR_TEXT_DOMAIN); ?>" id="verify-code" value=""/>
+                                <input type="text" name="verify-code" class="input-text"
+                                       placeholder="<?php _e("Received Verification Code", SAMYAR_TEXT_DOMAIN); ?>"
+                                       id="verify-code" value=""/>
                             </p>
-                        </div>
-                    <?php endif; ?>
+                        <?php } ?>
+                    </div>
+
                 <?php endif; ?>
 
                 <?php
@@ -236,15 +250,17 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
                     ?>
                     <input type="hidden" name="agree" value="0">
                     <input type="checkbox" value="1" id="agree" name="agree">
-                    <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="agree"><?= $text ?></label>
+                    <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification"
+                           for="agree"><?= $text ?></label>
                 <?php endif; ?>
 
                 <div id="payment" class="woocommerce-checkout-payment">
 
-                    <?php include (SAMYAR_DIR_TEMPLATE.'/gateways-list/gateways-list.php') ?>
+                    <?php include(SAMYAR_DIR_TEMPLATE . '/gateways-list/gateways-list.php') ?>
 
                     <div class="form-row place-order">
-                        <button class="button button-green kt-ajax-button alt" id="place_order"><?php _e("Submit Order", SAMYAR_TEXT_DOMAIN); ?></button>
+                        <button class="button button-green kt-ajax-button alt"
+                                id="place_order"><?php _e("Submit Order", SAMYAR_TEXT_DOMAIN); ?></button>
                     </div>
                 </div>
             </div>
@@ -253,18 +269,18 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
 </div>
 
 <script>
-    jQuery(function($) {
+    jQuery(function ($) {
         var $form = $j('.kando-package-form');
         if (!$form.length) return;
 
         // kandoSetDefaultGateway($form);
         // kandoToggleCardSelect($form);
         // روش صحیح: تابع را مستقیماً پاس دهید، نه نتیجه آن را
-        $(document).on("change", '.kando-package-form #payment_method', function() {
+        $(document).on("change", '.kando-package-form #payment_method', function () {
             kandoToggleCardSelect($form);
         });
 
-        $(document).on("change", '.kando-package-form input[name="payment_method"]', function() {
+        $(document).on("change", '.kando-package-form input[name="payment_method"]', function () {
             kandoToggleCardSelect($form);
         });
     });

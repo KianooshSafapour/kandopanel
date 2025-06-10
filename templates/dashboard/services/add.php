@@ -11,7 +11,9 @@ $providers = Provider::all();
 $site_currency = get_option('site_currency','IRT');
 ?>
 <style type="text/css">
-
+    .shop_table.shop_table_responsive tbody tr:nth-child(odd) td{
+        padding: 4px !important;
+    }
     .select2-container {
         margin-top: 10px;
     }
@@ -80,7 +82,7 @@ $site_currency = get_option('site_currency','IRT');
             </div>
             <div class="kt-col-xs-12 service-rate" style="margin-top:15px">
                 <label><?php _e("Original Price (The price at which you purchase)", SAMYAR_TEXT_DOMAIN); ?></label>
-                <input type="number" name="original_price" step="any"
+                <input type="number" name="original_price" step="any" dir="ltr"
                        style="padding: 9px 15px;float: right;width: calc(100% - 150px);margin-left: 10px;"
                        placeholder="<?php _e("Original Price", SAMYAR_TEXT_DOMAIN); ?>"/>
                 <span id="manual_currency">

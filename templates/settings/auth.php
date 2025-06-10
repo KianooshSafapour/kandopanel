@@ -308,6 +308,19 @@ defined('ABSPATH') || exit('No Access!');
                 </div>
             </div>
 
+            <div class="uk-margin">
+                <div class="uk-margin">
+                    <label class="uk-form-label"><?php _e('Use email instead of mobile number for guest user', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <div class="uk-margin-small">
+                        <label>
+                            <input class="uk-checkbox" type="hidden" name="enable-email-verification" value="0">
+                            <input class="uk-checkbox" type="checkbox" name="enable-email-verification"
+                                   value="1" <?php echo checked(kando_get_option('enable-email-verification', 0), 1); ?>><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></label>
+                    </div>
+
+                </div>
+            </div>
+
 
         </li>
         <li>

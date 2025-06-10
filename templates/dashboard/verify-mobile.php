@@ -86,7 +86,13 @@ $mobile = get_user_meta(get_current_user_id(), 'mobile', true);
         <div class="dashboard-posts-box dashboard-tickets-box">
             <div class="dashboard-posts-title-holder">
                 <i class="fal fa-mobile"></i>
-                <h5 class="dashboard-posts-title"><?php _e("Mobile Verification", SAMYAR_TEXT_DOMAIN); ?></h5>
+                <?php if (isset($_GET['for']) && $_GET['for'] === "2fa") { ?>
+                    <h5 class="dashboard-posts-title"><?php _e("Two-factor authentication", SAMYAR_TEXT_DOMAIN); ?></h5>
+                <?php } else { ?>
+                    <h5 class="dashboard-posts-title"><?php _e("Mobile Verification", SAMYAR_TEXT_DOMAIN); ?></h5>
+                <?php } ?>
+
+
             </div>
             <div class="dashboard-posts-list">
                 <div class="kt-row">

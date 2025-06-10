@@ -97,6 +97,12 @@ use samyar\priceController;
                                     <?php elseif ($payment->payment_type == "order"): ?>
                                         <span style="color: #e60921;font-size: 20px;"><i
                                                     class="fal fa-minus"></i></span>
+                                    <?php elseif ($payment->payment_type == "refund"): ?>
+                                        <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Refund", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-undo"></i></span>
+                                    <?php elseif ($payment->payment_type == "bonus"): ?>
+                                        <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Bonus", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-award"></i></span>
+                                    <?php elseif ($payment->payment_type == "gift-cart"): ?>
+                                        <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Gift Cart", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-gift"></i></span>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </td>

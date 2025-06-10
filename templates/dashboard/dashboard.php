@@ -89,6 +89,7 @@ if ($enable_welcome === "1") {
     </div>
     <!--end welcome-->
 <?php } ?>
+<?php include 'dashboard/notifications.php'; ?>
 <?php include 'dashboard/statistics.php'; ?>
 <?php include 'dashboard/chart.php'; ?>
 <?php include 'dashboard/order-statistics.php'; ?>
@@ -96,4 +97,3 @@ if ($enable_welcome === "1") {
 <?php include 'dashboard/packages-statistics.php'; ?>
 <?php //include('dashboard/favorite-service.php'); ?>
 <?php include 'dashboard/tickets.php'; ?>
-<?php include 'dashboard/notifications.php'; ?>

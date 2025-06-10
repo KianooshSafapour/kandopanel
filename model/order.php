@@ -144,8 +144,7 @@ class Order extends DataModel
             "SELECT * FROM $table_name 
         WHERE (id LIKE %s) 
         AND uid = %d 
-        ORDER BY id DESC 
-        LIMIT 10",
+        ORDER BY id DESC",
             '%' . $wpdb->esc_like($search_term) . '%',
             $uid
         );

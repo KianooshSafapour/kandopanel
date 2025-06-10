@@ -267,7 +267,7 @@ class kandoPack extends Widget_Base
         $settings = $this->get_settings_for_display();
         $pack_api_id = isset($settings['service-id']) && !empty($settings['service-id']) ? $settings['service-id'] : "";
         $pack_title = isset($settings['pack-title']) && !empty($settings['pack-title']) ? $settings['pack-title'] : "";
-        $pack_number = isset($settings['pack-number']) && !empty($settings['pack-number']) ? $settings['pack-number'] : "";
+        $pack_number = isset($settings['pack-number']) && !empty($settings['pack-number']) ? kando_english_number($settings['pack-number']) : "";
         $pack_content = isset($settings['pack-content']) && !empty($settings['pack-content']) ? $settings['pack-content'] : "";
 
         // Find the service
@@ -297,7 +297,7 @@ class kandoPack extends Widget_Base
         }
 
         $pack_price = isset($pack_price) && is_numeric($pack_price) ? $pack_price : 0;
-        $last_price = priceController::kandoFormatPrice($pack_price);
+        $last_price = priceController::kandoFormatPrice((float)$pack_price);
 
         $pack_price_by_discounted = isset($settings['pack-price-by-discounted']) && !empty($settings['pack-price-by-discounted']) ? $settings['pack-price-by-discounted'] : "";
         $pack_icon = isset($settings['pack-icon']) && !empty($settings['pack-icon']) ? $settings['pack-icon'] : "";

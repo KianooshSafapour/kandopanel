@@ -258,9 +258,9 @@ function ktOnLoad() {
         }, 450);
 
     });
-    setInterval(function () {
-        ktInitStickySidebars();
-    }, 10);
+    // setInterval(function () {
+    //     ktInitStickySidebars();
+    // }, 10);
     $j('.header-minicart-holder').hover(function () {
         $j(".header-minicart-content").stop(true, true).delay(200).fadeIn(200);
     }, function () {
@@ -3175,62 +3175,78 @@ function SamyarAjaxGetServiceList() {
 }
 
 function samyarGetServiceById() {
-    $j(document).on("click", ".search-service-btn", function () {
+    // Handle click on search button
+    $j(document).on("click", ".search-service-btn", function() {
+        submitServiceRequest();
+        return false;
+    });
+
+    // Handle Enter key on input field
+    $j('#input_service').on('keypress', function(e) {
+        if(e.which === 13) { // 13 is Enter key code
+            submitServiceRequest();
+            return false;
+        }
+    });
+
+    // Function to check if service exists in select list
+    function checkServiceExists(service_id) {
+        var $serviceSelect = $j('#samyar_select_service');
+        return $serviceSelect.find('option[value="' + service_id + '"]').length > 0;
+    }
+
+    // Function to handle the request submission
+    function submitServiceRequest() {
         var $this = $j(".new-order-form");
-        var $btn = $j(this);
+        var $btn = $j(".search-service-btn");
+        var service_id = $j('#input_service').val();
+
+        if (!service_id) return false;
+
         if (!$btn.hasClass('clicked') && !$btn.hasClass('is-loading')) {
+            // First check if service exists in the select list
+            if (checkServiceExists(service_id)) {
+                // Service exists - select it directly
+                $j('#samyar_select_service').val(service_id).trigger('change');
+                return true;
+            }
+
+            // Service doesn't exist - make AJAX request
             $btn.addClass('is-loading');
             $btn.addClass('clicked');
-            // $this.find('.samyar-form-loading').fadeIn(200);
-            var service_id = $j('#input_service').val();
+
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
                 data: {action: 'kando_get_service_info', service: service_id, nonce: kando_data.nonce},
-                success: function (response) {
-
-                    //اگر مرحله شروع پرداخت موفقیت آمیز بود به درگاه پرداخت برو
+                success: function(response) {
                     if (response.success) {
                         $j('#samyar_select_category').val(response.data.category).trigger('change');
 
-
-                        // سپس با کمی تاخیر دسته‌بندی را انتخاب کنید
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $j('#select-order-service select').val(service_id).trigger('change');
-                        }, 5000); // تاخیر 100 میلی‌ثانیه
-
-
+                        }, 5000);
                     } else {
-                        setTimeout(function () {
-
+                        setTimeout(function() {
                             Swal.fire({
                                 title: kando_data.langs.an_error,
                                 icon: 'error',
                                 html: response.data.message,
                                 showCloseButton: true,
                                 confirmButtonText: kando_data.langs.ok,
-                            })
-
-
+                            });
                         }, 200);
-
-                        // $this.find('.samyar-form-loading').fadeOut(200);
                     }
                     $btn.removeClass('is-loading');
                     $btn.removeClass('clicked');
-
                 },
-                error: function () {
+                error: function() {
                     $btn.removeClass('is-loading');
                     $btn.removeClass('clicked');
-                    // $this.find('.samyar-form-loading').fadeOut(200);
                 }
             });
-
         }
-
-        return false;
-    });
+    }
 }
 
 //افزودن سفارش
@@ -3993,6 +4009,7 @@ function samyarShowServiceInfo() {
 
             // نمایش متن در یک عنصر HTML
             $j('#srv-desc').hide();
+            $j('#srv-desc').html('');
             if (description !== "") {
                 $j('#srv-desc').html(description);
                 $j('#srv-desc').show();
@@ -4206,16 +4223,16 @@ function kando_number_format(price) {
     price = numberFormat(price, decimals, decimal_sep, thousand_sep)
 
     switch (currency_pos) {
-        case 'left':
+        case 'right':
             return price + '' + _currency_symbol;
             break;
-        case 'right':
+        case 'left':
             return _currency_symbol + '' + price;
             break;
-        case 'left_space':
+        case 'right_space':
             return price + ' ' + _currency_symbol;
             break;
-        case 'right_space':
+        case 'left_space':
             return _currency_symbol + ' ' + price;
             break;
     }
@@ -4669,6 +4686,9 @@ function SamyarAjaxShowPackageForm() {
                 price: price,
                 action: 'samyar_show_package_form'
             },
+            beforeSend: function () {
+                $j(".kt-send-package-modal .kt-modal-content").html("<span class='is-loading'><div class='samyar-form-loading' style='display: block;'></div></span>");
+            },
             success: function (response) {
                 // if (response.success) {
                 $j(".kt-send-package-modal .kt-modal-content").html(response);
@@ -4700,6 +4720,9 @@ function SamyarAjaxShowOrderForm() {
             url: kando_data.ajaxurl,
             type: 'GET',
             data: {service_id: service_id, cat_id: cat_id, type: type, action: 'samyar_show_order_form'},
+            beforeSend: function () {
+                $j(".kt-send-package-modal .kt-modal-content").html("<span class='is-loading'><div class='samyar-form-loading' style='display: block;'></div></span>");
+            },
             success: function (response) {
                 // if (response.success) {
                 $j(".kt-send-package-modal .kt-modal-content").html(response);
@@ -6375,6 +6398,7 @@ function SamyarAjaxChangeMobileNumber() {
             var $this = $j(this);
             // var mobile = $j(".new-order-form #mobile-number,.get-orders-form #mobile-number").val();
             var mobile = $this.parent().parent().find('#mobile-number').val();
+            var email = $this.parent().parent().find('#email').val();
 
 
             // $this.addClass('clicked');
@@ -6387,6 +6411,7 @@ function SamyarAjaxChangeMobileNumber() {
                     data: {
                         action: 'samyar_send_approve_code_order',
                         mobile: mobile,
+                        email: email,
                     },
                     success: function (response) {
                         if (!response.success) {
@@ -6441,6 +6466,7 @@ function SamyarAjaxChangeMobileNumber() {
             var $this = $j(this);
             // var mobile = $j(".new-order-form #mobile-number,.get-orders-form #mobile-number").val();
             var mobile = $this.parent().parent().parent().find('#mobile-number').val();
+            var email = $this.parent().parent().parent().find('#email').val();
 
 
             // $this.addClass('clicked');
@@ -6453,6 +6479,7 @@ function SamyarAjaxChangeMobileNumber() {
                     data: {
                         action: 'samyar_send_approve_code_order',
                         mobile: mobile,
+                        email: email,
                     },
                     success: function (response) {
                         if (!response.success) {
@@ -7307,6 +7334,9 @@ function SamyarAjaxShowNotification() {
             url: kando_data.ajaxurl,
             type: 'post',
             data: {id: notification_id, action: 'show_notification_description'},
+            beforeSend: function () {
+                $j(".kt-show-notification-modal .kt-modal-content").html("<span class='is-loading'><div class='samyar-form-loading' style='display: block;'></div></span>");
+            },
             success: function (response) {
                 // if (response.success) {
                 $j(".kt-show-notification-modal .kt-modal-content").html(response);
@@ -7880,6 +7910,9 @@ $j(document).on('click', '.kando-show-packages-form', function () {
         url: kando_data.ajaxurl,
         type: 'GET',
         data: {package_id: package_id, action: 'kando_show_package_form'},
+        beforeSend: function () {
+            $j(".kt-send-package-modal .kt-modal-content").html("<span class='is-loading'><div class='samyar-form-loading' style='display: block;'></div></span>");
+        },
         success: function (response) {
             // if (response.success) {
             $j(".kt-send-package-modal .kt-modal-content").html(response);
@@ -8827,7 +8860,7 @@ function kandoToggleCardSelect(context) {
         // حالت radio buttons
         selectedInput = context.find('input[name="payment_method"]:checked');
     }
-console.log(selectedInput.val());
+
     const hasCardCheck = parseInt(selectedInput.data('hascardcheck')) || 0;
     let cardsData = selectedInput.data('cards') || [];
 
@@ -9036,9 +9069,9 @@ $j(document).on('click', '.kando-select-order', function () {
     return false;
 });
 
-// $j(document).on('click', '#cb-select-all-0,#cb-select-all-1', function () {
-//     $j('input.kando-cb-checkbox:checkbox').prop('checked', this.checked);
-// });
+$j(document).on('click', '#cb-select-all-0,#cb-select-all-1', function () {
+    $j('input.kando-cb-checkbox:checkbox').prop('checked', this.checked);
+});
 
 function kando_checkbox_category() {
     // انتخاب تمام چک‌بکس‌های اصلی (دسته‌چک‌بکس)
@@ -9220,42 +9253,43 @@ $j(document).on('click', '.kando-show-services-filter', function () {
 if ($j('#samyar_select_category').length > 0) {
     var allOptions = $j('#samyar_select_category').html();
 
-    $j(document).on('click', '.brand-category', function (event) {
+    // تابع برای انتخاب و trigger کردن اولین گزینه
+    function selectAndTriggerFirstOption() {
+        var $firstOption = $j('#samyar_select_category option:first');
+        if ($firstOption.length) {
+            $j('#samyar_select_category').val($firstOption.val()).trigger('change');
+        }
+    }
+
+    // در ابتدای بارگذاری صفحه، اولین گزینه را انتخاب و trigger می‌کنیم
+    selectAndTriggerFirstOption();
+
+    $j(document).on('click', '.brand-category', function(event) {
         event.preventDefault();
-
-        // بررسی وجود سلکت باکس در صفحه
-        // var $select = $j('#samyar_select_category');
-        // if ($select.length === 0) return;
-
-        // دریافت شناسه برند از دکمه کلیک شده
         var brandId = $j(this).data('id');
 
         // بازیابی تمام گزینه‌ها
         $j('#samyar_select_category').html(allOptions);
 
-        // اگر برند خاصی انتخاب شده باشد
         if (brandId !== 'all' && brandId !== 'others') {
-            // پنهان کردن گزینه‌هایی که مطابقت ندارند
-            $j('#samyar_select_category option').each(function () {
+            $j('#samyar_select_category option').each(function() {
                 var optionBrand = $j(this).data('brand');
                 if (optionBrand != brandId) {
                     $j(this).remove();
                 }
             });
         }
-        // اگر "دیگر" انتخاب شده باشد
         else if (brandId === 'others') {
-            $j('#samyar_select_category option').each(function () {
+            $j('#samyar_select_category option').each(function() {
                 var optionBrand = $j(this).data('brand');
-                if (optionBrand) { // اگر گزینه برند داشته باشد (یعنی جزو دیگران نیست)
+                if (optionBrand) {
                     $j(this).remove();
                 }
             });
         }
-        // در غیر این صورت همه گزینه‌ها نمایش داده می‌شوند
 
-        // به روزرسانی سلکت۲ برای اعمال تغییرات
-        $j('#samyar_select_category').trigger('change.select2');
+        // پس از فیلتر کردن، اولین گزینه را انتخاب و trigger می‌کنیم
+        selectAndTriggerFirstOption();
     });
 }
 

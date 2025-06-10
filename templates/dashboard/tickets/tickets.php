@@ -41,7 +41,7 @@ if (kando_user_can('show_user_tickets')) {
                 break;
         }
     } else {
-        $title = __("Tickets awaiting response", SAMYAR_TEXT_DOMAIN);
+        $title = __("Tickets", SAMYAR_TEXT_DOMAIN);
     }
 
 //	$title = "تیکت های در انتظار پاسخ";

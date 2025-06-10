@@ -77,7 +77,8 @@ body.rtl .kando-form-wizard .custom-select-wrapper select {
 }
 
 .kando-form-wizard .kando-form-wizard-step:nth-child(3) .f-w-s-arrow {
-    left: -78px
+    left: -78px;
+    right: auto;
 }
 
 .kando-form-wizard .kando-form-wizard-step .user-filter {
@@ -93,12 +94,23 @@ body.rtl .kando-form-wizard .custom-select-wrapper select {
 }
 
 .kando-form-wizard .kando-form-wizard-step .f-w-s-arrow {
-    right: 109px;
+    right: 100px;
     transform: rotate(0deg);
 }
 
 .kando-form-wizard .final-price {
     text-align: right;
+}
+
+@media only screen and (max-width: 480px) {
+    .kando-form-wizard .kando-form-wizard-step .f-w-s-arrow {
+        right: 69px;
+        transform: rotate(0deg);
+    }
+
+    .kando-form-wizard .kando-form-wizard-step:nth-child(3) .f-w-s-arrow {
+        left: -72px;
+    }
 }
 
 body.rtl table ,
@@ -1149,4 +1161,16 @@ select option {
     /*right: 50%;*/
     /*left: auto;*/
     direction: rtl;
+}
+
+@media (max-width: 767px) {
+    /* اطمینان از اینکه h4 و ul به صورت بلاک نمایش داده می‌شوند (معمولا پیش‌فرض است) */
+    .shop_table_responsive tbody tr td.border-left > h4,
+    .shop_table_responsive tbody tr td.border-left > ul {
+        text-align: right;
+    }
+    .shop_table_responsive tbody tr td.border-left > ul li {
+        text-align: right;
+    }
+
 }

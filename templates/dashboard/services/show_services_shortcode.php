@@ -5,10 +5,8 @@ if (!defined('ABSPATH')) {
 
 use samyar\Category;
 use samyar\categoryController;
-use samyar\Provider;
 use samyar\Service;
-use samyar\Udisableservice;
-use TenQuality\WP\Database\QueryBuilder;
+use samyar\serviceController;
 
 $options = settingsController::getInstance();
 $cate_args = ['order' => 'ASC', 'order_by' => 'sort'];

@@ -21,7 +21,7 @@ $options = settingsController::getInstance();
         //        $service = Service::find($order->service_id);
         ?>
 
-        <?php if ($order->service_type == "giftcart") {
+        <?php if ($order->order_service_type == "giftcart") {
 
             include(SAMYAR_DIR_VIEW . '/orders/gift/gift.php');
 
@@ -72,8 +72,8 @@ $options = settingsController::getInstance();
                     <li class="mt-2"><span class="button button-violet mini-btn">(<span
                                     style=""><?php _e("cost", SAMYAR_TEXT_DOMAIN); ?></span>/<span
                                     style=""><?php _e("Profit", SAMYAR_TEXT_DOMAIN); ?></span>):</span> (<span
-                                style="color:#3ca235"><?php echo priceController::kandoFormatPrice($order->profit)['price_for_show_formatted'] ?></span>/<span
-                                style="color:#f58"><?php echo priceController::kandoFormatPrice($order->formal_charge)['price_for_show_formatted'] ?></span>)
+                                style="color:#3ca235"><?php echo priceController::kandoFormatPrice($order->formal_charge)['price_for_show_formatted'] ?></span>/<span
+                                style="color:#f58"><?php echo priceController::kandoFormatPrice($order->profit)['price_for_show_formatted'] ?></span>)
                     </li>
                 </ul>
             <?php } ?>
@@ -135,7 +135,28 @@ $options = settingsController::getInstance();
             <?php echo ($order->api_order_id == "0" || $order->api_order_id == "-1") ? "" : $order->api_order_id ?>
         </td>
         <td data-title="<?php _e("API response", SAMYAR_TEXT_DOMAIN); ?>">
-            <?php echo esc_attr($order->note) ?>
+            <?php
+            echo esc_attr($order->note);
+
+            // Show the "Add Rule" button ONLY IF the Kando plugin is active, the user is an admin, and an error note exists.
+            if (function_exists('kcc_admin_menu') && $order->note) {
+
+                // Fetch provider name based on provider ID from the order
+                global $wpdb;
+                $provider_name = $wpdb->get_var($wpdb->prepare("SELECT name FROM {$wpdb->prefix}samyar_api_provider WHERE id = %d", $order->api_provider_id));
+                if (!$provider_name) {
+                    $provider_name = __('Unknown', 'kando-cancel-condition');
+                }
+
+                printf(
+                    '<button type="button" class="button button-default btn-small kcc-add-rule-button" data-error="%s" data-provider-id="%d" data-provider-name="%s" title="%s"><i class="fal fa-plus-circle"></i></button>',
+                    esc_attr($order->note),
+                    esc_attr($order->api_provider_id),
+                    esc_attr($provider_name),
+                    __('Create a rule from this error', 'kando-cancel-condition')
+                );
+            }
+            ?>
         </td>
     <?php } ?>
     <td data-title="<?php _e("Operations", SAMYAR_TEXT_DOMAIN); ?>">
@@ -148,7 +169,7 @@ $options = settingsController::getInstance();
             ?>
             <span class="wating-timer" id="wating-timer-<?= $order->id ?>"></span>
             <script type="text/javascript">
-                kando_count_time("<?php echo $date2->format('Y m d H:i:s') ?>", "wating-timer-<?=$order->id?>", <?php _e("Opportunity to cancel the order", SAMYAR_TEXT_DOMAIN); ?>,)
+                kando_count_time("<?php echo $date2->format('Y m d H:i:s') ?>", "wating-timer-<?=$order->id?>", "<?php _e("Opportunity to cancel the order", SAMYAR_TEXT_DOMAIN); ?>")
             </script>
             <span class="button button-red btn-small cancel-order" data-id="<?php echo esc_attr($order->id) ?>"
                   data-tooltip="<?php _e("cancel", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-ban"></i></span>
@@ -245,7 +266,6 @@ $options = settingsController::getInstance();
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <button class="btn button-default CopyToClipBoard2"
-                                        style="height: 28px;border-radius: 5px 0 0 5px;font-size: 13px;"
                                         href="<?= $order->link ?>"
                                         type="button"><i class="fal fa-copy"></i></button>
                             </div>

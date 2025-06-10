@@ -542,19 +542,32 @@ $enable_send_order_mass = kando_get_option('enable-send-order-mass', 1);
                                         <?php
 
                                         //اگر مدیر در تنظیمات گفته که نیازی به تایید موبایل نیست
-                                        $enable_otp_order = kando_get_option('enable-otp-order', 1);
+                                        $enable_otp_order = (bool)kando_get_option('enable-otp-order', 1);
+                                        $email_verification = (bool)kando_get_option('enable-email-verification', 0);
+                                        $note = __("Note: If you don't need to confirm the mobile number for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN);
+                                        if($email_verification){
+                                            $note = __("Note: If you don't need to confirm the email for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN);
+                                        }
                                         ?>
-                                        <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
-                                            <p style="margin-top:20px;color:#AF0000"><?php _e("Note: If you don't need to confirm the mobile number for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN); ?></p>
+                                        <?php if ($enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
+                                            <p style="margin-top:20px;color:#AF0000"><?php echo $note; ?></p>
                                         <?php } ?>
                                         <div class="checkout_coupon" style="margin-top:30px">
 
+                                            <?php if($email_verification){ ?>
                                             <p class="form-row form-row-first">
-                                                <input type="text" name="mobile" dir="ltr" class="input-text"
-                                                       placeholder="<?php _e("Mobile", SAMYAR_TEXT_DOMAIN); ?>"
-                                                       id="mobile-number" value=""/>
+                                                <input type="text" name="email" dir="ltr" class="input-text"
+                                                       placeholder="<?php _e("Email", SAMYAR_TEXT_DOMAIN); ?>"
+                                                       id="email" value=""/>
                                             </p>
-                                            <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
+                                            <?php }else{ ?>
+                                                <p class="form-row form-row-first">
+                                                    <input type="text" name="mobile" dir="ltr" class="input-text"
+                                                           placeholder="<?php _e("Mobile", SAMYAR_TEXT_DOMAIN); ?>"
+                                                           id="mobile-number" value=""/>
+                                                </p>
+                                            <?php } ?>
+                                            <?php if ($enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
                                                 <p class="form-row form-row-last">
                                                     <a href="#"
                                                        class="button button-red kt-ajax-button samyar-verify-send"
@@ -640,7 +653,7 @@ $enable_send_order_mass = kando_get_option('enable-send-order-mass', 1);
                                                     'text' => '<span data-id="serviceSpeed">-</span>',
                                                 ),
                                                 array(
-                                                    'label' => __('Guarantee', SAMYAR_TEXT_DOMAIN),
+                                                    'label' => __('Refill', SAMYAR_TEXT_DOMAIN),
                                                     'icon' => 'elegant-icon icon_check',
                                                     'text' => '<span data-id="serviceRefill">-</span>',
                                                 ),

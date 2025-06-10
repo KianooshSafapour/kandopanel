@@ -1,5 +1,12 @@
 <?php
+/**
+ * @var object $order
+ * @var object|null $provider
+ * @var array $stranslates
+ */
+
 use samyar\Service;
+use samyar\serviceController;
 
 $options = settingsController::getInstance();
 ?>

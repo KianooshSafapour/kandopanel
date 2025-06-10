@@ -236,32 +236,45 @@ if (kando_user_can('show_user_tickets') || $ticket->uid == get_current_user_id()
         </div>
         <div class="column kt-col-xs-12 kt-col-md-8">
             <div class="ticket-single-form-holder">
-                <form class="ticket-single-form" method="POST" enctype="multipart/form-data"
-                      data-ticket-id="<?php echo esc_attr($ticket->id) ?>">
+                <?php
+                // فرم را نمایش بده اگر:
+                // 1. وضعیت تیکت "closed" نیست (یعنی باز است)
+                // یا
+                // 2. کاربر دسترسی ویژه برای دیدن اطلاعات را دارد (حتی اگر تیکت بسته باشد)
+                if ($ticket->status !== "closed" || kando_user_can('show_user_info_ticket')) {
+                    ?>
+                    <form class="ticket-single-form" method="POST" enctype="multipart/form-data" data-ticket-id="<?php echo esc_attr($ticket->id); ?>">
+                        <div class="ticket-single-form-errors"></div>
+                        <div class="ticket-single-form-loading"></div>
 
-                    <div class="ticket-single-form-errors"></div>
-                    <div class="ticket-single-form-loading"></div>
+                        <div class="clearfix">
+                            <textarea class="ticket-single-form-text" placeholder="<?php _e("your answer", SAMYAR_TEXT_DOMAIN); ?>"></textarea>
 
+                            <?php
+                            if (kando_get_option('enable-ticket-attach', 1) == 1) {
+                                ?>
+                                <input type="file" name="ticket-single-form-file" id="ticket-single-form-file" accept="image/gif, image/jpeg, image/png">
+                                <label for="ticket-single-form-file" class="button button-blue"><?php _e("File upload", SAMYAR_TEXT_DOMAIN); ?></label>
+                            <?php } ?>
 
-                    <div class="clearfix">
-                    <textarea class="ticket-single-form-text"
-                              placeholder="<?php _e("your answer", SAMYAR_TEXT_DOMAIN); ?>"></textarea>
-
-                        <?php
-
-                        if (kando_get_option('enable-ticket-attach', 1) == 1) {
-                            ?>
-                            <input type="file" name="ticket-single-form-file" id="ticket-single-form-file"
-                                   accept="image/gif, image/jpeg, image/png">
-                            <label for="ticket-single-form-file"
-                                   class="button button-blue"><?php _e("File upload", SAMYAR_TEXT_DOMAIN); ?></label>
-
-                        <?php } ?>
-                        <input type="submit" class="button button-green ticket-single-form-submit"
-                               value="<?php _e("Post a reply", SAMYAR_TEXT_DOMAIN); ?>">
-
+                            <input type="submit" class="button button-green ticket-single-form-submit" value="<?php _e("Post a reply", SAMYAR_TEXT_DOMAIN); ?>">
+                        </div>
+                    </form>
+                    <?php
+                } else {
+                    // در غیر این صورت (یعنی تیکت بسته است و کاربر دسترسی ویژه ندارد)
+                    // پیام "تیکت بسته است" را نمایش بده
+                    ?>
+                    <div class="kt-row">
+                        <div class="column kt-col-xs-12">
+                            <div class="alert alert-danger" role="alert">
+                                <?php _e('Ticket is closed', SAMYAR_TEXT_DOMAIN); ?>
+                            </div>
+                        </div>
                     </div>
-                </form>
+                <?php } ?>
+
+
             </div>
             <div class="ticket-single-replies">
 

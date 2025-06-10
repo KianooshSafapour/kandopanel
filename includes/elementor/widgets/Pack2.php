@@ -258,10 +258,10 @@ class kandoPack2 extends Widget_Base
         // Extract settings
         $pack_api_id = !empty($settings['service-id']) ? $settings['service-id'] : '';
         $pack_title = !empty($settings['pack-title']) ? $settings['pack-title'] : '';
-        $pack_discount_percent = !empty($settings['pack-discount-percent']) ? $settings['pack-discount-percent'] : '';
+        $pack_discount_percent = !empty($settings['pack-discount-percent']) ? kando_english_number($settings['pack-discount-percent']) : '';
         $packs = !empty($settings['packs']) ? $settings['packs'] : [];
         $pack_content = !empty($settings['pack-content']) ? $settings['pack-content'] : '';
-        $subtext_number = !empty($settings['subtext-number']) ? $settings['subtext-number'] : '';
+        $subtext_number = !empty($settings['subtext-number']) ? kando_english_number($settings['subtext-number']) : '';
 
         $button_color = !empty($settings['button-color']) ? $settings['button-color'] : '#CD2653';
         $button_title_color = !empty($settings['button-title-color']) ? $settings['button-title-color'] : '#FFFFFF';
@@ -271,16 +271,16 @@ class kandoPack2 extends Widget_Base
 
         // Calculate prices
         $first_pack = $packs[0] ?? [];
-        $last_price = !empty($first_pack['pack-price-by-discounted']) ? $first_pack['pack-price-by-discounted'] : ($first_pack['pack_price'] ?? 0);
-        $old_price = ($first_pack['pack_price'] ?? 0) == $last_price ? 0 : ($first_pack['pack_price'] ?? 0);
+        $last_price = !empty($first_pack['pack-price-by-discounted']) ? kando_english_number($first_pack['pack-price-by-discounted']) : (kando_english_number($first_pack['pack_price']) ?? 0);
+        $old_price = (kando_english_number($first_pack['pack_price']) ?? 0) == $last_price ? 0 : (kando_english_number($first_pack['pack_price']) ?? 0);
 
         // Prepare data for JavaScript
         $v_pcks = [];
         foreach ($packs as $pack) {
             $v_pcks[$pack['pack_number']] = [
-                'count' => $pack['pack_number'] ?? '',
-                'Fprice' => $pack['pack-price-by-discounted'] ?? '',
-                'price' => $pack['pack_price'] ?? '',
+                'count' => kando_english_number($pack['pack_number']) ?? '',
+                'Fprice' => kando_english_number($pack['pack-price-by-discounted']) ?? '',
+                'price' => kando_english_number($pack['pack_price']) ?? '',
             ];
         }
 
@@ -304,7 +304,7 @@ class kandoPack2 extends Widget_Base
                                 <?php
                                 $last_price1 = !empty($pack['pack-price-by-discounted']) ? $pack['pack-price-by-discounted'] : $pack['pack_price'];
                                 ?>
-                                <option data-price="<?php echo priceController::kandoFormatPrice($last_price1)['price_for_show_formatted'] ?>" value="<?php echo esc_attr($pack['pack_number']) ?>">
+                                <option data-price="<?php echo priceController::kandoFormatPrice((float)$last_price1)['price_for_show_formatted'] ?>" value="<?php echo esc_attr($pack['pack_number']) ?>">
                                     <?php echo esc_html($pack['pack_number']) ?> <?php echo esc_html($subtext_number) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -315,10 +315,10 @@ class kandoPack2 extends Widget_Base
 
                 <div class="pckg-price">
                 <span class="oldPrice" id="<?php echo esc_attr($element_id) ?>_oldPrice" style="text-decoration: line-through;<?php echo $old_price == 0 ? 'display: none' : '' ?>">
-                    <?php echo priceController::kandoFormatPrice($old_price)['price_for_show_formatted'] ?>
+                    <?php echo priceController::kandoFormatPrice((float)$old_price)['price_for_show_formatted'] ?>
                 </span>
                     <span>
-                    <i style="font-style: normal" id="<?php echo esc_attr($element_id) ?>_newPrice"><?php echo priceController::kandoFormatPrice($last_price)['price_for_show_formatted'] ?></i>
+                    <i style="font-style: normal" id="<?php echo esc_attr($element_id) ?>_newPrice"><?php echo priceController::kandoFormatPrice((float)$last_price)['price_for_show_formatted'] ?></i>
                 </span>
                 </div>
 

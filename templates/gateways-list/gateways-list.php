@@ -1,3 +1,9 @@
+<?php
+//اگر اعتبار قبل از ارسال سفارش فعال بود
+//بهش بگو که باید قبل از ارسال سفارش کیف پول خودشون رو شارژ کنن
+$enable_wallet_charge = (bool)kando_get_option('enable-wallet-charge', "0");
+?>
+<?php if(!$enable_wallet_charge || (isset($_GET['action']) && $_GET['action'] == "add-credit")){ ?>
 <div id="payment" class="woocommerce-checkout-payment kando-gateways-list">
     <?php
 
@@ -21,11 +27,9 @@
 
     //                                        print_r($gateways);
 
-    //اگر اعتبار قبل از ارسال سفارش فعال بود
-    //بهش بگو که باید قبل از ارسال سفارش کیف پول خودشون رو شارژ کنن
-    $enable_agree_order = kando_get_option('enable-wallet-charge', "0");
 
-    if ($enable_agree_order !== "1") {
+
+
 
         if ($gateway_style == 1) {
             ?>
@@ -100,6 +104,7 @@
         }
 
 
-    } ?>
+     ?>
     <div class="show-carts"></div>
 </div>
+<?php } ?>

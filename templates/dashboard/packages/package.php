@@ -36,7 +36,7 @@
         $date_format = get_option('date_format');
         $time_format = get_option('time_format');
 
-        if (!empty($package->start_date)) {
+        if (!empty(trim($package->start_date))) {
             echo date_i18n($date_format . ' ' . $time_format, strtotime($package->start_date));
         } else {
             // مقدار پیشفرض یا پیام مناسب در صورت نبود تاریخ
@@ -47,7 +47,7 @@
     <td data-title="<?php _e('End Date', SAMYAR_TEXT_DOMAIN) ?>">
         <?
 
-        if (!empty($package->end_date)) {
+        if (!empty(trim($package->end_date))) {
             echo date_i18n($date_format . ' ' . $time_format, strtotime($package->end_date));
         } else {
             // مقدار پیشفرض یا پیام مناسب در صورت نبود تاریخ

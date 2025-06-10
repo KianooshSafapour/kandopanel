@@ -30,6 +30,9 @@ if ($service):
     ?>
     <style type="text/css">
 
+        .shop_table.shop_table_responsive tbody tr:nth-child(odd) td{
+            padding: 4px !important;
+        }
         .select2-container {
             margin-top: 10px;
         }
@@ -135,7 +138,7 @@ if ($service):
                     }
 
                     ?>
-                    <input type="text" name="original_price" step="any"
+                    <input type="text" name="original_price" step="any" dir="ltr"
                            style="padding: 9px 15px;float: right;width: calc(100% - 150px);margin-left: 10px;"
                            value="<?php echo esc_attr($original_price) ?>" placeholder="<?php _e("Original Price", SAMYAR_TEXT_DOMAIN); ?>"/>
                     <?php
@@ -254,14 +257,14 @@ if ($service):
                                     __('Price (%s)', SAMYAR_TEXT_DOMAIN),
                                     $site_currency
                                 );
-                                ?>"><input type="number" dir="ltr" step="any" name="price" placeholder="<?php _e("Price", SAMYAR_TEXT_DOMAIN); ?>"
+                                ?>"><input type="number" step="any" dir="ltr" name="price" placeholder="<?php _e("Price", SAMYAR_TEXT_DOMAIN); ?>"
                                            value="<?php echo esc_attr($service->price) ?>"/></td>
                                 <td data-title="Rate (Percentage)"><input type="number" dir="ltr" step="any" name="profit_rate" placeholder="<?php _e("Profit Rate", SAMYAR_TEXT_DOMAIN); ?>"
                                                                           value="<?php echo esc_attr($service->profit_rate) ?>"/></td>
                                 <?php
                                 $prices = \samyar\priceController::calculatePricesBatch([$service],null);
                                 ?>
-                                <td data-title="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"><input type="text" dir="ltr" step="any" disabled placeholder="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"
+                                <td data-title="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"><input type="text" step="any" disabled placeholder="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"
                                                                                                   value="<?php echo $prices[$service->id]['price_formatted']  ?>"/></td>
                             </tr>
 
@@ -330,7 +333,7 @@ if ($service):
                                     <td data-title="<?php _e("Discount", SAMYAR_TEXT_DOMAIN); ?>"><input type="number" dir="ltr" step="any" name="<?= $key ?>_profit_rate"
                                                                              placeholder="<?php _e("Discount", SAMYAR_TEXT_DOMAIN); ?>"
                                                                              value="<?= esc_attr($rate['profit_rate']) ?>"/></td>
-                                    <td data-title="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"><input type="text" disabled dir="ltr"
+                                    <td data-title="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"><input type="text" disabled
                                                                            placeholder="<?php _e("Displayed price", SAMYAR_TEXT_DOMAIN); ?>"
                                                                            value="<?= esc_attr($rate['show_price']['price_formatted']) ?>"/></td>
                                 </tr>

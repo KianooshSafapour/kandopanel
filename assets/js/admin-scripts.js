@@ -438,6 +438,7 @@ jQuery(document).ready(function ($) {
         var $this = $(this);
         // var loader = $(this).find(".loader");
         var start = $('#samyar-start-order-id').val();
+        var nonce = $('meta[name="samyar-nonce"]').attr('content');
         // loader.show();
         $.ajax({
             url: ajaxurl,
@@ -445,6 +446,7 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'kando_set_start_order_id',
                 start: start,
+                nonce: nonce
             },
             beforeSend: function () {
                 $this.attr('disabled', 'disabled');

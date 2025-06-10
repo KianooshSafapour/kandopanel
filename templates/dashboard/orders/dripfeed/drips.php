@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 use samyar\Order;
 use samyar\Provider;
 use samyar\Service;
+use samyar\serviceController;
 
 $title = __("Drip Feeds Orders", SAMYAR_TEXT_DOMAIN);
 $stranslates = \samyar\serviceController::getInstance()->get_translates();
@@ -56,6 +57,11 @@ $stranslates = \samyar\serviceController::getInstance()->get_translates();
                 <tbody>
                 <?php
                 foreach ($orders as $order):
+                    /**
+                     * @var Order $order
+                     * @var Provider|null $provider
+                     * @var array $stranslates
+                     */
                     if ($order->api_provider_id !== "0") {
                         $provider = Provider::find($order->api_provider_id);
                     }

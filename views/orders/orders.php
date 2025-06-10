@@ -293,6 +293,7 @@ if ($count):
         // کوئری اصلی
         $sql = "SELECT 
     o.*, 
+    o.service_type AS order_service_type, 
     s.name AS service_name, 
     s.type AS service_type, 
     s.cancel AS service_cancel,

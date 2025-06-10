@@ -217,6 +217,5 @@ $custom_title = $page_title . ' - ' . $site_name; // فرمت: "عنوان صف�
         </div>
     </div>
 </div>
-<?php wp_footer(); ?>
 </body>
 </html>

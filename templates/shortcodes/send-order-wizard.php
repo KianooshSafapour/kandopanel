@@ -312,15 +312,15 @@ $ctranslates = categoryController::getInstance()->get_translates();
             <div class="kando-form-wizard-step active">
                 <span class="f-w-s-bg"></span>
                 <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/Bag.svg" alt="" class="f-w-s-icon Bag-filter"/>
-                <p class="f-w-s-text"><?php _e("Select Service", SAMYAR_TEXT_DOMAIN) ?></p>
                 <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/form-wizard-step-arrow.png" class="f-w-s-arrow" alt="">
+                <p class="f-w-s-text"><?php _e("Select Service", SAMYAR_TEXT_DOMAIN) ?></p>
             </div>
             <?php if (!is_user_logged_in()): ?>
                 <div class="kando-form-wizard-step">
                     <span class="f-w-s-bg"></span>
                     <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/user.svg" alt="" class="f-w-s-icon user-filter"/>
-                    <p class="f-w-s-text"><?php _e("Account Verification", SAMYAR_TEXT_DOMAIN) ?></p>
                     <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/form-wizard-step-arrow.png" class="f-w-s-arrow" alt="">
+                    <p class="f-w-s-text"><?php _e("Account Verification", SAMYAR_TEXT_DOMAIN) ?></p>
                 </div>
             <?php endif; ?>
             <div class="kando-form-wizard-step">
@@ -330,7 +330,7 @@ $ctranslates = categoryController::getInstance()->get_translates();
             </div>
         </div>
 
-        <fieldset class="service-selection fieldset">
+        <fieldset class="service-selection fieldset" style="display: contents">
             <div class="loading-wrapper">
                 <div class="loader"><?php _e("Please wait...", SAMYAR_TEXT_DOMAIN) ?></div>
             </div>
@@ -589,22 +589,34 @@ $ctranslates = categoryController::getInstance()->get_translates();
 
         <?php if (!is_user_logged_in()): ?>
             <?php
-            $enable_otp_order = kando_get_option('enable-otp-order', 1);
+            $enable_otp_order = (bool)kando_get_option('enable-otp-order', 1);
+            $email_verification = (bool)kando_get_option('enable-email-verification', 0);
+            $note = __("Note: If you don't need to confirm the mobile number for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN);
+            if($email_verification){
+                $note = __("Note: If you don't need to confirm the email for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN);
+            }
             ?>
             <fieldset class="check-id fieldset">
                 <div class="loading-wrapper">
                     <div class="loader"><?php _e("Please wait...", SAMYAR_TEXT_DOMAIN) ?></div>
                 </div>
-                <?php if ($enable_otp_order === "1" || $enable_otp_order): ?>
-                    <p style="margin-top:20px;color:#AF0000"><?php _e("Note: If you do not want to verify your mobile number for each order, simply register and log in to your account.", SAMYAR_TEXT_DOMAIN) ?></p>
+                <?php if ($enable_otp_order): ?>
+                    <p style="margin-top:20px;color:#AF0000"><?php echo $note; ?></p>
                 <?php endif; ?>
-                <div class="form-group">
-                    <input type="tel" name="mobile" placeholder="<?php _e("Mobile Number", SAMYAR_TEXT_DOMAIN) ?>" class="order-phone-number required ltr" id="mobile-number" required="required">
-                </div>
+                <?php if($email_verification){ ?>
+                    <div class="form-group">
+                        <input type="text" name="email" placeholder="<?php _e("Email", SAMYAR_TEXT_DOMAIN) ?>" class="order-phone-number required ltr" id="email" required="required">
+                    </div>
+
+                <?php }else{ ?>
+                    <div class="form-group">
+                        <input type="tel" name="mobile" placeholder="<?php _e("Mobile Number", SAMYAR_TEXT_DOMAIN) ?>" class="order-phone-number required ltr" id="mobile-number" required="required">
+                    </div>
+                <?php } ?>
                 <?php if ($enable_otp_order === "1" || $enable_otp_order): ?>
                     <div class="form-group fx-o">
                         <div class="buttons-id">
-                            <a type="button" class="btn n-c-i-button kt-ajax-button samyar-wizard-verify-send">
+                            <a type="button" style="border-radius: 5px;padding: 6px 18px" class="btn n-c-i-button kt-ajax-button samyar-wizard-verify-send">
                                 <?php _e("Send Verification Code", SAMYAR_TEXT_DOMAIN) ?>
                             </a>
                         </div>

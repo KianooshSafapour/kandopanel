@@ -1199,8 +1199,8 @@ class priceConvertor
                                                         $profit_percent = $provider->custom_rate;
 
                                                         // قالب‌بندی مقادیر برای نمایش (برای نمایش عدد صحیح یا اعشاری)
-                                                        $formatted_profit_fix = number_format($profit_fix, 4, '.', '');
-                                                        $formatted_profit_percent = number_format($profit_percent, 4, '.', '');
+                                                        $formatted_profit_fix = number_format((float)$profit_fix, 4, '.', '');
+                                                        $formatted_profit_percent = number_format((float)$profit_percent, 4, '.', '');
 
                                                         // حذف صفرهای اضافی از اعشار
                                                         $formatted_profit_fix = rtrim(rtrim($formatted_profit_fix, '0'), '.');

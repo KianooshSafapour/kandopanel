@@ -2,6 +2,7 @@
 //اینجا می یایم مشخص می کنیم که اگر سرویس دستی و توسط خود مدیر اضافه شده
 //نرخش چی باشه
 use samyar\Provider;
+use samyar\serviceController;
 use samyar\Smeta;
 
 ?>

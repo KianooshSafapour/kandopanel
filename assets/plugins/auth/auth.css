@@ -2199,21 +2199,34 @@ input[type=number]::-ms-clear {
     }
 }
 
+/* پایه برای دسکتاپ یا صفحه‌نمایش‌های بزرگ */
+.w-xs-300px {
+    width: 300px; /* مقدار پیش‌فرض برای دسکتاپ */
+}
+
+/* برای تبلت‌ها و موبایل‌های بزرگ */
 @media (max-width: 768px) {
     .w-xs-300px {
-        width: 520px !important;
+        width: 80vw !important; /* 80% عرض صفحه */
+        max-width: 520px; /* حداکثر عرض */
+        min-width: 300px; /* حداقل عرض */
     }
 }
 
-
+/* برای موبایل‌های متوسط */
 @media (max-width: 576px) {
     .w-xs-300px {
-        width: 420px !important;
+        width: 90vw !important; /* 90% عرض صفحه */
+        max-width: 420px;
+        min-width: 280px;
     }
 }
 
+/* برای موبایل‌های کوچک */
 @media (max-width: 350px) {
     .w-xs-300px {
-        width: 320px !important;
+        width: 95vw !important; /* تقریباً کل عرض صفحه */
+        max-width: 320px;
+        min-width: 250px;
     }
 }

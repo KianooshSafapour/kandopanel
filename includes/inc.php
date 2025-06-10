@@ -8,3 +8,5 @@ include( 'classes/recently-registered.php' );
 include( 'builder/footer.php' );
 include( 'builder/header.php' );
 include( 'system-checkup.php' );
+include( 'admin/notification-List-table.php' );
+

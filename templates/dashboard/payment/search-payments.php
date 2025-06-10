@@ -57,6 +57,10 @@ $priceSettings = [
                             <span style="color: #e60921;font-size: 20px;"><i class="fal fa-minus" data-tooltip="<?php _e("Credit reduction for order", SAMYAR_TEXT_DOMAIN); ?>"></i></span>
                         <?php elseif ($payment->payment_type == "refund"): ?>
                             <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Refund", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-undo"></i></span>
+                        <?php elseif ($payment->payment_type == "bonus"): ?>
+                            <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Bonus", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-award"></i></span>
+                        <?php elseif ($payment->payment_type == "coupon"): ?>
+                            <span style="color: #00a699;font-size: 23px" data-tooltip="<?php _e("Coupon", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-gift"></i></span>
                         <?php endif; ?>
                         <?php //endif; ?>
                     </td>
@@ -129,40 +133,60 @@ $priceSettings = [
                         echo date_i18n( $date_format.' '.$time_format, strtotime( $payment->created_at ) ) ?>
                     </td>
                     <td data-title="<?php _e("Description", SAMYAR_TEXT_DOMAIN); ?>">
-                        <?php echo esc_attr( $payment->note ) ?>
-                        <?php if ( $payment->order_id && $payment->status === "1" && ( $payment->payment_type === "decrease-credit" || $payment->payment_type === "refound" ) ): ?>
-                            (<a href="<?php echo esc_attr( home_url( 'dashboard/?action=orders&section=edit&id=' . esc_attr( $payment->order_id ) ) ) ?>"><?php _e("Order", SAMYAR_TEXT_DOMAIN); ?></a>)
+                        <?php echo esc_attr($payment->note) ?>
+                        <?php if ($payment->order_id && $payment->status === "1" && ($payment->payment_type === "decrease-credit" || $payment->payment_type === "refound") && kando_user_can('edit_payment')): ?>
+                            (
+                            <a href="<?php echo esc_attr(home_url('dashboard/?action=orders&section=edit&id=' . esc_attr($payment->order_id))) ?>"><?php _e("Order", SAMYAR_TEXT_DOMAIN); ?></a>)
                         <?php endif ?>
 
                         <?php
-                        $coupon_code           = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'coupon_code' ] );
-                        if ( $coupon_code ):
-                            $original_price = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'original_price' ] );
-                            $price_by_discount = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'price_by_discount' ] );
+                        if ($payment->payment_type == "coupon") {
+
+                            $coupon_code = Pmeta::find_where(['payment_id' => $payment->order_id, 'meta_key' => 'coupon_code']);
+
+                            if ($coupon_code && $coupon_code->meta_value) {
+                                echo sprintf(__('Gift amount from coupon %s added to wallet.', SAMYAR_TEXT_DOMAIN), $coupon_code->meta_value);
+                                echo '<br>';
+                            }
+                        }
+                        if ($payment->payment_type == "bonus") {
+                            echo sprintf(__('Bonus added for payment ID: %1$s <br>', SAMYAR_TEXT_DOMAIN),$payment->order_id);
+                        }
+                        /*
+                        $coupon_code = Pmeta::find_where(['payment_id' => $payment->id, 'meta_key' => 'coupon_code']);
+                        if ($coupon_code) {
+                            $original_price = Pmeta::find_where(['payment_id' => $payment->id, 'meta_key' => 'original_price']);
+                            $price_by_gift = Pmeta::find_where(['payment_id' => $payment->id, 'meta_key' => 'price_by_gift']);
+
+                            // اطمینان از وجود مقادیر قبل از استفاده
+                            $original_price_val = ($original_price) ? (float)$original_price->meta_value : 0;
+                            $price_by_gift_val = ($price_by_gift) ? (float)$price_by_gift->meta_value : 0;
+
                             ?>
                             <span class="button button-green badge-error-orders"
-                                  style="margin-right: 0;"><?php _e("Amount charged:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$original_price->meta_value ) ?> <?php kando_get_currency_base_text() ?></span>
+                                  style="margin-right: 0;"> <?php _e("Amount charged:", SAMYAR_TEXT_DOMAIN); ?>  <?= number_format_i18n($original_price_val) ?><?php kando_get_currency_base_text() ?></span>
                             <br>
-                            <?php _e("discount:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$original_price->meta_value - (int)$price_by_discount->meta_value ) ?><?php kando_get_currency_base_text() ?> <br>
-                            <?php _e("Amount paid:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$price_by_discount->meta_value ) ?><?php kando_get_currency_base_text() ?> <br>
-                            <?php _e("Gift code:", SAMYAR_TEXT_DOMAIN); ?>   <?= $coupon_code->meta_value ?><br>
+                            <?php if ($original_price_val && $price_by_gift_val) { ?>
+                                <?php _e("Gift:", SAMYAR_TEXT_DOMAIN); ?> <?= priceController::kandoFormatPrice($original_price_val - $price_by_gift_val)['price_for_show_formatted'] ?>
+                                <br>
+                            <?php } ?>
 
+                            <?php if (isset($price_by_gift) && $price_by_gift->meta_value) { ?>
+                                <?php _e("Amount paid:", SAMYAR_TEXT_DOMAIN); ?> <?= priceController::kandoFormatPrice($price_by_gift->meta_value)['price_for_show_formatted'] ?>
+                                <br>
+                            <?php } ?>
+                            <?php if (isset($coupon_code) && $coupon_code->meta_value) { ?>
+                                <?php _e("Gift code:", SAMYAR_TEXT_DOMAIN); ?> <?= $coupon_code->meta_value ?><br>
+                            <?php } ?>
+                            <?php
+                        }
+                        */
+                         ?>
                         <?php
-                        endif ?>
-
-                        <?php
-                        $credit_before_charge = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'credit_before_charge' ] );
-                        if ( $credit_before_charge ) {
+                        $ref_id = Pmeta::find_where(['payment_id' => $payment->id, 'meta_key' => 'ref_id']);
+                        if ($ref_id) {
                             ?>
-                            <?php _e("Credit before charging:", SAMYAR_TEXT_DOMAIN); ?> <?= number_format_i18n( (int)$credit_before_charge->meta_value ) ?><?php kando_get_currency_base_text() ?> <br>
-                        <?php }
-                        ?>
-
-                        <?php
-                        $ref_id = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'ref_id' ] );
-                        if ( $ref_id ) {
-                            ?>
-                            <?php _e("Tracking ID:", SAMYAR_TEXT_DOMAIN); ?>   <?= $ref_id->meta_value ?><br>
+                            <?php _e("Tracking ID:", SAMYAR_TEXT_DOMAIN); ?> <?= $ref_id->meta_value ?><br>
                         <?php }
                         ?>
                     </td>

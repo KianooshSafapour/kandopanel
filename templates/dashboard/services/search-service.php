@@ -21,8 +21,7 @@ $enable_average_time = kando_get_option('enable-average-time', 1);
 $sort_by = kando_get_option('select_service_order', 'price');
 
 
-//$categories = wp_cache_get('kando_service_list');
-//if (false === $categories) {
+
 $query = QueryBuilder::create();
 $query->select('category.id as `category_id`');
 $query->select('category.name as `category_name`');
@@ -122,13 +121,6 @@ foreach ($services as $serv) {
     }
 
 }
-
-
-
-//    wp_cache_set('kando_service_list', $categories);
-//}
-
-//print_r($categories)
 ?>
 
 

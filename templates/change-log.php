@@ -27,8 +27,65 @@
                         }
                     </style>
                     <div class="samyar-other-products uk-overflow-auto">
+                        <h5 class="samyar-title">نسخه 30.4 (1404/03/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل فعال شدن سرویس های غیرفعال</li>
+                            <li>حل مشکل در بخش تنظیمات ارز</li>
+                            <li>حل مشکل در بخش پکیج های المنتور</li>
+                            <li>حل مشکل در بخش اطلاعیه ها</li>
+                            <li>حل مشکل در بخش تیکت ها</li>
+                            <li>اطلاعیه و اخبار در بخش داشبرد به بالاترین آیتم منتقل شد</li>
+                            <li>رند کردن قیمت با توجه به مشکلاتی که داشت در این آپدیت غیرفعال شده تا سر فرصت بازنویسی بشه</li>
+                            <li>حل مشکلات گزارش شده کاربران</li>
+                        </ul>
 
-                        <h5 class="samyar-title">نسخه 29 (1404/02/24)</h5>
+                        <h5 class="samyar-title">نسخه 30.3 (1404/03/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکللات گزارش شده کاربران</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 30.2 (1404/03/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکللات گزارش شده کاربران</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 30.1 (1404/03/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل در بخش گزارشات</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 30 (1404/03/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید در بخش تنظیمات کندوپنل -> تنظیمات احراز هویت ->شخصی سازی کاری کنید که برای کاربر مهمان ایمیل به جایی شماره همراه تایید شود</li>
+                            <li>در بخش تنظیمات کندوپنل -> تنظیمات تیکت می تونید مشخص کنید همزمان کاربر چند تیکت باز می تونه داشته باشه</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>درگاه آقای پرداخت بروزرسانی شد</li>
+                            <li>حل مشکل کرون جاب انصراف ها</li>
+                            <li>بهبود سرعت در برخی عملیات ها</li>
+                            <li>از این پس تراکنش های کارت تخفیف جداگانه ثبت میشه</li>
+                            <li>بهبود امنیت</li>
+                            <li>هماهنگ سازی با افزونه بونس کندوپنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 29.1 (1404/03/02)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلی صفحه بررسی پرداخت</li>
+                            <li>حل مشکل نمایش تاریخ شروع و پایان بسته ها</li>
+                            <li>حل مشکل اعمال کد هدیه</li>
+                            <li>حل مشکل نمایش سرویس های غیر فعال در ثبت سفارش برای مدیر</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 29 (1404/02/29)</h5>
                         <ul class="uk-list uk-list-bullet">
 
                             <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
