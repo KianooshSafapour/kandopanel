@@ -31,6 +31,7 @@ if (is_user_logged_in()):
                                 <form class="samyar-form kando-avatar-form" id="kando-avatar-form"
                                       enctype="multipart/form-data" action="" method="POST" autocomplete="off">
                                     <input type="hidden" name="action" value="kando-change-avatar">
+                                    <input type="hidden" name="kando_avatar_nonce" value="<?php echo wp_create_nonce('kando_avatar_nonce'); ?>">
                                     <div class="new-ticket-form-errors"></div>
                                     <div class="new-ticket-form-loading"></div>
                                     <div class="my_account_info">
@@ -153,6 +154,7 @@ if (is_user_logged_in()):
                                 <form class="samyar-form create-api-key-form" action="" method="POST"
                                       autocomplete="off">
                                     <input type="hidden" name="action" value="samyar_create_api_key">
+                                    <input type="hidden" name="samyar_create_api_nonce" value="<?php echo wp_create_nonce('samyar_create_api_nonce'); ?>">
                                     <div class="samyar-form-loading"></div>
                                     <p class="woocommerce-form-row form-row form-row-first">
                                         <label for="name"><?php _e("api link", SAMYAR_TEXT_DOMAIN); ?></label>
@@ -194,6 +196,7 @@ if (is_user_logged_in()):
                             <div class="new-api-form-outer">
                                 <form class="samyar-form edit-profile-form" action="" method="POST" autocomplete="off">
                                     <input type="hidden" name="action" value="samyar_edit_profile">
+                                    <input type="hidden" name="samyar_edit_profile_nonce" value="<?php echo wp_create_nonce('samyar_edit_profile_nonce'); ?>">
                                     <div class="samyar-form-loading"></div>
                                     <p class="woocommerce-form-row form-row form-row-one-half form-row-first">
                                         <label for="name"><?php _e("Name and lastname", SAMYAR_TEXT_DOMAIN); ?><span class="required">*</span></label>
@@ -329,7 +332,7 @@ if (is_user_logged_in()):
                                     <form class="samyar-form update-ticket-settings-form" action="" method="POST"
                                           autocomplete="off">
                                         <input type="hidden" name="action" value="save_user_currency">
-                                        <?php wp_nonce_field('change_language_nonce', 'change_language_nonce'); ?>
+                                        <?php wp_nonce_field('save_user_currency_nonce', 'save_user_currency_nonce'); ?>
                                         <div class="samyar-form-loading"></div>
                                         <select class="regular-text" id="currency" name="currency">
                                             <?php foreach ($currencies as $key => $value) :
@@ -368,6 +371,7 @@ if (is_user_logged_in()):
                                     <form class="samyar-form update-ticket-settings-form" action="" method="POST"
                                           autocomplete="off">
                                         <input type="hidden" name="action" value="samyar_update_ticket_settings">
+                                        <input type="hidden" name="samyar_update_ticket_settings_nonce" value="<?php echo wp_create_nonce('samyar_update_ticket_settings_nonce'); ?>">
                                         <div class="samyar-form-loading"></div>
                                         <p class="woocommerce-form-row form-row form-row-first">
                                             <label for="ticket-signature"><?php _e("Ticket signature (it will be displayed under each of your answers)", SAMYAR_TEXT_DOMAIN); ?></label>

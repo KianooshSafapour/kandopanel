@@ -129,7 +129,7 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
                                 <div class="input-group-prepend">
                                     <span class="input-group-text currency">تومان</span>
                                 </div>
-                                <input type="number" class="form-control" dir="ltr" name="topup_amount">
+                                <input type="number" class="form-control" dir="ltr" id="topup_amount" name="topup_amount">
 
                             </div>
 
