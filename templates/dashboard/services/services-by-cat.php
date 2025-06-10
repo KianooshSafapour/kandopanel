@@ -18,8 +18,8 @@ $options = settingsController::getInstance();
 //}
 //$categories = Category::where($cate_args);
 
-$enable_average_time = $options->get_option('enable-average-time', 1);
-$sort_by = $options->get_option('select_service_order', 'price');
+$enable_average_time = kando_get_option('enable-average-time', 1);
+$sort_by = kando_get_option('select_service_order', 'price');
 
 
 $query = QueryBuilder::create();
@@ -122,10 +122,10 @@ foreach ($categories as $key => $cat) {
                         <th><span class="nobr"><?php _e("Name", SAMYAR_TEXT_DOMAIN); ?></span></th>
                         <th><span class="nobr"><?php _e("Description", SAMYAR_TEXT_DOMAIN); ?></span></th>
                         <?php if (kando_user_can('show_original_price')): ?>
-                            <th><span class="nobr">قیمت اصلی</span></th>
+                            <th><span class="nobr"><?php _e("Original Price", SAMYAR_TEXT_DOMAIN); ?></span></th>
                         <?php endif; ?>
                         <?php if (kando_user_can('show_service_type')): ?>
-                            <th><span class="nobr">نوع</span></th>
+                            <th><span class="nobr"><?php _e("Type", SAMYAR_TEXT_DOMAIN); ?></span></th>
                         <?php endif; ?>
                         <th><span class="nobr"><?php _e("Price per 1000 pcs", SAMYAR_TEXT_DOMAIN); ?></span></th>
                         <th><span class="nobr"><?php _e("Min/Max", SAMYAR_TEXT_DOMAIN); ?></span></th>

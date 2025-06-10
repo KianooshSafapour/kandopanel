@@ -160,7 +160,7 @@ final class JalalianTest extends TestCase
         $jDate = new Jalalian(1401, 3, 7);
         $this->assertEquals($jDate->getWeekOfMonth(), 2);
     }
-    
+
     public function testGetFirstDayOfWeek()
     {
         $jDate = new Jalalian(1401, 1, 23);
@@ -228,5 +228,146 @@ final class JalalianTest extends TestCase
     {
         $jDate = new Jalalian(1401, 6, 8);
         $this->assertEquals($jDate->getLastMonth()->format('Y-m-d'), '1401-05-08');
+    }
+
+    public function testGetFirstDayOfQuarter()
+    {
+        $jDate = new Jalalian(1402, 1, 25);
+        $this->assertEquals('1402-01-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 2, 25);
+        $this->assertEquals('1402-01-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 3, 25);
+        $this->assertEquals('1402-01-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 4, 25);
+        $this->assertEquals('1402-04-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 5, 25);
+        $this->assertEquals('1402-04-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 6, 25);
+        $this->assertEquals('1402-04-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 7, 25);
+        $this->assertEquals('1402-07-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 8, 25);
+        $this->assertEquals('1402-07-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 9, 25);
+        $this->assertEquals('1402-07-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals('1402-10-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 11, 19);
+        $this->assertEquals('1402-10-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 12, 25);
+        $this->assertEquals('1402-10-01', $jDate->getFirstDayOfQuarter()->format('Y-m-d'));
+
+    }
+
+    public function testGetEndDayOfWeek()
+    {
+        /*
+         *  --------------------------------
+         *       Day 1402 (March 2024)
+         *  --------------------------------
+         *    Sat Sun Mon Tue Wed Thu Fri
+         *  --------------------------------
+         *                             1
+         *     2   3   4   5   6   7   8
+         *     9  10  11  12  13  14  15
+         *    16  17  18  19  20  21  22
+         *    23  24  25  26  27  28  29
+         *    30
+         *  -------------------------------
+         */
+
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals('1402-10-29', $jDate->getEndDayOfWeek()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 10, 29);
+        $this->assertEquals('1402-10-29', $jDate->getEndDayOfWeek()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 10, 23);
+        $this->assertEquals('1402-10-29', $jDate->getEndDayOfWeek()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 12, 29);
+        $this->assertEquals('1403-01-03', $jDate->getEndDayOfWeek()->format('Y-m-d'));
+
+    }
+
+    public function testGetEndDayOfMonth()
+    {
+        /*
+         *  --------------------------------
+         *       Day 1402 (March 2024)
+         *  --------------------------------
+         *    Sat Sun Mon Tue Wed Thu Fri
+         *  --------------------------------
+         *                             1
+         *     2   3   4   5   6   7   8
+         *     9  10  11  12  13  14  15
+         *    16  17  18  19  20  21  22
+         *    23  24  25  26  27  28  29
+         *    30
+         *  -------------------------------
+         */
+
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals('1402-10-30', $jDate->getEndDayOfMonth()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 04, 12);
+        $this->assertEquals('1402-04-31', $jDate->getEndDayOfMonth()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 12, 25);
+        $this->assertEquals('1402-12-29', $jDate->getEndDayOfMonth()->format('Y-m-d'));
+    }
+
+    public function testGetEndDayOfYear()
+    {
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals('1402-12-29', $jDate->getEndDayOfYear()->format('Y-m-d'));
+
+        // LeapYear
+        $jDate = new Jalalian(1403, 10, 25);
+        $this->assertEquals('1403-12-30', $jDate->getEndDayOfYear()->format('Y-m-d'));
+    }
+
+    public function testGetEndDayOfQuarter()
+    {
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals('1402-12-29', $jDate->getEndDayOfQuarter()->format('Y-m-d'));
+
+        $jDate = new Jalalian(1402, 2, 25);
+        $this->assertEquals('1402-03-31', $jDate->getEndDayOfQuarter()->format('Y-m-d'));
+
+
+        $jDate = new Jalalian(1402, 6, 01);
+        $this->assertEquals('1402-06-31', $jDate->getEndDayOfQuarter()->format('Y-m-d'));
+
+
+        $jDate = new Jalalian(1402, 9, 01);
+        $this->assertEquals('1402-09-30', $jDate->getEndDayOfQuarter()->format('Y-m-d'));
+    }
+
+    public function testGetQuarter()
+    {
+        $jDate = new Jalalian(1402, 10, 25);
+        $this->assertEquals(4, $jDate->getQuarter());
+
+        $jDate = new Jalalian(1402, 1, 01);
+        $this->assertEquals(1, $jDate->getQuarter());
+
+
+        $jDate = new Jalalian(1402, 05, 24);
+        $this->assertEquals(2, $jDate->getQuarter());
+
+        $jDate = new Jalalian(1402, 7, 23);
+        $this->assertEquals(3, $jDate->getQuarter());
     }
 }

@@ -44,7 +44,7 @@ if (isset($_POST['order_id']) && !empty($_POST['order_id'])) {
 
 
                     //گرفتن اعتبار کیف پول
-                    $wallet = new walletController();
+                    $wallet =  walletController::getInstance();
                     $data = $wallet->calculate_wallet_payment($total_service);
 
                     $number = new Number2Word();
@@ -96,7 +96,7 @@ if (isset($_POST['order_id']) && !empty($_POST['order_id'])) {
                 </table>
 
                 <?php
-                $default_gateway = $options->get_option('default-gateway', "zarinpal");
+                $default_gateway = kando_get_option('default-gateway', "zarinpal");
                 ?>
                 <script>
                     jQuery(document).ready(function ($) {

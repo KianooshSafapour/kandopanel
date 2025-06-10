@@ -401,7 +401,30 @@ $date = (new Jalalian(1397, 6, 24))->isStartOfWeek()
 // output: true
 
 ```
+---
+```php
+public function getEndDayOfYear(): bool
 
+$date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
+// output: 1397, 12, 29
+
+```
+---
+```php
+public function getFirstDayOfMonth(): bool
+
+$date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
+// output: 1397, 6, 1
+
+```
+---
+```php
+public function getEndDayOfMonth(): bool
+
+$date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
+// output: 1397, 6, 30
+
+```
 ---
 ```php
 public function isSaturday(): bool

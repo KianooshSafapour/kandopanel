@@ -65,7 +65,7 @@ query_posts( array( 'post_type' => 'post', 'post_status' => 'publish','paged' =>
         }
 
 	    } else {
-		    echo '<h2>در حال حاضر مطلبی وجود ندارد</h2>';
+            echo '<h2>' . __('Currently, there is no content available', SAMYAR_TEXT_DOMAIN) . '</h2>';
 	    }
 	    ?>
 

@@ -3,46 +3,62 @@
 use samyar\Number2Word;
 use samyar\Service;
 use samyar\walletController;
+use samyar\priceController;
 
 $options = settingsController::getInstance();
-if (isset($_POST['service_id']) && !empty($_POST['service_id'])) {
-    $service = Service::find($_POST['service_id']);
-}
-if (isset($_POST['quantity']) && !empty($_POST['quantity'])) {
-    $quantity = $_POST['quantity'];
+
+// دریافت داده‌های فرم
+$service_id = isset($_POST['service_id']) ? intval($_POST['service_id']) : 0;
+$quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
+$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+$price = isset($_POST['price']) ? $_POST['price'] : 0;
+
+// یافتن سرویس
+$service = $service_id ? Service::find($service_id) : null;
+
+if (!$service) {
+    echo __('Service not found.', SAMYAR_TEXT_DOMAIN);
+    return;
 }
 
-if (isset($_POST['title']) && !empty($_POST['title'])) {
-    $title = $_POST['title'];
-}
+// محاسبه قیمت‌ها با استفاده از priceController::calculatePricesBatch
+$user_id = get_current_user_id();
+$services = [$service];
+$prices = priceController::calculatePricesBatch($services, $user_id);
+$service_price = $prices[$service_id]['price'] ?? 0;
 
-if (isset($_POST['price']) && !empty($_POST['price'])) {
-    $price = $_POST['price'];
-}
-//var_dump($service->type);
+// محاسبه قیمت کل
+$total_service = ($service_price / 1000) * $quantity;
+
+// محاسبه کیف پول و مبلغ قابل پرداخت
+$wallet = walletController::getInstance();
+$wallet_data = $wallet->calculate_wallet_payment($total_service);
+$total_payment = $wallet_data['total_payment'];
+
+// تبدیل عدد به حروف
+$number = new Number2Word();
+$total_payment_words = $number->numberToWords(round($total_payment));
 
 ?>
+
 <div class="kt-row">
     <div class="column kt-col-xs-12 kt-col-md-5 pack-right">
-        <div class=" kt-col-xs-12 kt-col-md-12">
-
+        <div class="kt-col-xs-12 kt-col-md-12">
             <div class="dashboard-box dashboard-box-green">
                 <a class="dashboard-box-inner" href="#" data-wpel-link="internal">
-				<span class="dashboard-box-text">
-                    <span class="woocommerce-Price-amount amount"><?= esc_attr($quantity) ?>&nbsp;</span><small><?= esc_attr($title) ?></small>
-                </span>
-
-
+                    <span class="dashboard-box-text">
+                        <span class="woocommerce-Price-amount amount"><?= esc_attr($quantity) ?>&nbsp;</span>
+                        <small><?= esc_attr($title) ?></small>
+                    </span>
                 </a>
             </div>
         </div>
-        <div class=" kt-col-xs-12 kt-col-md-12" style="margin-top:10px">
+        <div class="kt-col-xs-12 kt-col-md-12" style="margin-top:10px">
             <div class="dashboard-box dashboard-box-profit">
                 <a class="dashboard-box-inner" href="#" data-wpel-link="internal">
-                <span class="dashboard-box-text">
-                    &lt;<span class="woocommerce-Price-amount amount"><?php echo number_format_i18n(esc_attr((int)$price)) ?>&nbsp;</span><small>تومان</small>
-                </span>
-
+                    <span class="dashboard-box-text">
+                        &lt;<span class="woocommerce-Price-amount amount"><?= priceController::kandoFormatPrice($total_service)['price_for_show_formatted'] ?>&nbsp;</span>
+                    </span>
                     <i class="fal fa-money-bill dashboard-box-icon"></i>
                 </a>
             </div>
@@ -58,19 +74,14 @@ if (isset($_POST['price']) && !empty($_POST['price'])) {
 
             <div id="insert-order-data">
                 <div class="order-default-link">
-                    <label>لینک</label>
-                    <input type="text" name="link" dir="ltr" placeholder="لینک را وارد کنید"/>
-                    <?php
-                    $enable_process_link = $options->get_option('enable-process-link', "1");
-                    ?>
-                    <?php if ($enable_process_link == 1 || $enable_process_link === "1"): ?>
-<!--                        <button class="button button-green kt-ajax-button alt process-link" id="process-link">بررسی لینک</button>-->
-                    <?php endif; ?>
+                    <label><?php _e("Link", SAMYAR_TEXT_DOMAIN); ?></label>
+                    <input type="text" name="link" dir="ltr" placeholder="<?php _e("Enter the link", SAMYAR_TEXT_DOMAIN); ?>"/>
                 </div>
                 <div class="process-link-result"></div>
-                <?php
-                switch ($service->type) {
 
+                <?php
+                // نمایش فیلدهای سفارش بر اساس نوع سرویس
+                switch ($service->type) {
                     case "custom_comments":
                         ?>
                         <div class="order-comments">
@@ -78,7 +89,6 @@ if (isset($_POST['price']) && !empty($_POST['price'])) {
                             <textarea rows="10" name="comments" class="form-control square ajax_custom_comments"></textarea>
                         </div>
                         <?php
-
                         break;
 
                     case "custom_comments_package":
@@ -111,19 +121,15 @@ if (isset($_POST['price']) && !empty($_POST['price'])) {
                             <textarea rows="10" name="usernames_custom" dir="ltr" class="form-control square ajax_custom_lists"></textarea>
                         </div>
                         <?php
-
-
                         break;
 
                     case "mentions_hashtag":
                         ?>
                         <div class="order-hashtag">
-                            <label for=""><?php _e("Hashtag", SAMYAR_TEXT_DOMAIN) ?> </label>
+                            <label for=""><?php _e("Hashtag", SAMYAR_TEXT_DOMAIN) ?></label>
                             <input class="form-control square" type="text" name="hashtag">
                         </div>
                         <?php
-
-
                         break;
 
                     case "comment_likes":
@@ -134,172 +140,115 @@ if (isset($_POST['price']) && !empty($_POST['price'])) {
                             <input class="form-control square" dir="ltr" name="username" type="text">
                         </div>
                         <?php
-
-
                         break;
 
                     case "mentions_media_likers":
-
                         ?>
-                        <!-- Mentions Media Likers -->
                         <div class="order-media">
                             <label for=""><?php _e("Media Url", SAMYAR_TEXT_DOMAIN) ?></label>
                             <input class="form-control square" dir="ltr" name="media_url" type="link">
                         </div>
                         <?php
-
-
                         break;
 
                     case "package":
-
-
+                        // هیچ فیلد اضافی برای پکیج‌ها نیاز نیست
                         break;
-
-
                 }
-
                 ?>
-
             </div>
+
             <div id="order_review" style="margin-top: 40px;">
                 <table class="shop_table">
                     <?php
-                    $basket_html = "";
-
-                    $service_id = esc_attr($_POST['service_id']);
-                    $quantity = esc_attr($_POST['quantity']);
-
-                    $service = Service::find($service_id);
-                    $price = calculate_service_price($service->id);
-                    $total_service = ($price / 1000) * $quantity;
-
-
-                    //گرفتن اعتبار کیف پول
-                    $wallet = new walletController();
-                    $data = $wallet->calculate_wallet_payment($total_service);
-                    $number = new Number2Word();
-                    $basket_html .= '<thead>
+                    $basket_html = '<thead>
         <tr>
-            <th class="product-name">محصول</th>
-            <th class="product-total">قیمت</th>
+            <th class="product-name">' . __('Product', SAMYAR_TEXT_DOMAIN) . '</th>
+            <th class="product-total">' . __('Price', SAMYAR_TEXT_DOMAIN) . '</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         <tr class="cart_item">
             <td class="product-name">
-                            <span class="product-title">' . esc_attr($service->name) . '&nbsp;<strong class="product-quantity"> &times; ' . $quantity . '</strong>							                                </span>
+                <span class="product-title">' . esc_attr($service->name) . '&nbsp;<strong class="product-quantity"> &times; ' . $quantity . '</strong></span>
             </td>
-            <td class="product-total">
-                <!--                                <span class="sale-price">1,500,000 تومان</span>-->
-				' . number_format_i18n((int)$total_service) . ' تومان
-            </td>
+            <td class="product-total">' . priceController::kandoFormatPrice($total_service)['price_for_show_formatted'] . '</td>
         </tr>
-        </tbody>
-        <tfoot>
+    </tbody>
+    <tfoot>';
 
-        <tr class="cart-subtotal" style="display: none">
-            <th> قیمت کل</th>
-            <td><span class="woocommerce-Price-amount amount">' . number_format_i18n((int)$total_service) . '&nbsp;<span class="woocommerce-Price-currencySymbol">'.kando_get_currency_base_text(false).'</span></span></td>
-        </tr>';
-                    if ($data['wallet_payment'] > 0):
+                    if ($wallet_data['wallet_payment'] > 0) {
                         $basket_html .= '<tr class="cart-discount">
-            <th>کسر از کیف پول</th>
-            <td class="align-left" data-title="اعتبار کیف پول">' . number_format_i18n((int)$data['wallet_payment']) . ' '.kando_get_currency_base_text(false).'</td>
+            <th>' . __('Deduction from Wallet', SAMYAR_TEXT_DOMAIN) . '</th>
+            <td class="align-left">' . priceController::kandoFormatPrice($wallet_data['wallet_payment'])['price_for_show_formatted'] . '</td>
         </tr>';
-
-                    endif;
-                    $basket_html .= '<tr class="cart-discount" style="display: none">
-            <th>تخفیف سبد خرید</th>
-            <td class="align-left" data-title="تخفیف سبد خرید">0 تومان</td>
-        </tr>
-        <tr class="order-total">
-            <th>مبلغ قابل پرداخت</th>
-            <td><strong><span class="woocommerce-Price-amount amount">' . number_format_i18n((int)$data['total_payment']) . '&nbsp;<span class="woocommerce-Price-currencySymbol">'.kando_get_currency_base_text(false).'</span></span></strong></td>
-        </tr>';
-                    if (round($data['total_payment']) > 0) {
-                        $basket_html .= '<tr><th colspan="2">به حروف: <strong><span class="woocommerce-Price-amount amount">' . $number->numberToWords(round($data['total_payment'])) . '&nbsp;<span class="woocommerce-Price-currencySymbol">'.kando_get_currency_base_text(false).'</span></span></strong></th></tr>';
                     }
+
+                    $basket_html .= '<tr class="order-total">
+        <th>' . __('Payable Amount', SAMYAR_TEXT_DOMAIN) . '</th>
+        <td><strong>' . priceController::kandoFormatPrice($total_payment)['price_for_show_formatted'] . '</strong></td>
+    </tr>';
+
+//                    if (round($total_payment) > 0) {
+//                        $basket_html .= '<tr>
+//            <th colspan="2">' . __('In Words:', SAMYAR_TEXT_DOMAIN) . ' <strong>' . esc_html($total_payment_words) . ' ' . __('Toman', SAMYAR_TEXT_DOMAIN) . '</strong></th>
+//        </tr>';
+//                    }
+
                     $basket_html .= '</tfoot>';
                     echo $basket_html;
-                    $gateways = $data['total_payment'] == 0 ? false : true;
-
                     ?>
                 </table>
 
                 <?php if (!is_user_logged_in()): ?>
                     <?php
-
-                    //اگر مدیر در تنظیمات گفته که نیازی به تایید موبایل نیست
-                    $enable_otp_order = $options->get_option('enable-otp-order', 1);
-                    ?>
-                    <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
-                        <p style="margin-top:20px;color:#AF0000">توجه: اگر می خواهید برای هر بار ارسال سفارش، نیاز به تایید شماره همراه نداشته باشید کافی است در سایت ثبت نام و وارد حساب کاربری خود
-                            شوید.</p>
-                    <?php } ?>
-                    <div class="checkout_coupon" style="margin-top:30px">
-
-                        <p class="form-row form-row-first">
-                            <input type="text" name="mobile" dir="ltr" class="input-text" placeholder="شماره همراه" id="mobile-number" value=""/>
+                    $enable_otp_order = kando_get_option('enable-otp-order', 1);
+                    if ($enable_otp_order === "1" || $enable_otp_order):
+                        ?>
+                        <p style="margin-top:20px;color:#AF0000">
+                            <?php _e("Note: If you do not want to verify your phone number every time you place an order, simply register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN); ?>
                         </p>
-                        <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
-                            <p class="form-row form-row-last">
-                                <a href="#" class="button button-red kt-ajax-button samyar-verify-send" style="margin-top:-10px;line-height: 28px;">ارسال کد تایید</a>
+                        <div class="checkout_coupon" style="margin-top:30px">
+                            <p class="form-row form-row-first">
+                                <input type="text" name="mobile" dir="ltr" class="input-text" placeholder="<?php _e("Phone Number", SAMYAR_TEXT_DOMAIN); ?>" id="mobile-number" value=""/>
                             </p>
-
+                            <p class="form-row form-row-last">
+                                <a href="#" class="button button-red kt-ajax-button samyar-verify-send" style="margin-top:-10px;line-height: 28px;"><?php _e("Send Verification Code", SAMYAR_TEXT_DOMAIN); ?></a>
+                            </p>
                             <div class="clear"></div>
                             <p class="form-row form-row-first">
-                                <input type="text" name="verify-code" class="input-text" placeholder="کد تایید دریافتی" id="verify-code" value=""/>
+                                <input type="text" name="verify-code" class="input-text" placeholder="<?php _e("Received Verification Code", SAMYAR_TEXT_DOMAIN); ?>" id="verify-code" value=""/>
                             </p>
-                        <?php } ?>
-                    </div>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
-                <?php
-                $options = settingsController::getInstance();
-                $enable_agree_order = $options->get_option('enable-agree-order', "1");
-                $agree_order_text = $options->get_option('samyar-agree-order-text', __( "I have read and agree to [term].", SAMYAR_TEXT_DOMAIN ));
 
-                $link = $options->get_option('samyar-agree-order-link', "");
-                if (empty($link)) {
-                    $url = __( "Rules and regulations", SAMYAR_TEXT_DOMAIN );
-                } else {
-                    $url = '<a href="' . $link . '" target="_blank">'.__("Rules and regulations", SAMYAR_TEXT_DOMAIN).'</a>';
-                }
-                $text = str_replace('[term]', $url, $agree_order_text);
+                <?php
+                $enable_agree_order = kando_get_option('enable-agree-order', "1");
+                $agree_order_text = kando_get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+                $link = kando_get_option('samyar-agree-order-link', "");
 
                 if ($enable_agree_order === "1"):
+                    $url = empty($link)
+                        ? __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                        : sprintf('<a class="terms-tag" href="%s" target="_blank">%s</a>', esc_url($link), __("Rules and regulations", SAMYAR_TEXT_DOMAIN));
+                    $text = str_replace('[term]', $url, $agree_order_text);
                     ?>
-
                     <input type="hidden" name="agree" value="0">
                     <input type="checkbox" value="1" id="agree" name="agree">
                     <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="agree"><?= $text ?></label>
                 <?php endif; ?>
-                <?php
-                $default_gateway = $options->get_option('default-gateway', "zarinpal");
-                ?>
-                <script>
-                    jQuery(document).ready(function ($) {
-                        if ($('input:radio[name=payment_method]').length > 0) {
-                            if ($('input:radio[value=<?=$default_gateway?>]').length > 0) {
-                                $("input:radio[value=<?=$default_gateway?>]").attr('checked', true);
-                            }else{
-                                $("input:radio[name=payment_method]:first").attr('checked', true);
-                            }
-                        }
-                    })
-                </script>
 
                 <div id="payment" class="woocommerce-checkout-payment">
-                    <?php if ($gateways): ?>
+                    <?php if ($total_payment > 0): ?>
                         <ul class="wc_payment_methods payment_methods methods">
                             <?php do_action('samyar_order_payments'); ?>
                         </ul>
                     <?php endif; ?>
                     <div class="form-row place-order">
-                        <button class="button button-green kt-ajax-button alt" id="place_order">ثبت سفارش</button>
+                        <button class="button button-green kt-ajax-button alt" id="place_order"><?php _e("Submit Order", SAMYAR_TEXT_DOMAIN); ?></button>
                     </div>
                 </div>
-
             </div>
         </form>
     </div>

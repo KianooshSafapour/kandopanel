@@ -10,66 +10,65 @@ if (!defined('ABSPATH')) {
             <div class="new-ticket-help">
                 <img src="<?php echo SAMYAR_DIR_IMG ?>/new-ticket-help.png"/>
                 <ul>
-                    <li><b>نوع اطلاعیه:</b> این اطلاعیه در باکس اطلاعیه ها در داشبرد نمایش داده خواهد شد</li>
-                    <li><b>نوع هشدار:</b> هشدار یک باکس رنگی به همراه متن است که می توانید در مکان های مختلف از سایت،برای کاربران قرار دهید</li>
+                    <li><b><?php _e('Notification Type:', SAMYAR_TEXT_DOMAIN); ?></b> <?php _e('This notification will be displayed in the notifications box on the dashboard.', SAMYAR_TEXT_DOMAIN); ?></li>
+                    <li><b><?php _e('Alert Type:', SAMYAR_TEXT_DOMAIN); ?></b> <?php _e('An alert is a colored box with text that you can place in various locations on the site for users.', SAMYAR_TEXT_DOMAIN); ?></li>
                 </ul>
             </div>
         </div>
         <div class="column kt-col-xs-12 kt-col-md-7 float-left">
             <div class="new-ticket-form-outer">
-                <h4 class="new-ticket-title">افزودن اطلاعیه و هشدار</h4>
-                <span class="new-ticket-text">متن اطلاعیه را نوشته و منتشر کنید</span>
+                <h4 class="new-ticket-title"><?php _e('Add Notification and Alert', SAMYAR_TEXT_DOMAIN); ?></h4>
+                <span class="new-ticket-text"><?php _e('Write and publish the notification text.', SAMYAR_TEXT_DOMAIN); ?></span>
                 <form method="POST" enctype="multipart/form-data" class="new-notification-form">
                     <input type="hidden" name="action" value="samyar_notification_add">
                     <div class="samyar-form-loading"></div>
                     <div class="clearfix">
-                        <label>نوع:</label>
+                        <label><?php _e('Type:', SAMYAR_TEXT_DOMAIN); ?></label>
                         <select name="type" id="notification-type" style="margin-bottom: 15px">
-                            <option value="notification">اطلاعیه</option>
-                            <option value="alert">هشدار</option>
+                            <option value="notification"><?php _e('Notification', SAMYAR_TEXT_DOMAIN); ?></option>
+                            <option value="alert"><?php _e('Alert', SAMYAR_TEXT_DOMAIN); ?></option>
                         </select>
                         <div class="kt-col-xs-12">
-                            <input type="text" class="new-ticket-form-title" name="notification-title" placeholder="عنوان" style="margin-bottom: 15px;">
+                            <input type="text" class="new-ticket-form-title" name="notification-title" placeholder="<?php _e('Title', SAMYAR_TEXT_DOMAIN); ?>" style="margin-bottom: 15px;">
                         </div>
-                        <label>برای چه نوع کاربری نمایش داده شود؟</label>
+                        <label><?php _e('Which type of users should see this?', SAMYAR_TEXT_DOMAIN); ?></label>
                         <select name="user-type" style="margin-bottom: 15px">
-                            <option value="all">همه کاربران</option>
-                            <option value="agents">نمایندگان</option>
+                            <option value="all"><?php _e('All Users', SAMYAR_TEXT_DOMAIN); ?></option>
+                            <option value="agents"><?php _e('Agents', SAMYAR_TEXT_DOMAIN); ?></option>
                         </select>
 
                         <div class="kt-col-xs-12" id="alert-section" style="display: none">
-                            <label>در چه مکانی نمایش داده شود؟</label>
+                            <label><?php _e('Where should it be displayed?', SAMYAR_TEXT_DOMAIN); ?></label>
                             <select name="location" style="margin-bottom: 15px">
-                                <option value="dashboard">داشبرد</option>
-                                <option value="credit">شارژ اعتبار</option>
-                                <option value="order">افزودن سفارش</option>
-                                <option value="orders">سفارشات</option>
-                                <option value="services">سرویس ها</option>
-                                <option value="ticket">افزودن تیکت</option>
-                                <option value="tickets">تیکت ها</option>
-                                <option value="profile">ویرایش پروفایل</option>
+                                <option value="dashboard"><?php _e('Dashboard', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="credit"><?php _e('Credit Charge', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="order"><?php _e('Add Order', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="orders"><?php _e('Orders', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="services"><?php _e('Services', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="ticket"><?php _e('Add Ticket', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="tickets"><?php _e('Tickets', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="profile"><?php _e('Edit Profile', SAMYAR_TEXT_DOMAIN); ?></option>
                             </select>
 
-                            <label>رنگ پس زمینه هشدار:</label>
+                            <label><?php _e('Alert Background Color:', SAMYAR_TEXT_DOMAIN); ?></label>
                             <select name="background-color" style="margin-bottom: 15px">
-                                <option value="success">سبز</option>
-                                <option value="info">آبی</option>
-                                <option value="warning">زرد</option>
-                                <option value="danger">قرمز</option>
-                                <option value="primary">بنفش</option>
-                                <option value="secondary">خاکستری</option>
-                                <option value="dark">تاریک</option>
-                                <option value="light">روشن</option>
+                                <option value="success"><?php _e('Green', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="info"><?php _e('Blue', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="warning"><?php _e('Yellow', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="danger"><?php _e('Red', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="primary"><?php _e('Purple', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="secondary"><?php _e('Gray', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="dark"><?php _e('Dark', SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="light"><?php _e('Light', SAMYAR_TEXT_DOMAIN); ?></option>
                             </select>
                         </div>
                         <div class="kt-col-xs-12">
-                        <?php wp_editor('', 'notification-content'); ?>
+                            <?php wp_editor('', 'notification-content'); ?>
                         </div>
                         <div class="kt-col-xs-12">
-                        <input type="checkbox" value="1" id="publish-notification" name="publish-notification"><label style="margin: 20px 0;" class="publish-notification" for="publish-notification">منتشر
-                            شود</label>
+                            <input type="checkbox" value="1" id="publish-notification" name="publish-notification"><label style="margin: 20px 0;" class="publish-notification" for="publish-notification"><?php _e('Publish', SAMYAR_TEXT_DOMAIN); ?></label>
                         </div>
-                        <input type="submit" class="button button-green notification-form-submit" value="ارسال اطلاعیه">
+                        <input type="submit" class="button button-green notification-form-submit" value="<?php _e('Send Notification', SAMYAR_TEXT_DOMAIN); ?>">
                     </div>
                 </form>
             </div>

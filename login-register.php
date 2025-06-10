@@ -13,9 +13,9 @@ if (isset($site_logo) && !empty($site_logo) && is_numeric($site_logo)) {
 
 
 $options = settingsController::getInstance();
-$google_captcha_enable = esc_attr($options->get_option('google-captcha-enable', 0));
-$siteKey = esc_attr($options->get_option('google-captcha-key', ""));
-$secretKey = esc_attr($options->get_option('google-captcha-secret-key', ""));
+$google_captcha_enable = esc_attr(kando_get_option('google-captcha-enable', 0));
+$siteKey = esc_attr(kando_get_option('google-captcha-key', ""));
+$secretKey = esc_attr(kando_get_option('google-captcha-secret-key', ""));
 
 //redirect
 $redirect = "";
@@ -67,11 +67,11 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     <!--begin::احراز هویت - ورود -->
     <div class="d-flex flex-column flex-lg-row flex-column-fluid">
         <!--begin::Body-->
-        <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
+        <div class="d-flex flex-column flex-center flex-lg-row-fluid w-lg-50 order-2 order-lg-1">
             <!--begin::Form-->
-            <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+            <div class="d-flex flex-column flex-lg-row-fluid">
                 <!--begin::Wrapper-->
-                <div class="w-lg-500px p-10">
+                <div class="w-lg-500px w-xs-300px p-10">
                     <div class="back-btn">
                         <a href="<?=home_url()?>" class="button gray ripple-effect"><?php _e('Return to home',SAMYAR_TEXT_DOMAIN)?>  <i class="fa fas fa-chevron-left"></i></a>
                     </div>
@@ -134,13 +134,13 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
         <!--end::Body-->
         <!--begin::کناری-->
         <?php
-        $login_background = $options->get_option('login-background', SAMYAR_DIR_IMG . '/auth/auth-bg.png');
+        $login_background = kando_get_option('login-background', SAMYAR_DIR_IMG . '/auth/auth-bg.png');
         if (isset($login_background) && !empty($login_background) && is_numeric($login_background)) {
             $login_background = wp_get_attachment_url($login_background);
         }
 
 
-        $login_item_pic = $options->get_option('login-item-pic', SAMYAR_DIR_IMG . '/auth/auth-screens.png');
+        $login_item_pic = kando_get_option('login-item-pic', SAMYAR_DIR_IMG . '/auth/auth-screens.png');
         if (isset($login_item_pic) && !empty($login_item_pic) && is_numeric($login_item_pic)) {
             $login_item_pic = wp_get_attachment_url($login_item_pic);
         }
@@ -166,6 +166,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
                     <?= get_bloginfo('description') ?>
                 </div>
                 <!--end::Text-->
+
             </div>
             <!--end::Content-->
         </div>

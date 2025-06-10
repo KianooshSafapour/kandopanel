@@ -285,6 +285,9 @@ $categories = kando_get_category_by_enable_service();;
         }));
 
         //removed
+
+        var catId = "<?= isset($cat_id) ? $cat_id : '' ?>";
+        var GetQuantity = "<?= isset($_GET['quantity']) ? $_GET['quantity'] : '' ?>";
     }))
 </script>
 
@@ -292,8 +295,8 @@ $categories = kando_get_category_by_enable_service();;
 <div class="kando-form-wizard">
 
     <header>
-        <h5 class="kando-form-wizard-title-1">خرید آنی</h5>
-        <p class="kando-form-wizard-title-2">سریعترین روش خرید</p>
+        <h5 class="kando-form-wizard-title-1"><?php _e("Instant Purchase", SAMYAR_TEXT_DOMAIN) ?></h5>
+        <p class="kando-form-wizard-title-2"><?php _e("The Fastest Way to Buy", SAMYAR_TEXT_DOMAIN) ?></p>
     </header>
 
     <form role="form" id="form" class="new-order-form" action="" method="post">
@@ -305,54 +308,48 @@ $categories = kando_get_category_by_enable_service();;
             <div class="kando-form-wizard-step active">
                 <span class="f-w-s-bg"></span>
                 <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/Bag.svg" alt="" class="f-w-s-icon Bag-filter"/>
-                <p class="f-w-s-text">انتخاب سرویس</p>
+                <p class="f-w-s-text"><?php _e("Select Service", SAMYAR_TEXT_DOMAIN) ?></p>
                 <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/form-wizard-step-arrow.png" class="f-w-s-arrow" alt="">
             </div>
             <?php if (!is_user_logged_in()): ?>
                 <div class="kando-form-wizard-step">
                     <span class="f-w-s-bg"></span>
                     <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/user.svg" alt="" class="f-w-s-icon user-filter"/>
-                    <p class="f-w-s-text">تایید حساب</p>
+                    <p class="f-w-s-text"><?php _e("Account Verification", SAMYAR_TEXT_DOMAIN) ?></p>
                     <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/form-wizard-step-arrow.png" class="f-w-s-arrow" alt="">
                 </div>
             <?php endif; ?>
             <div class="kando-form-wizard-step">
                 <span class="f-w-s-bg"></span>
                 <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/Document.svg" alt="" class="f-w-s-icon Document-filter"/>
-                <p class="f-w-s-text">اطلاعات سفارش</p>
+                <p class="f-w-s-text"><?php _e("Order Information", SAMYAR_TEXT_DOMAIN) ?></p>
             </div>
-
         </div>
 
         <fieldset class="service-selection fieldset">
             <div class="loading-wrapper">
-                <div class="loader">لطفاً صبر کنید...</div>
+                <div class="loader"><?php _e("Please wait...", SAMYAR_TEXT_DOMAIN) ?></div>
             </div>
 
             <div class="form-group">
-
                 <div class="custom-select">
-
                     <div class="custom-select-wrapper">
                         <select class="custom-select" name="cate_id" id="samyar_select_category" required="required">
                             <?php if ($categories): ?>
-                                <option value="0" selected>لطفاً یک دسته را انتخاب کنید.</option>
+                                <option value="0" selected><?php _e("Please select a category.", SAMYAR_TEXT_DOMAIN) ?></option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?php echo esc_attr($category->id) ?>"><?php echo esc_attr($category->name) ?></option>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <option value="">هیچ دسته ای برای سفارش وجود ندارد.</option>
+                                <option value=""><?php _e("No categories available for order.", SAMYAR_TEXT_DOMAIN) ?></option>
                             <?php endif; ?>
-
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="form-group wizard-select-service" id="select-order-service" style="display: none">
-
                 <div class="custom-select">
-
                     <div class="custom-select-wrapper">
                         <select class="custom-select" name="service" required="required"></select>
                     </div>
@@ -361,53 +358,56 @@ $categories = kando_get_category_by_enable_service();;
 
             <div class="form-group">
                 <div class="service-description">
-                    <h5 class="s-d-title">توضیحات سرویس :</h5>
+                    <h5 class="s-d-title"><?php _e("Service Description:", SAMYAR_TEXT_DOMAIN) ?></h5>
                     <p class="s-d-text"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="enter-user-id order-default-link">
-                    <input type="text" name="link" placeholder="لینک پست یا آیدی پیج خود را وارد کنید"
-                           class="e-u-form ltr">
+                    <input type="text" name="link" placeholder="<?php _e("Enter your post link or page ID", SAMYAR_TEXT_DOMAIN) ?>" class="e-u-form ltr">
                 </div>
-
             </div>
+
             <?php
-            $enable_process_link = $options->get_option('enable-process-link', "1");
+            $enable_process_link = kando_get_option('enable-process-link', "1");
             ?>
             <?php if ($enable_process_link == 1 || $enable_process_link === "1"): ?>
-            <!--
+                <!--
             <div class="form-group fx-o">
                 <div class="buttons-id">
                     <button type="button" class="btn n-c-i-button kt-ajax-button process-link" style="background: #c73636;">
-                        بررسی لینک
+                        <?php _e("Check Link", SAMYAR_TEXT_DOMAIN) ?>
                     </button>
                 </div>
-
             </div>
             -->
             <?php endif; ?>
+
             <div class="process-link-result"></div>
+
             <div class="form-group">
-                <div class="custom-number ">
+                <div class="custom-number">
                     <div class="c-n-wrapper order-default-quantity">
-                        <input class="c-n-input ltr ajaxQuantity" min="0" name="quantity" placeholder="تعداد مورد نظر" type="number">
+                        <input class="c-n-input ltr ajaxQuantity" min="0" name="quantity" placeholder="<?php _e("Desired Quantity", SAMYAR_TEXT_DOMAIN) ?>" type="number">
                     </div>
-                    <div class="alert alert-warning" style="display:none"><div class="l-f-arrow"></div> <p class="l-f">لطفا حداقل و حداکثر تعداد را رعایت فرمایید</p></div>
+                    <div class="alert alert-warning" style="display:none">
+                        <div class="l-f-arrow"></div>
+                        <p class="l-f"><?php _e("Please respect the minimum and maximum quantity.", SAMYAR_TEXT_DOMAIN) ?></p>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="order-comments c-n-wrapper d-none">
-                    <label for=""><?php _e("Comments", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
+                    <label for=""><?php _e("Comments", SAMYAR_TEXT_DOMAIN) ?> <?php _e("(1 per line)", SAMYAR_TEXT_DOMAIN) ?></label>
                     <textarea rows="10" name="comments" class="form-control square c-n-textarea ajax_custom_comments"></textarea>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="order-comments-custom-package c-n-wrapper d-none">
-                    <label for=""><?php _e("Comments", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
+                    <label for=""><?php _e("Comments", SAMYAR_TEXT_DOMAIN) ?> <?php _e("(1 per line)", SAMYAR_TEXT_DOMAIN) ?></label>
                     <textarea rows="10" name="comments_custom_package" class="form-control square c-n-textarea"></textarea>
                 </div>
             </div>
@@ -421,53 +421,55 @@ $categories = kando_get_category_by_enable_service();;
 
             <div class="form-group">
                 <div class="order-usernames-custom c-n-wrapper d-none">
-                    <label for=""><?php _e("Usernames", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
+                    <label for=""><?php _e("Usernames", SAMYAR_TEXT_DOMAIN) ?> <?php _e("(1 per line)", SAMYAR_TEXT_DOMAIN) ?></label>
                     <textarea rows="10" name="usernames_custom" class="form-control square ajax_custom_lists c-n-textarea"></textarea>
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="order-hashtags c-n-wrapper d-none">
                     <label for=""><?php _e("Hashtags (Format: #hashtag)", SAMYAR_TEXT_DOMAIN) ?></label>
                     <input type="text" class="form-control input-tags c-n-input" name="hashtags" value="#goodphoto,#love,#nice,#sunny">
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="order-hashtag c-n-wrapper d-none">
-                    <label for=""><?php _e("Hashtag", SAMYAR_TEXT_DOMAIN) ?> </label>
+                    <label for=""><?php _e("Hashtag", SAMYAR_TEXT_DOMAIN) ?></label>
                     <input class="form-control square c-n-input" type="text" name="hashtag">
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="order-username c-n-wrapper d-none">
                     <label for=""><?php _e("Username", SAMYAR_TEXT_DOMAIN) ?></label>
                     <input class="form-control square c-n-input" name="username" type="text">
                 </div>
             </div>
-            <!-- Mentions Media Likers -->
+
             <div class="form-group">
                 <div class="order-media c-n-wrapper d-none">
-                    <label for=""><?php _e("Media Url", SAMYAR_TEXT_DOMAIN) ?></label>
+                    <label for=""><?php _e("Media URL", SAMYAR_TEXT_DOMAIN) ?></label>
                     <input class="form-control square c-n-input" name="media_url" type="link">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="order-poll c-n-wrapper d-none">
-                    <label for=""><?php _e("Answer number", SAMYAR_TEXT_DOMAIN) ?> </label>
+                    <label for=""><?php _e("Answer Number", SAMYAR_TEXT_DOMAIN) ?></label>
                     <input class="form-control square" type="text" dir="ltr" name="answer_number">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="order-groups c-n-wrapper d-none">
-                    <label for=""><?php _e("Groups", SAMYAR_TEXT_DOMAIN) ?><?php _e('(1 per line)', SAMYAR_TEXT_DOMAIN) ?></label>
+                    <label for=""><?php _e("Groups", SAMYAR_TEXT_DOMAIN) ?> <?php _e("(1 per line)", SAMYAR_TEXT_DOMAIN) ?></label>
                     <textarea rows="10" name="groups" class="form-control square c-n-textarea"></textarea>
                 </div>
             </div>
 
-            <!-- Subscriptions  -->
+            <!-- Subscriptions -->
             <div class="row order-subscriptions d-none">
-
                 <div class="kt-col-md-6">
                     <div class="form-group c-n-wrapper">
                         <label><?php _e("Username", SAMYAR_TEXT_DOMAIN) ?></label>
@@ -477,14 +479,14 @@ $categories = kando_get_category_by_enable_service();;
 
                 <div class="kt-col-md-6">
                     <div class="form-group c-n-wrapper">
-                        <label><?php _e("New posts", SAMYAR_TEXT_DOMAIN) ?></label>
-                        <input class="form-control square c-n-input" type="number" placeholder="<?php _e("minimum 1 post") ?>" name="sub_posts">
+                        <label><?php _e("New Posts", SAMYAR_TEXT_DOMAIN) ?></label>
+                        <input class="form-control square c-n-input" type="number" placeholder="<?php _e("Minimum 1 post", SAMYAR_TEXT_DOMAIN) ?>" name="sub_posts">
                     </div>
                 </div>
 
                 <div class="kt-col-md-6">
                     <div class="form-group c-n-wrapper">
-                        <label><?php _e("Old posts", SAMYAR_TEXT_DOMAIN) ?></label>
+                        <label><?php _e("Old Posts", SAMYAR_TEXT_DOMAIN) ?></label>
                         <input class="form-control square c-n-input" type="number" placeholder="" name="sub_old_posts">
                     </div>
                 </div>
@@ -492,23 +494,24 @@ $categories = kando_get_category_by_enable_service();;
                 <div class="kt-col-md-6">
                     <div class="form-group c-n-wrapper">
                         <label><?php _e("Quantity", SAMYAR_TEXT_DOMAIN) ?></label>
-                        <input class="form-control square c-n-input" type="number" name="sub_min" placeholder="<?php _e("min", SAMYAR_TEXT_DOMAIN) ?>">
+                        <input class="form-control square c-n-input" type="number" name="sub_min" placeholder="<?php _e("Min", SAMYAR_TEXT_DOMAIN) ?>">
                     </div>
                 </div>
+
                 <div class="kt-col-md-6">
                     <div class="form-group c-n-wrapper">
                         <label>&nbsp;</label>
-                        <input class="form-control square c-n-input" type="number" name="sub_max" placeholder="<?php _e("max", SAMYAR_TEXT_DOMAIN) ?>">
+                        <input class="form-control square c-n-input" type="number" name="sub_max" placeholder="<?php _e("Max", SAMYAR_TEXT_DOMAIN) ?>">
                     </div>
                 </div>
 
                 <div class="kt-col-md-6">
                     <div class="form-group">
                         <div class="custom-select">
-                            <label><?php _e("Delay", SAMYAR_TEXT_DOMAIN) ?> (<?php _e("minutes", SAMYAR_TEXT_DOMAIN) ?>)</label>
+                            <label><?php _e("Delay", SAMYAR_TEXT_DOMAIN) ?> (<?php _e("Minutes", SAMYAR_TEXT_DOMAIN) ?>)</label>
                             <div class="custom-select-wrapper">
                                 <select name="sub_delay" class="form-control square">
-                                    <option value="0"><?php _e("No delay", SAMYAR_TEXT_DOMAIN) ?></option>
+                                    <option value="0"><?php _e("No Delay", SAMYAR_TEXT_DOMAIN) ?></option>
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="15">15</option>
@@ -526,134 +529,93 @@ $categories = kando_get_category_by_enable_service();;
                         <label><?php _e("Expiry", SAMYAR_TEXT_DOMAIN) ?></label>
                         <div class="input-group">
                             <input type="text" class="form-control datepicker c-n-input hasDatepicker" name="sub_expiry" onkeydown="return false" placeholder="" id="expiry">
-                            <!--
-                            <span class="input-group-append">
-                                        <button class="btn btn-info" type="button" onclick="document.getElementById('expiry').value = ''"><i class="fe fe-trash-2"></i></button>
-                                    </span>
-                                    -->
-
                         </div>
                     </div>
                 </div>
-
             </div>
 
-	        <?php
-	        //	                    if (get_option("enable_drip_feed", "") == 1) {
-	        ?>
+            <!-- Drip-feed Section -->
             <div class="row drip-feed-option c-n-wrapper d-none">
                 <div class="kt-col-md-12">
-
                     <div class="form-label"><?php _e("Drip-feed", SAMYAR_TEXT_DOMAIN) ?>
                         <label class="custom-switch">
-                                        <span class="custom-switch-description m-r-20"><i class="fas fa-question-circle"
-                                                                                          data-tooltip="<?php _e("What is Drip-feed?", SAMYAR_TEXT_DOMAIN) ?>"></i></span>
-
+                            <span class="custom-switch-description m-r-20">
+                                <i class="fas fa-question-circle" data-tooltip="<?php _e("What is Drip-feed?", SAMYAR_TEXT_DOMAIN) ?>"></i>
+                            </span>
                             <input type="hidden" name="is_drip_feed" value="0">
-                            <input type="checkbox" name="is_drip_feed" value="1" class="is_drip_feed custom-switch-input"
-                                   data-tooltip="<?php _e("What is Drip-feed?", SAMYAR_TEXT_DOMAIN) ?>" data-toggle="collapse" data-target="#drip-feed"
-                                   aria-expanded="false"
-                                   aria-controls="drip-feed">
+                            <input type="checkbox" name="is_drip_feed" value="1" class="is_drip_feed custom-switch-input" data-tooltip="<?php _e("What is Drip-feed?", SAMYAR_TEXT_DOMAIN) ?>" data-toggle="collapse" data-target="#drip-feed" aria-expanded="false" aria-controls="drip-feed">
                             <span class="custom-switch-indicator"></span>
                         </label>
                     </div>
 
-
-                    <div class="row collapse " id="drip-feed">
-
+                    <div class="row collapse" id="drip-feed">
                         <div class="kt-col-md-6" style="padding-left: 3px">
-
                             <label><?php _e("Runs", SAMYAR_TEXT_DOMAIN) ?></label>
                             <input class="form-control square c-n-input ajaxDripFeedRuns" type="number" name="runs" value="1">
-
                         </div>
-                        <div class="kt-col-md-6" style="padding-right: 3px">
 
+                        <div class="kt-col-md-6" style="padding-right: 3px">
                             <label><?php _e("Interval (in minutes)", SAMYAR_TEXT_DOMAIN) ?></label>
                             <input class="form-control square c-n-input" min="0" step="1" type="number" name="interval" value="10">
-                            <!--
-                                                        <select name="interval" class="form-control square">
-                                                            <?php
-					        for ($i = 1; $i <= 60; $i++) {
-						        if ($i % 10 == 0) {
-							        ?>
-                                                                    <option value="<?= $i ?>"><?= $i ?></option>
-                                                                <?php }
-					        } ?>
-                                                        </select>
--->
                         </div>
 
                         <div class="kt-col-md-12">
-
                             <label><?php _e("Total Quantity", SAMYAR_TEXT_DOMAIN) ?></label>
                             <input class="form-control square c-n-input" name="total_quantity" type="number" disabled>
-
                         </div>
                     </div>
                 </div>
             </div>
-	        <?php //} ?>
 
             <div class="form-group">
-
                 <div class="final-price">
-                    <span class="final-price-price-is"> قیمت محاسبه شده :</span>
+                    <span class="final-price-price-is"><?php _e("Calculated Price:", SAMYAR_TEXT_DOMAIN) ?></span>
                     <br>
-                    <!--                            <del class="final-price-number" v-show="product.has_discount">{{ price }}</del>-->
                     <span class="final-price-number">0</span>
-                    <span class="final-price-toman"><?=kando_get_currency_base_text()?></span>
+<!--                    <span class="final-price-toman">--><?php //= kando_get_currency_base_text() ?><!--</span>-->
                 </div>
-
             </div>
-
 
             <div class="form-group">
                 <div class="kando-form-wizard-buttons">
-                    <button type="button" class="btn btn-next kt-ajax-button">خرید رو ادامه بده</button>
+                    <button type="button" class="btn btn-next kt-ajax-button"><?php _e("Continue Purchase", SAMYAR_TEXT_DOMAIN) ?></button>
                 </div>
             </div>
-
-
         </fieldset>
+
         <?php if (!is_user_logged_in()): ?>
             <?php
-
-            //اگر مدیر در تنظیمات گفته که نیازی به تایید موبایل نیست
-            $enable_otp_order = $options->get_option('enable-otp-order', 1);
+            $enable_otp_order = kando_get_option('enable-otp-order', 1);
             ?>
             <fieldset class="check-id fieldset">
                 <div class="loading-wrapper">
-                    <div class="loader">لطفاً صبر کنید...</div>
+                    <div class="loader"><?php _e("Please wait...", SAMYAR_TEXT_DOMAIN) ?></div>
                 </div>
-                <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
-                <p style="margin-top:20px;color:#AF0000">توجه: اگر می خواهید برای هر بار ارسال سفارش، نیاز به تایید شماره همراه نداشته باشید کافی است در سایت ثبت نام و وارد حساب کاربری خود
-                    شوید.</p>
-                <?php } ?>
+                <?php if ($enable_otp_order === "1" || $enable_otp_order): ?>
+                    <p style="margin-top:20px;color:#AF0000"><?php _e("Note: If you do not want to verify your mobile number for each order, simply register and log in to your account.", SAMYAR_TEXT_DOMAIN) ?></p>
+                <?php endif; ?>
                 <div class="form-group">
-                    <input type="tel" name="mobile"
-                           placeholder="شماره تلفن همراه" class="order-phone-number required ltr" id="mobile-number" required="required">
+                    <input type="tel" name="mobile" placeholder="<?php _e("Mobile Number", SAMYAR_TEXT_DOMAIN) ?>" class="order-phone-number required ltr" id="mobile-number" required="required">
                 </div>
-                <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
-                <div class="form-group fx-o">
-                    <div class="buttons-id">
-                        <a type="button" class="btn n-c-i-button kt-ajax-button samyar-wizard-verify-send">
-                            ارسال کد تایید
-                        </a>
+                <?php if ($enable_otp_order === "1" || $enable_otp_order): ?>
+                    <div class="form-group fx-o">
+                        <div class="buttons-id">
+                            <a type="button" class="btn n-c-i-button kt-ajax-button samyar-wizard-verify-send">
+                                <?php _e("Send Verification Code", SAMYAR_TEXT_DOMAIN) ?>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="verify-code"
-                           placeholder="کد تایید دریافتی" id="verify-code" class="order-phone-number required ltr" required="required">
-                </div>
-                <?php } ?>
+                    <div class="form-group">
+                        <input type="text" name="verify-code" placeholder="<?php _e("Verification Code", SAMYAR_TEXT_DOMAIN) ?>" id="verify-code" class="order-phone-number required ltr" required="required">
+                    </div>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <div class="kando-form-wizard-buttons">
                         <button type="button" class="btn btn-previous">
                             <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/right-arrow.svg" alt="" class="right-arrow-filter">
                         </button>
-                        <button type="button" class="btn btn-next kt-ajax-button">تایید اطلاعات و ادامه</button>
+                        <button type="button" class="btn btn-next kt-ajax-button"><?php _e("Confirm details and proceed", SAMYAR_TEXT_DOMAIN); ?></button>
                     </div>
                 </div>
 
@@ -662,7 +624,7 @@ $categories = kando_get_category_by_enable_service();;
         <fieldset class="order-information">
 
             <div class="loading-wrapper">
-                <div class="loader">لطفاً صبر کنید...</div>
+                <div class="loader"><?php _e("Please wait...", SAMYAR_TEXT_DOMAIN); ?></div>
             </div>
 
 
@@ -673,7 +635,7 @@ $categories = kando_get_category_by_enable_service();;
 
             <div class="form-group">
                 <?php
-                $default_gateway = $options->get_option('default-gateway', "zarinpal");
+                $default_gateway = kando_get_option('default-gateway', "zarinpal");
                 ?>
                 <script>
                     jQuery(document).ready(function ($) {
@@ -693,18 +655,21 @@ $categories = kando_get_category_by_enable_service();;
 
 
             <?php
-            $options = settingsController::getInstance();
-            $enable_agree_order = $options->get_option('enable-agree-order', "1");
-            $agree_order_text = $options->get_option('samyar-agree-order-text', __( "I have read and agree to [term].", SAMYAR_TEXT_DOMAIN ));
+            $enable_agree_order = kando_get_option('enable-agree-order', "1");
+            $agree_order_text = kando_get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+            $link = kando_get_option('samyar-agree-order-link', "");
 
-            $link = $options->get_option('samyar-agree-order-link', "");
-            if (empty($link)) {
-                $url = __( "Rules and regulations", SAMYAR_TEXT_DOMAIN );
-            } else {
-                $url = '<a href="'.$link.'" target="_blank">'.__("Rules and regulations", SAMYAR_TEXT_DOMAIN).'</a>';
-            }
+            // تعیین URL بر اساس وجود یا عدم وجود لینک
+            $url = empty($link)
+                ? __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                : sprintf(
+                    '<a class="terms-tag" href="%s" target="_blank">%s</a>',
+                    esc_url($link),
+                    __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                );
+
+            // جایگزینی [term] با URL
             $text = str_replace('[term]', $url, $agree_order_text);
-
             if ($enable_agree_order === "1"):
                 ?>
 
@@ -728,7 +693,7 @@ $categories = kando_get_category_by_enable_service();;
                     <button type="button" class="btn btn-previous">
                         <img src="<?= SAMYAR_DIR_IMG ?>/form-wizard/right-arrow.svg" alt="" class="right-arrow-filter">
                     </button>
-                    <button type="submit" class="btn btn-submit kt-ajax-button" id="place_order">ادامه و پرداخت آنلاین</button>
+                    <button type="submit" class="btn btn-submit kt-ajax-button" id="place_order"><?php _e("Continue and pay online", SAMYAR_TEXT_DOMAIN); ?></button>
                 </div>
             </div>
 

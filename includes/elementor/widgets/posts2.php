@@ -32,20 +32,20 @@ class kandoPosts2 extends Widget_Base {
 
 	protected function register_controls() {
 
-		$this->start_controls_section(
-			'content_section',
-			[
-				'label' => "تنظیمات",
-			]
-		);
+        $this->start_controls_section(
+            'content_section',
+            [
+                'label' => __('Settings', SAMYAR_TEXT_DOMAIN),
+            ]
+        );
 
-		$this->add_control(
-			'post-number',
-			[
-				'label' => "تعداد پست",
-				'type'  => Controls_Manager::TEXT,
-			]
-		);
+        $this->add_control(
+            'post-number',
+            [
+                'label' => __('Number of Posts', SAMYAR_TEXT_DOMAIN),
+                'type'  => Controls_Manager::TEXT,
+            ]
+        );
 
 		$this->end_controls_section();
 	}

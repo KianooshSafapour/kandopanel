@@ -5,9 +5,9 @@ use samyar\userController;
 if (!is_user_logged_in()):
     $userClass = new userController();
     $options = settingsController::getInstance();
-    $google_captcha_enable = esc_attr($options->get_option('google-captcha-enable', 0));
-    $siteKey = esc_attr($options->get_option('google-captcha-key', ""));
-    $secretKey = esc_attr($options->get_option('google-captcha-secret-key', ""));
+    $google_captcha_enable = esc_attr(kando_get_option('google-captcha-enable', 0));
+    $siteKey = esc_attr(kando_get_option('google-captcha-key', ""));
+    $secretKey = esc_attr(kando_get_option('google-captcha-secret-key', ""));
     ?>
     <div class="kt-modal-inner kt-login-modal">
         <i class="kt-modal-close"></i>

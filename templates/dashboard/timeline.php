@@ -484,50 +484,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 $logs = Log::where(['order'=>'DESC','order_by'=>'id','uid'=>$_GET['user']]);
 ?>
 <div class="dashboard-welcome-box cssanimations">
-    <div class="dashboard-welcome-box-inner clearfix">
-        <div class="dashboard-welcome-box-desc">
+        <div class="dashboard-welcome-box-inner clearfix">
+            <div class="dashboard-welcome-box-desc">
 
-			<?php if ( $logs ): ?>
-                <h4 style="text-align: center">فعالیت های کاربر</h4>
-                <section id="cd-timeline" class="cd-container">
-					<?php foreach ( $logs as $log ):
+                <?php if ( $logs ): ?>
+                    <h4 style="text-align: center"><?php _e("User Activity", SAMYAR_TEXT_DOMAIN); ?></h4>
+                    <section id="cd-timeline" class="cd-container">
+                        <?php foreach ( $logs as $log ):
 
-						switch ( $log->type ) {
-							case 'register':
-								$icon  = '<i class="fal fa-user"></i>';
-								$color = 'cd-green';
-								break;
-							case 'change_mobile':
-							case 'mobile_approved':
-								$icon  = '<i class="fal fa-mobile"></i>';
-								$color = 'cd-red';
-								break;
-							default:
-								$icon  = '<i class="fal fa-info"></i>';
-								$color = 'cd-yello';
-								break;
-						}
+                            switch ( $log->type ) {
+                                case 'register':
+                                    $icon  = '<i class="fal fa-user"></i>';
+                                    $color = 'cd-green';
+                                    break;
+                                case 'change_mobile':
+                                case 'mobile_approved':
+                                    $icon  = '<i class="fal fa-mobile"></i>';
+                                    $color = 'cd-red';
+                                    break;
+                                default:
+                                    $icon  = '<i class="fal fa-info"></i>';
+                                    $color = 'cd-yellow'; // Corrected "cd-yello" to "cd-yellow"
+                                    break;
+                            }
 
-						?>
-                        <div class="cd-timeline-block">
-                            <div class="cd-timeline-img <?= $color ?>">
-								<?= $icon ?>
-                            </div> <!-- cd-timeline-img -->
+                            ?>
+                            <div class="cd-timeline-block">
+                                <div class="cd-timeline-img <?= $color ?>">
+                                    <?= $icon ?>
+                                </div> <!-- cd-timeline-img -->
 
-                            <div class="cd-timeline-content">
-                                <p><?= $log->content ?></p>
-                                <span class="cd-date"><?= date_i18n( 'd M Y - h:i a', strtotime( $log->created_at ) ) ?></span>
-                            </div> <!-- cd-timeline-content -->
-                        </div> <!-- cd-timeline-block -->
-					<?php endforeach; ?>
+                                <div class="cd-timeline-content">
+                                    <p><?= $log->content ?></p>
+                                    <span class="cd-date"><?= date_i18n( 'd M Y - h:i a', strtotime( $log->created_at ) ) ?></span>
+                                </div> <!-- cd-timeline-content -->
+                            </div> <!-- cd-timeline-block -->
+                        <?php endforeach; ?>
 
-                </section> <!-- cd-timeline -->
-			<?php else: ?>
-            در حال حاضر فعالیتی وجود ندارد
-            <?php endif; ?>
+                    </section> <!-- cd-timeline -->
+                <?php else: ?>
+                    <p><?php _e("No activities available at the moment.", SAMYAR_TEXT_DOMAIN); ?></p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
 
 
 <?php endif; ?>

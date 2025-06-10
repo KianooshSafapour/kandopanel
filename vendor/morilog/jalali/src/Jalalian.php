@@ -165,6 +165,73 @@ class Jalalian
         );
     }
 
+    public function getFirstDayOfQuarter(): Jalalian
+    {
+        return new static(
+            $this->getYear(),
+            ($this->getQuarter() - 1) * Carbon::MONTHS_PER_QUARTER + 1,
+            1,
+            $this->getHour(),
+            $this->getMinute(),
+            $this->getSecond(),
+            $this->getTimezone()
+        );
+    }
+
+    public function getEndDayOfWeek(): Jalalian
+    {
+        $endWeek = $this->addDays(6 - $this->getDayOfWeek());
+
+        return (new static(
+            $endWeek->getYear(),
+            $endWeek->getMonth(),
+            $endWeek->getDay(),
+            $endWeek->getHour(),
+            $endWeek->getMinute(),
+            $endWeek->getSecond(),
+            $endWeek->getTimezone()
+        ));
+    }
+
+    public function getEndDayOfMonth(): Jalalian
+    {
+        return new static(
+            $this->getYear(),
+            $this->getMonth(),
+            $this->getDaysOf($this->getMonth()),
+            $this->getHour(),
+            $this->getMinute(),
+            $this->getSecond(),
+            $this->getTimezone()
+        );
+    }
+
+    public function getEndDayOfYear(): Jalalian
+    {
+        return new static(
+            $this->getYear(),
+            12,
+            $this->getDaysOf(12),
+            $this->getHour(),
+            $this->getMinute(),
+            $this->getSecond(),
+            $this->getTimezone()
+        );
+    }
+
+    public function getEndDayOfQuarter(): Jalalian
+    {
+        return new static(
+            $this->getYear(),
+            $this->getQuarter() * Carbon::MONTHS_PER_QUARTER,
+            $this->getDaysOf($this->getQuarter() * Carbon::MONTHS_PER_QUARTER),
+            $this->getHour(),
+            $this->getMinute(),
+            $this->getSecond(),
+            $this->getTimezone()
+        );
+    }
+
     public function getMonthDays()
     {
         if ($this->getMonth() <= 6) {
@@ -197,6 +264,11 @@ class Jalalian
     public function getYear()
     {
         return $this->year;
+    }
+
+    public function getQuarter(): int
+    {
+        return (int) ceil($this->getMonth() / Carbon::MONTHS_PER_QUARTER);
     }
 
     public function subMonths(int $months = 1): Jalalian

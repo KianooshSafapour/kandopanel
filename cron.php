@@ -89,5 +89,5 @@ if(isset($key, $cronjob_key) && $cron_subscriptions && !empty($cronjob_key) && $
 
 
 if(isset($key, $cronjob_key) && !empty($cronjob_key) && $cronjob_key !== $key){
-    echo "کلید کرون جاب اشتباه است";
+    echo __('The cron job key is incorrect', SAMYAR_TEXT_DOMAIN);
 }

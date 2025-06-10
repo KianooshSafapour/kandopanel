@@ -2656,6 +2656,11 @@ body.exiting .merlin__content--content .merlin__content__footer {
 	top: 0;
 }
 
+html[dir="rtl"] .merlin__select-control-help {
+	left: 7px !important;
+	right: auto;
+}
+
 .merlin__select-control {
 	background: #f9f9f9;
 	border: 1px solid #ccc;

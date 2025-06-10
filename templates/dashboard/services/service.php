@@ -1,6 +1,7 @@
 <?php
 //اینجا می یایم مشخص می کنیم که اگر سرویس دستی و توسط خود مدیر اضافه شده
 //نرخش چی باشه
+use samyar\priceController;
 use samyar\Provider;
 use samyar\Smeta;
 
@@ -16,8 +17,8 @@ $options = settingsController::getInstance();
 //    $base_currency = $provider->base_currency;
 //}
 
-$enable_average_time = $options->get_option('enable-average-time', 1);
-$enable_order_btn_notloginuser = $options->get_option('enable-order-btn-notloginuser', 1);
+$enable_average_time = kando_get_option('enable-average-time', 1);
+$enable_order_btn_notloginuser = kando_get_option('enable-order-btn-notloginuser', 1);
 ?>
 <tr id="service-<?php echo esc_attr($service->id) ?>">
     <?php if (kando_user_can('edit_service')): ?>
@@ -45,52 +46,50 @@ $enable_order_btn_notloginuser = $options->get_option('enable-order-btn-notlogin
         endif; ?>
     </td>
     <?php if (kando_user_can('show_original_price')): ?>
-        <td data-title="قیمت اصلی">
+        <td data-title="<?php _e("Original Price", SAMYAR_TEXT_DOMAIN); ?>">
             <?php
-            echo calculate_service_orginal_price($service->id, true, true);
+            echo kandoConvertCurrency(calculate_service_original_price($service->id));
             ?>
         </td>
     <?php endif; ?>
     <?php if (kando_user_can('show_service_type')): ?>
-        <td data-title="نوع">
+        <td data-title="<?php _e("Type", SAMYAR_TEXT_DOMAIN); ?>">
             <?php if ($service->add_type === "api"): ?>
                 <li><?= esc_attr($service->provider->name) ?>(<?= $service->provider->id ?>) <br> <span
-                            style="font-size:11px"> شناسه سرویس در ارائه دهنده : <b><?= esc_attr($service->api_service_id) ?></b></span></li>
+                            style="font-size:11px"><?php _e("Service ID in Provider:", SAMYAR_TEXT_DOMAIN); ?> <b><?= esc_attr($service->api_service_id) ?></b></span></li>
             <?php else: ?>
-                <li> دستی</li>
+                <li><?php _e("Manual", SAMYAR_TEXT_DOMAIN); ?></li>
             <?php endif; ?>
         </td>
     <?php endif; ?>
 
     <td data-title="<?php _e("Price per 1000 pcs", SAMYAR_TEXT_DOMAIN); ?>">
         <?php echo kandoConvertCurrency($service->service_price) ?>
-        <?php //echo kando_number_format_currency($service->service_price, true) ?>
 
         <?php
-        $representation_active = !empty($options->get_option('representation-active')) ? $options->get_option('representation-active') : 0;
+        $representation_active = !empty(kando_get_option('representation-active')) ? kando_get_option('representation-active') : 0;
         if ($representation_active):
-            $show_price_representation = $options->get_option('show-price-representation', 0);
-            $show_price_representation_type = $options->get_option('show-price-representation-type', 1);
+            $show_price_representation = kando_get_option('show-price-representation', 0);
+            $show_price_representation_type = kando_get_option('show-price-representation-type', 1);
             ?>
             <?php if (($show_price_representation == 1 || $show_price_representation === "1") && $service->disable_representation === "0"): ?>
             <?php if ($show_price_representation_type == 1 || $show_price_representation_type === "1"): ?>
                 <div class="custom-popup"><i class="fal fa-info-circle" style="color: #8d81e6;margin-right: 7px;"></i>
                     <span class="popuptext" id="myPopup">
-                                        قیمت نمایندگی ها: <br>
-                                        <span style="padding-right:10px;float: right;text-align: right;">
-                                        نمایندگی طلایی: (<?= kando_number_format_currency(calculate_representation_price($service->id, 1), true) ?> ) <br>
-                                        نمایندگی نقره ای: (<?= kando_number_format_currency(calculate_representation_price($service->id, 2), true) ?> )<br>
-                                        نمایندگی برنزی: (<?= kando_number_format_currency(calculate_representation_price($service->id, 3), true) ?> ) <br>
-                                        </span>
-
-                                    </span>
+    <?php _e("Representation Prices:", SAMYAR_TEXT_DOMAIN); ?> <br>
+    <span style="padding-right:10px;float: right;text-align: right;">
+        <?php _e("Golden Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 1))['price_for_show_formatted'] ?> ) <br>
+        <?php _e("Silver Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 2))['price_for_show_formatted'] ?> ) <br>
+        <?php _e("Bronze Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 3))['price_for_show_formatted'] ?> ) <br>
+    </span>
+</span>
                 </div>
             <?php else: ?>
                 <ul class="order-details">
-                    <li style="text-align: center;">قیمت نمایندگی ها</li>
-                    <li style="font-size: 11px;">نمایندگی طلایی: (<?= kando_number_format_currency(calculate_representation_price($service->id, 1), true) ?> )</li>
-                    <li style="font-size: 11px;">نمایندگی نقره ای: (<?= kando_number_format_currency(calculate_representation_price($service->id, 2), true) ?> )</li>
-                    <li style="font-size: 11px;">نمایندگی برنزی: (<?= kando_number_format_currency(calculate_representation_price($service->id, 3), true) ?> )</li>
+                    <li style="text-align: center;"><?php _e("Representation Prices", SAMYAR_TEXT_DOMAIN); ?></li>
+                    <li style="font-size: 11px;"><?php _e("Golden Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 1))['price_for_show_formatted'] ?> )</li>
+                    <li style="font-size: 11px;"><?php _e("Silver Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 2))['price_for_show_formatted'] ?> )</li>
+                    <li style="font-size: 11px;"><?php _e("Bronze Representation:", SAMYAR_TEXT_DOMAIN); ?> (<?= priceController::kandoFormatPrice(calculate_representation_price($service->id, 3))['price_for_show_formatted'] ?> )</li>
                 </ul>
             <?php endif; ?>
         <?php endif; ?>
@@ -136,20 +135,17 @@ $enable_order_btn_notloginuser = $options->get_option('enable-order-btn-notlogin
                         data-cat="<?php echo esc_attr($service->cate_id) ?>" data-type="fast-order" data-tooltip="<?php _e("Order", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-shopping-cart"></i></span></a>
         <?php } ?>
         <?php if (kando_user_can('edit_service')){ ?>
-        <a href="<?php echo esc_attr(home_url('dashboard/?action=services&section=edit&id=' . esc_attr($service->id))) ?>"><span
-                    class="button button-default btn-small" data-tooltip="ویرایش"><i class="fal fa-edit"></i></span></a>
+            <a href="<?php echo esc_attr(home_url('dashboard/?action=services&section=edit&id=' . esc_attr($service->id))) ?>"><span
+                        class="button button-default btn-small" data-tooltip="<?php _e("Edit", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-edit"></i></span></a>
         <?php } ?>
         <?php if (kando_user_can('show_service_log')){ ?>
-        <a href="<?php echo esc_attr(home_url('dashboard/?action=services&section=log&id=' . esc_attr($service->id))) ?>"><span
-                    class="button button-default btn-small" data-tooltip="گزارش سرویس"><i class="fal fa-clipboard-list"></i></span></a>
+            <a href="<?php echo esc_attr(home_url('dashboard/?action=services&section=log&id=' . esc_attr($service->id))) ?>"><span
+                        class="button button-default btn-small" data-tooltip="<?php _e("Service Report", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-clipboard-list"></i></span></a>
         <?php } ?>
         <?php if (kando_user_can('delete_service')){ ?>
-
-        <span class="button button-aqua btn-small delete-service" data-id="<?php echo esc_attr($service->id) ?>" data-tooltip="حذف"><i
-                    class="fal fa-trash"></i></span>
+            <span class="button button-aqua btn-small delete-service" data-id="<?php echo esc_attr($service->id) ?>" data-tooltip="<?php _e("Delete", SAMYAR_TEXT_DOMAIN); ?>"><i
+                        class="fal fa-trash"></i></span>
         <?php } ?>
-
-
     </td>
 
 </tr>

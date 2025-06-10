@@ -6,6 +6,7 @@ namespace kandoElementor\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use samyar\Category;
+use samyar\priceController;
 use samyar\Provider;
 use samyar\Service;
 
@@ -113,9 +114,9 @@ class kandoPack extends Widget_Base
     protected function register_controls ()
     {
 //		$options = new DAI_Options_Manager();
-//		$popup_image = $options->get_option( 'popup-image');
+//		$popup_image = kando_get_option( 'popup-image');
 //		if(isset($popup_image) && !empty($popup_image) && is_numeric($popup_image)){
-//			$popup_image  = $options->get_option( 'popup-image');
+//			$popup_image  = kando_get_option( 'popup-image');
 //			$popup_image = wp_get_attachment_url( $popup_image );
 //		}else{
 //			$popup_image  = dai_default('popup-image');
@@ -167,32 +168,33 @@ class kandoPack extends Widget_Base
                 'type' => Controls_Manager::SELECT2,
                 'options' => $servs,
                 'default' => '',
-                'description' => "سرویس را انتخاب کنید",
+                'description' => __('Select the service', SAMYAR_TEXT_DOMAIN),
             ]
         );
 
         $this->add_control(
             'pack-title',
             [
-                'label' => __('pack title', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Title', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::TEXT,
-                'description' => "مثال: سفارش ویو",
+                'description' => __('Example: View Order', SAMYAR_TEXT_DOMAIN),
             ]
         );
 
         $this->add_control(
             'pack-number',
             [
-                'label' => __('pack number', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Number', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::TEXT,
             ]
         );
+
         $this->add_control(
             'pack-content',
             [
-                'label' => __('pack content', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Content', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::WYSIWYG,
-                'description' => "توضیحات بسته",
+                'description' => __('Package description', SAMYAR_TEXT_DOMAIN),
             ]
         );
         $this->add_control(
@@ -268,62 +270,78 @@ class kandoPack extends Widget_Base
         $pack_number = isset($settings['pack-number']) && !empty($settings['pack-number']) ? $settings['pack-number'] : "";
         $pack_content = isset($settings['pack-content']) && !empty($settings['pack-content']) ? $settings['pack-content'] : "";
 
-
-        //مبلغ رو محاسبه کن
-        //مبلغ با سود رو محاسبه میکنه
-
+        // Find the service
         $service = Service::find($pack_api_id);
-        $amount = calculate_service_price($pack_api_id);
 
-        if($service){
-            if ($service->type === "package" || $service->type === "custom_comments_package") {
-                $pack_price = round($amount);
-            } else {
-                $pack_price = (round($amount) / 1000) * (int)$pack_number;//قیمت هر 1000 تا / 1000 * تعداد
-            }
-
-            $pack_price = isset($pack_price) && !empty($pack_price) ? $pack_price : "";
-
-
-
-            $pack_price_by_discounted = isset($settings['pack-price-by-discounted']) && !empty($settings['pack-price-by-discounted']) ? $settings['pack-price-by-discounted'] : "";
-            $pack_icon = isset($settings['pack-icon']) && !empty($settings['pack-icon']) ? $settings['pack-icon'] : "";
-            $icon_color = isset($settings['icon-color']) && !empty($settings['icon-color']) ? $settings['icon-color'] : "";
-            $button_color = isset($settings['button-color']) && !empty($settings['button-color']) ? $settings['button-color'] : "#CD2653";
-            $button_title_color = isset($settings['button-title-color']) && !empty($settings['button-title-color']) ? $settings['button-title-color'] : "#FFFFFF";
-
-//        $last_price = !empty($pack_price_by_discounted) ? $pack_price_by_discounted : $pack_price;
-            $last_price = number_format_i18n((int)$pack_price);
-
-            $link = add_query_arg(array(['service-id' => $pack_api_id, 'number' => $pack_number]), home_url('kando-send-pack'));
-            ?>
-
-            <div class="kando-elementor-pack product-plan">
-                <div class="itemPack ofh">
-                    <div class="ipTopSide">
-                        <span class="iptsCircle bgPurple2 brs50"></span>
-                        <div class="iptsIconCircle brs50">
-                            <i style="color:<?php echo esc_attr($icon_color) ?>" class="<?php echo esc_attr($pack_icon['value']) ?>"></i></div>
-                        <div class="iptsTitle relative">
-                            <h5 class="blue3 bold iptstCount dIb"><?php echo esc_attr($pack_number) ?></h5>
-                            <h5 class="bold iptstCountSubtitle Black1"><?php echo esc_attr($pack_title) ?></h5>
-                        </div>
-                    </div>
-                    <div class="ipBottomSide">
-                        <?php echo $pack_content ?>
-                        <?php if (!empty($pack_price_by_discounted)) { ?>
-                            <!--                    <div class="bgGray5 db smallBtn black text-center relative before ipbPrice oldprice">--><?php //echo esc_attr($pack_price) ?><!--<span class="">تومان</span></div>-->
-                        <?php } ?>
-                        <div class="bgBlue6 db smallBtn blue3  text-center relative before ipbPrice bold"><?php echo esc_attr($last_price) ?><span class=""><?=kando_get_currency_base_text()?></span></div>
-
-                        <a class="bgPink1 db smallBtn White text-center relative before bold kt-modal-button samyar-show-package-form" data-modal="send-package" data-price="<?php echo esc_attr($pack_price) ?>" data-title="<?php echo esc_attr($pack_title) ?>" data-service="<?php echo esc_attr($pack_api_id) ?>" data-quantity="<?php echo esc_attr($pack_number) ?>" style="background:<?php echo esc_attr($button_color) ?>;color:<?php echo esc_attr($button_title_color) ?>"
-                           href="#">سفارش</a>
-                    </div>
-                </div>
-            </div>
-            <?php
+        if (!$service) {
+            echo __('Service not found.', SAMYAR_TEXT_DOMAIN);
+            return;
         }
 
+        $services = [$service];
+
+        // Calculate prices
+        $user_id = get_current_user_id();
+        if (empty($services)) {
+            echo __('No services available for price calculation.', SAMYAR_TEXT_DOMAIN);
+            return;
+        }
+
+        $prices = priceController::calculatePricesBatch($services, $user_id);
+        $amount = $prices[$pack_api_id]['price'] ?? 0;
+
+        if ($service->type === "package" || $service->type === "custom_comments_package") {
+            $pack_price = $amount;
+        } else {
+            $pack_price = ($amount / 1000) * (int)$pack_number;
+        }
+
+        $pack_price = isset($pack_price) && is_numeric($pack_price) ? $pack_price : 0;
+        $last_price = priceController::kandoFormatPrice($pack_price);
+
+        $pack_price_by_discounted = isset($settings['pack-price-by-discounted']) && !empty($settings['pack-price-by-discounted']) ? $settings['pack-price-by-discounted'] : "";
+        $pack_icon = isset($settings['pack-icon']) && !empty($settings['pack-icon']) ? $settings['pack-icon'] : "";
+        $icon_color = isset($settings['icon-color']) && !empty($settings['icon-color']) ? $settings['icon-color'] : "";
+        $button_color = isset($settings['button-color']) && !empty($settings['button-color']) ? $settings['button-color'] : "#CD2653";
+        $button_title_color = isset($settings['button-title-color']) && !empty($settings['button-title-color']) ? $settings['button-title-color'] : "#FFFFFF";
+
+        $link = add_query_arg([
+            'service-id' => $pack_api_id,
+            'number' => $pack_number
+        ], home_url('kando-send-pack'));
+        ?>
+
+        <div class="kando-elementor-pack product-plan">
+            <div class="itemPack ofh">
+                <div class="ipTopSide">
+                    <span class="iptsCircle bgPurple2 brs50"></span>
+                    <div class="iptsIconCircle brs50">
+                        <i style="color:<?php echo esc_attr($icon_color) ?>" class="<?php echo esc_attr($pack_icon['value']) ?>"></i>
+                    </div>
+                    <div class="iptsTitle relative">
+                        <h5 class="blue3 bold iptstCount dIb"><?php echo esc_attr($pack_number) ?></h5>
+                        <h5 class="bold iptstCountSubtitle Black1"><?php echo esc_attr($pack_title) ?></h5>
+                    </div>
+                </div>
+                <div class="ipBottomSide">
+                    <?php echo $pack_content ?>
+                    <?php if (!empty($pack_price_by_discounted)) { ?>
+                        <!-- <div class="bgGray5 db smallBtn black text-center relative before ipbPrice oldprice"><?php echo esc_attr($pack_price) ?><span class="">تومان</span></div> -->
+                    <?php } ?>
+                    <div class="bgBlue6 db smallBtn blue3 text-center relative before ipbPrice bold"><?php echo $last_price['price_for_show_formatted'] ?></div>
+
+                    <a class="bgPink1 db smallBtn White text-center relative before bold kt-modal-button samyar-show-package-form"
+                       data-modal="send-package"
+                       data-price="<?php echo $pack_price['price'] ?>"
+                       data-title="<?php echo esc_attr($pack_title) ?>"
+                       data-service="<?php echo esc_attr($pack_api_id) ?>"
+                       data-quantity="<?php echo esc_attr($pack_number) ?>"
+                       style="background:<?php echo esc_attr($button_color) ?>;color:<?php echo esc_attr($button_title_color) ?>"
+                       href="#"><?php _e('Order', SAMYAR_TEXT_DOMAIN) ?></a>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
 }

@@ -71,10 +71,11 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 
 		if ( isset( $args['orderby'] ) ) {
 			if ( 'balance' === $args['orderby'] ) {
+                $wallet_meta_key = walletController::getInstance()->get_meta_key();
 				$args = array_merge(
 					$args, array(
 						// phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_meta_key
-						'meta_key' => 'samyar_wallet',
+						'meta_key' => $wallet_meta_key,
 						'orderby'  => 'meta_value_num',
 					)
 				);
@@ -85,7 +86,7 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 
 		// Query the user IDs for this page
 		$wp_user_search = new WP_User_Query( $args );
-		$wallet         = new walletController();
+		$wallet         = walletController::getInstance();
 		$data           = array();
 		foreach ( $wp_user_search->get_results() as $user ) {
 			$data[] = apply_filters( 'samyar_wallet_balance_details_list_table_item_data', array(
@@ -93,7 +94,7 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 				'username' => $user->data->user_login,
 				'name'     => $user->data->display_name,
 				'email'    => $user->data->user_email,
-				'balance'  => number_format($wallet->getUserCredit( $user->ID )).'  تومان ',
+				'balance'  => $wallet->getUserCredit( $user->ID )['price_formatted'],
 				'actions'  => ''
 			), $user );
 		}
@@ -191,7 +192,7 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			echo( sprintf( "<label class='alignleft actions bulkactions'>%s(%s): <input name='amount' type='number' step='100' id='amount'></input></label>", __( 'Amount', SAMYAR_TEXT_DOMAIN ), "تومان" ) );
+			echo( sprintf( "<label class='alignleft actions bulkactions'>%s(%s): <input name='amount' type='number' step='100' id='amount'></input></label>", __( 'Amount', SAMYAR_TEXT_DOMAIN ), get_option('site_currency','IRT') ) );
 			echo( sprintf( "<label class='alignleft actions bulkactions'>%s: <input name='description' type='text' id='description'></input></label>", __( 'Description', SAMYAR_TEXT_DOMAIN ) ) );
 		}
 		do_action( 'samyar_wallet_users_list_extra_tablenav', $which );
@@ -284,14 +285,26 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 
 	private function process_bulk_actions() {
 
-		$wallet = new walletController();
+        global $wpdb;
+
 		if ( 'credit' === $this->current_action() && isset( $_POST['users'] ) ) {
 			$credit_ids  = esc_sql( $_POST['users'] );
 			$amount      = isset( $_POST['amount'] ) ? floatval( $_POST['amount'] ) : 0;
 			$description = isset( $_POST['description'] ) ? $_POST['description'] : '';
 			if ( $amount && $credit_ids ) {
 				foreach ( $credit_ids as $id ) {
-					$wallet->IncreaseUserCredit( $id, $amount );
+
+                    $wallet_meta_key = walletController::getInstance()->get_meta_key();
+                    // افزایش اعتبار
+                    $status = $wpdb->query(
+                        $wpdb->prepare(
+                            "UPDATE {$wpdb->usermeta} SET meta_value = CAST(meta_value AS DECIMAL(20,4)) + %s WHERE user_id = %d AND meta_key = %s",
+                            $amount,
+                            (int)$id,
+                            $wallet_meta_key
+                        )
+                    );
+
 
 					//اینجا می یایم یه تراکنش شارژ اعتبار اضافه می کنیم که کاربر متوجه بشه به خاطر چی بوده
 					$payment = Payment::insert( [
@@ -316,7 +329,17 @@ class Samyar_Wallet_Balance_Details extends WP_List_Table {
 			$description = isset( $_POST['description'] ) ? $_POST['description'] : '';
 			if ( $amount && $debit_ids ) {
 				foreach ( $debit_ids as $id ) {
-					$wallet->IncreaseUserCredit( $id, $amount );
+
+                    $wallet_meta_key = walletController::getInstance()->get_meta_key();
+                    // افزایش اعتبار
+                    $status = $wpdb->query(
+                        $wpdb->prepare(
+                            "UPDATE {$wpdb->usermeta} SET meta_value = CAST(meta_value AS DECIMAL(20,4)) + %s WHERE user_id = %d AND meta_key = %s",
+                            $amount,
+                            (int)$id,
+                            $wallet_meta_key
+                        )
+                    );
 
 					//اینجا می یایم یه تراکنش شارژ اعتبار اضافه می کنیم که کاربر متوجه بشه به خاطر چی بوده
 					$payment = Payment::insert( [

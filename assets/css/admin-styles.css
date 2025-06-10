@@ -708,3 +708,62 @@ body > pre.xdebug-var-dump {
 .backup-textarea,.import-textarea,.import-file{
     display: none;
 }
+
+
+
+.custom-switch-indicator {
+    display: inline-block;
+    height: 1.25rem;
+    width: 2.25rem;
+    background: #e9ecef;
+    border-radius: 50px;
+    position: relative;
+    vertical-align: bottom;
+    border: 1px solid rgba(0, 40, 100, 0.12);
+    transition: .3s border-color, .3s background-color;
+}
+
+.custom-switch-indicator:before {
+    content: '';
+    position: absolute;
+    height: calc(1.25rem - 4px);
+    width: calc(1.25rem - 4px);
+    top: 1px;
+    right: 1px;
+    background: #fff;
+    border-radius: 50%;
+    transition: .3s right;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.custom-switch-input:checked ~ .custom-switch-indicator {
+    background: #2dcee3;
+}
+
+.custom-switch-input:checked ~ .custom-switch-indicator:before {
+    right: calc(1rem + 1px);
+}
+
+.custom-switch-input:focus ~ .custom-switch-indicator {
+    box-shadow: 0 0 0 2px rgba(70, 127, 207, 0.25);
+    border-color: #467fcf;
+}
+
+.custom-switch-description {
+    margin-right: .5rem;
+    color: #6e7687;
+    transition: .3s color;
+}
+
+.custom-switch-input:checked ~ .custom-switch-description {
+    color: #495057;
+}
+
+
+.custom-switch input[type=checkbox],.custom-switch input[type=radio] {
+    display: none;
+}
+
+.samyar-settings .samyar-settings-content .samyar-float-button-item{
+    padding-top: 20px;
+}

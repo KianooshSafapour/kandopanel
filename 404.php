@@ -1,18 +1,17 @@
 <?php
-defined('ABSPATH') || exit('No Access!');
+defined('ABSPATH') || exit(__('No Access!', SAMYAR_TEXT_DOMAIN));
 $options = settingsController::getInstance();
-$site_mobile_logo = $options->get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_mobile_logo = kando_get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mobile_logo)) {
-    $site_mobile_logo = $options->get_option('site-mobile-logo');
+    $site_mobile_logo = kando_get_option('site-mobile-logo');
     $site_mobile_logo = wp_get_attachment_url($site_mobile_logo);
 }
 
-$site_favicon = $options->get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
+$site_favicon = kando_get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) {
-    $site_favicon = $options->get_option('site-favicon');
+    $site_favicon = kando_get_option('site-favicon');
     $site_favicon = wp_get_attachment_url($site_favicon);
 }
-
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -26,7 +25,7 @@ if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) 
 </head>
 <body class="bg-purple">
 <div class="stars">
-    <!-- start logo and menu -->
+    <!-- Start logo and menu -->
     <div class="custom-navbar">
         <div class="brand-logo">
             <a class="responsive-logo" href="<?= home_url() ?>" title="<?= get_bloginfo('name') ?>" data-wpel-link="internal">
@@ -37,15 +36,15 @@ if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) 
         </div>
         <div class="navbar-links">
             <ul>
-                <li><a href="<?php echo home_url() ?>" target="_blank">صفحه نخست</a></li>
+                <li><a href="<?php echo home_url() ?>" target="_blank"><?php _e('Home Page', SAMYAR_TEXT_DOMAIN); ?></a></li>
             </ul>
         </div>
     </div>
-    <!-- end logo and menu -->
-    <!-- start content -->
+    <!-- End logo and menu -->
+    <!-- Start content -->
     <div class="central-body">
         <img class="image-404" src="<?php echo get_template_directory_uri() ?>/assets/404/pics/404.png" width="300px">
-        <a href="<?php echo home_url() ?>" class="btn-go-home" target="_blank">بازگشت</a>
+        <a href="<?php echo home_url() ?>" class="btn-go-home" target="_blank"><?php _e('Back', SAMYAR_TEXT_DOMAIN); ?></a>
     </div>
     <div class="objects">
         <img class="object_rocket" src="<?php echo get_template_directory_uri() ?>/assets/404/pics/rocket.svg" width="40px">
@@ -64,7 +63,7 @@ if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) 
         <div class="star"></div>
         <div class="star"></div>
     </div>
-    <!-- end content -->
+    <!-- End content -->
 </div>
 <script src="<?php echo get_template_directory_uri() ?>/assets/404/js/jquery-3.1.1.min.js"></script>
 <?php wp_footer(); ?>
