@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @author 10 Quality <info@10quality.com>
  * @license MIT
  * @package wp-query-builder
- * @version 1.0.13
+ * @version 1.0.12
  */
 class TraitModelTest extends TestCase
 {
@@ -20,7 +20,7 @@ class TraitModelTest extends TestCase
      */
     public function testFind()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $model = Model::find( 101 );
@@ -40,7 +40,7 @@ class TraitModelTest extends TestCase
      */
     public function testFindWhere()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $model = Model::find_where( ['name' => 'yolo'] );
@@ -59,7 +59,7 @@ class TraitModelTest extends TestCase
      */
     public function testInsert()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $model = Model::insert( ['name' => 'yolo'] );
@@ -79,7 +79,7 @@ class TraitModelTest extends TestCase
         // Exec
         $collection = Model::where( ['name' => 'yolo'] );
         // Assert
-        $this->assertIsArray( $collection );
+        $this->assertInternalType( 'array', $collection );
         $this->assertInstanceOf( 'Model', $collection[0] );
     }
     /**
@@ -93,7 +93,7 @@ class TraitModelTest extends TestCase
         // Exec
         $count = Model::count();
         // Assert
-        $this->assertIsInt( $count );
+        $this->assertInternalType( 'int', $count );
         $this->assertEquals( 1, $count );
     }
     /**
@@ -104,12 +104,12 @@ class TraitModelTest extends TestCase
      */
     public function testAll()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $collection = Model::all();
         // Assert
-        $this->assertIsArray( $collection );
+        $this->assertInternalType( 'array', $collection );
         $this->assertInstanceOf( 'Model', $collection[0] );
     }
     /**
@@ -121,12 +121,12 @@ class TraitModelTest extends TestCase
      */
     public function testUpdate()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $flag = Model::update_all( ['status' => 'active'] );
         // Assert
-        $this->assertIsBool( $flag );
+        $this->assertInternalType( 'bool', $flag );
         $this->assertTrue( $flag );
         $this->assertEquals(
             'UPDATE prefix_' . Model::TABLE . ' SET status = %s',
@@ -142,7 +142,7 @@ class TraitModelTest extends TestCase
      */
     public function testUpdateWhere()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         // Exec
         $flag = Model::update_all( ['status' => 'active'], ['type' => 'yolo'] );

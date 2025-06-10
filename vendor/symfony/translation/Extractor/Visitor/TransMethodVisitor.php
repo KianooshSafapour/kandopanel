@@ -39,12 +39,12 @@ final class TransMethodVisitor extends AbstractVisitor implements NodeVisitor
             return null;
         }
 
-        $name = $node->name instanceof Node\Name ? $node->name->getLast() : (string) $node->name;
+        $name = (string) $node->name;
 
         if ('trans' === $name || 't' === $name) {
             $firstNamedArgumentIndex = $this->nodeFirstNamedArgumentIndex($node);
 
-            if (!$messages = $this->getStringArguments($node, 0 < $firstNamedArgumentIndex ? 0 : 'id')) {
+            if (!$messages = $this->getStringArguments($node, 0 < $firstNamedArgumentIndex ? 0 : 'message')) {
                 return null;
             }
 

@@ -1,26 +1,25 @@
 <?php
 $options = settingsController::getInstance();
 
-$site_favicon = kando_get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
+$site_favicon = $options->get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) {
-    $site_favicon = kando_get_option('site-favicon');
+    $site_favicon = $options->get_option('site-favicon');
     $site_favicon = wp_get_attachment_url($site_favicon);
 }
 
 
-$site_logo = kando_get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_logo = $options->get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_logo) && !empty($site_logo) && is_numeric($site_logo)) {
-    $site_logo = kando_get_option('site-logo');
+    $site_logo = $options->get_option('site-logo');
     $site_logo = wp_get_attachment_url($site_logo);
 }
 
 
-$site_mobile_logo = kando_get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_mobile_logo = $options->get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mobile_logo)) {
-    $site_mobile_logo = kando_get_option('site-mobile-logo');
+    $site_mobile_logo = $options->get_option('site-mobile-logo');
     $site_mobile_logo = wp_get_attachment_url($site_mobile_logo);
 }
-
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -101,15 +100,15 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 <body <?php body_class('perfect-body'); ?>>
 
 <?php
-$header_notification_active = kando_get_option('header-notification-active', 0);
-$header_notification_id = kando_get_option('header-notification-id', "");
-$header_notification_title = kando_get_option('header-notification-title', "");
-$header_notification_btn_title = kando_get_option('notification-btn-title', "");
-$header_notification_btn_url = kando_get_option('notification-btn-url', "");
+$header_notification_active = $options->get_option('header-notification-active', 0);
+$header_notification_id = $options->get_option('header-notification-id', "");
+$header_notification_title = $options->get_option('header-notification-title', "");
+$header_notification_btn_title = $options->get_option('notification-btn-title', "");
+$header_notification_btn_url = $options->get_option('notification-btn-url', "");
 
-$site_header_notification_bg = kando_get_option('site-header-notification-bg', SAMYAR_DIR_IMG . '/social_media_banner.png');
+$site_header_notification_bg = $options->get_option('site-header-notification-bg', SAMYAR_DIR_IMG . '/social_media_banner.png');
 if (isset($site_header_notification_bg) && !empty($site_header_notification_bg) && is_numeric($site_header_notification_bg)) {
-    $site_header_notification_bg = kando_get_option('site-header-notification-bg');
+    $site_header_notification_bg = $options->get_option('site-header-notification-bg');
     $site_header_notification_bg = wp_get_attachment_url($site_header_notification_bg);
 }
 if ($header_notification_active):
@@ -132,8 +131,8 @@ if ($header_notification_active):
 <div class="page-holder">
     <?php
     $options = settingsController::getInstance();
-    $samyar_header = kando_get_option('samyar-header', 0);
-    $enable_site_title = kando_get_option('enable-site-title', 1);
+    $samyar_header = $options->get_option('samyar-header', 0);
+    $enable_site_title = $options->get_option('enable-site-title', 1);
     ?>
     <?php
     if($samyar_header !== "disable"){

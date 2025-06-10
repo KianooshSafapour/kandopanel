@@ -848,52 +848,6 @@ $title = __("Your orders", SAMYAR_TEXT_DOMAIN);
 </div>
 
 
-<div class="dashboard-posts-box dashboard-tickets-box api-documentation">
-    <div class="dashboard-posts-title-holder">
-        <h5 class="dashboard-posts-title"><?php _e("Create cancel", SAMYAR_TEXT_DOMAIN); ?></h5>
-    </div>
-    <div class="dashboard-posts-list">
-        <table class="table table-hover table-bordered projects">
-            <thead>
-            <tr>
-                <th><?php _e("Parameter", SAMYAR_TEXT_DOMAIN); ?></th>
-                <th><?php _e("Description", SAMYAR_TEXT_DOMAIN); ?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>key</td>
-                <td><?php _e("Your API key", SAMYAR_TEXT_DOMAIN); ?></td>
-            </tr>
-            <tr>
-                <td>action</td>
-                <td>cancel</td>
-            </tr>
-            <tr>
-                <td>orders</td>
-                <td><?php _e("Order IDs (separated by a comma, up to 100 IDs)", SAMYAR_TEXT_DOMAIN); ?></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="card-body">
-        <?php _e("Example answer:", SAMYAR_TEXT_DOMAIN); ?>
-        <pre>[
-    {
-        "order": 9,
-        "cancel": {
-            "error": "Incorrect order ID"
-        }
-    },
-    {
-        "order": 2,
-        "cancel": 1
-    }
-]</pre>
-    </div>
-</div>
-
-
 
 
 <div class="dashboard-posts-box dashboard-tickets-box api-documentation">

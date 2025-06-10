@@ -1,7 +1,4 @@
 <?php
-
-use samyar\priceController;
-
 $gift = "";
 $variant = "";
 if(class_exists('\giftCard\Gift')){
@@ -21,11 +18,11 @@ $serials = get_order_meta($order->id,'serials',true);
         <li><?php _e("Gift card type:", SAMYAR_TEXT_DOMAIN); ?>&nbsp;<?php echo esc_attr($variant->title) ?></li>
     <?php endif; ?>
     <li><?php _e("Quantity:", SAMYAR_TEXT_DOMAIN); ?> <?php echo esc_attr($order->quantity) ?></li>
-    <li><?php _e("Amount:", SAMYAR_TEXT_DOMAIN); ?> <?= priceController::kandoConvertCurrency($order->charge,$settings['base_currency_data'],$settings['user_currency_data'])  ?></li>
+    <li><?php _e("Amount:", SAMYAR_TEXT_DOMAIN); ?> <?= kandoConvertCurrency($order->charge)  ?></li>
     <?php if (kando_user_can('show_order_provider_info')): ?>
         <li>(<span style="color:#f58"><?php _e("Cost", SAMYAR_TEXT_DOMAIN); ?></span>/<span style="color:#3ca235"><?php _e("Profit", SAMYAR_TEXT_DOMAIN); ?></span>): (<span
-                    style="color:#3ca235"><?= priceController::kandoConvertCurrency($order->profit,$settings['base_currency_data'],$settings['user_currency_data'])  ?></span>/<span
-                    style="color:#f58"><?= priceController::kandoConvertCurrency($order->formal_charge,$settings['base_currency_data'],$settings['user_currency_data'])  ?></span>)
+                    style="color:#3ca235"><?= kandoConvertCurrency($order->profit)  ?></span>/<span
+                    style="color:#f58"><?= kandoConvertCurrency($order->formal_charge)  ?></span>)
         </li>
     <?php endif; ?>
     <?php if ($order->user_note && kando_user_can('show_order_user_info')): ?>

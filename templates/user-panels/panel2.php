@@ -6,23 +6,23 @@ use samyar\walletController;
 
 $options = settingsController::getInstance();
 
-$site_favicon = kando_get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
+$site_favicon = $options->get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) {
-    $site_favicon = kando_get_option('site-favicon');
+    $site_favicon = $options->get_option('site-favicon');
     $site_favicon = wp_get_attachment_url($site_favicon);
 }
 
 
-$site_logo = kando_get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_logo = $options->get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_logo) && !empty($site_logo) && is_numeric($site_logo)) {
-    $site_logo = kando_get_option('site-logo');
+    $site_logo = $options->get_option('site-logo');
     $site_logo = wp_get_attachment_url($site_logo);
 }
 
 
-$site_mobile_logo = kando_get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_mobile_logo = $options->get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mobile_logo)) {
-    $site_mobile_logo = kando_get_option('site-mobile-logo');
+    $site_mobile_logo = $options->get_option('site-mobile-logo');
     $site_mobile_logo = wp_get_attachment_url($site_mobile_logo);
 }
 ?>
@@ -108,15 +108,15 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 <body <?php body_class(); ?>>
 
 <?php
-$header_notification_active = kando_get_option('header-notification-active', 0);
-$header_notification_id = kando_get_option('header-notification-id', "");
-$header_notification_title = kando_get_option('header-notification-title', "");
-$header_notification_btn_title = kando_get_option('notification-btn-title', "");
-$header_notification_btn_url = kando_get_option('notification-btn-url', "");
+$header_notification_active = $options->get_option('header-notification-active', 0);
+$header_notification_id = $options->get_option('header-notification-id', "");
+$header_notification_title = $options->get_option('header-notification-title', "");
+$header_notification_btn_title = $options->get_option('notification-btn-title', "");
+$header_notification_btn_url = $options->get_option('notification-btn-url', "");
 
-$site_header_notification_bg = kando_get_option('site-header-notification-bg', SAMYAR_DIR_IMG . '/social_media_banner.png');
+$site_header_notification_bg = $options->get_option('site-header-notification-bg', SAMYAR_DIR_IMG . '/social_media_banner.png');
 if (isset($site_header_notification_bg) && !empty($site_header_notification_bg) && is_numeric($site_header_notification_bg)) {
-    $site_header_notification_bg = kando_get_option('site-header-notification-bg');
+    $site_header_notification_bg = $options->get_option('site-header-notification-bg');
     $site_header_notification_bg = wp_get_attachment_url($site_header_notification_bg);
 }
 if ($header_notification_active):
@@ -137,7 +137,7 @@ if ($header_notification_active):
         </div>
     </div>
 <?php endif;
-$redirect_logout = kando_get_option('redirect-logout', home_url('login'));
+$redirect_logout = $options->get_option('redirect-logout', home_url('login'));
 ?>
 <header class="user_header">
     <div class="container">
@@ -145,54 +145,29 @@ $redirect_logout = kando_get_option('redirect-logout', home_url('login'));
         <div class="account_head_icon text_align_left">
 
             <?php
-            $enable_switch_language = kando_get_option('enable-switch-language', 0);
+            $enable_switch_language = settingsController::getInstance()->get_option('enable-switch-language', 0);
+            $languages = kando_get_available_languages();
+            $current_language = get_user_meta(get_current_user_id(), 'user_language', true);
             if ($enable_switch_language == '1') {
-
-                // لیست زبان‌ها و پرچم‌ها
-
-                $current_user_id = get_current_user_id();
-                $current_language = get_user_meta($current_user_id, 'user_language', true);
-
-                if (!$current_language) {
-                    $current_language = 'fa_IR';
-                }
-
-                [$current_language, $current_country] = explode('_', $current_language);
-
-                $languages = kando_get_available_languages();
                 ?>
-
-                <div class="up_top_setting navbar ms-auto">
-                    <div class="nav-item currencyItem toggle-item">
-                        <a href="#" class=" toggle-head nav-link"
-                           title="<?php _e("Language", SAMYAR_TEXT_DOMAIN); ?>"><i class="fi flag-icon-squared fi-<?php echo esc_html(strtolower($current_country)); ?> fis"></i></a>
-                        <div class="toggle-body">
-                            <div class="top d-flex align-items-center justify-content-between mb-3">
-                                <div class="toggle-title ms-3"><?php _e("Language", SAMYAR_TEXT_DOMAIN); ?></div>
-                            </div>
-                            <div class="currencyList" id="currencies-list">
-                                <?php foreach ($languages as $lang_code => $lang_name) {
-                                    [$language, $country] = explode('_', $lang_code);
-                                    $country_lowercase = strtolower($country);
-                                    ?>
-                                    <a class="item d-flex align-items-center justify-content-start p-2 position-relative" data-language-code="<?php echo esc_html($lang_code); ?>" href="#">
-                                        <div class="content">
-                                            <div class="item-title mb-1 d-flex align-items-center justify-content-between">
-                                                <div class="name">
-                                                    <i class="fi flag-icon-squared fi-<?php echo esc_html($country_lowercase); ?> fis"></i>
-                                                    <span class="cText"><?php echo esc_html($lang_name); ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <?php } ?>
-                            </div>
-                        </div>
+                <!--
+                <form id="kando-change-language" style="display: inline-block;">
+                    <input type="hidden" name="action" value="kando_change_language">
+                    <?php wp_nonce_field('change_language_nonce', 'change_language_nonce'); ?>
+                    <div class="kando-language-dropdown">
+                        <div class="kando-language-icon" title="تغییر زبان"><i class="fal fa-globe"></i><span class="lang-title"><?= kando_get_locale_display_name($current_language, $current_language) ?></span></div>
+                        <select id="kando-language-selector" class="kando-language-selector" name="language">
+                            <?php foreach ($languages as $lang_code => $lang_name) {
+                    ?>
+                                <option value="<?php echo esc_attr($lang_code) ?>" <?php selected($current_language, $lang_code); ?>><?php echo $lang_name ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
-                </div>
-            <?php } ?>
+                </form>
 
-            <a href="<?php echo esc_attr(kando_logout_url()) ?>" class="up_top_logout"
+                -->
+            <?php } ?>
+            <a href="<?php echo esc_attr(wp_logout_url($redirect_logout)) ?>" class="up_top_logout"
                title="<?php _e("Logout", SAMYAR_TEXT_DOMAIN); ?>"><i
                         class="fal fa-power-off"></i></a>
             <?php if (kando_count_notification() > 0) { ?>
@@ -212,7 +187,7 @@ $options = settingsController::getInstance();
 
 
 $wallet = walletController::getInstance();
-$user_credit = $wallet->getUserCredit(get_current_user_id())['price_for_show_formatted'];
+$user_credit = $wallet->getUserCredit(get_current_user_id());
 
 $action = "";
 $section = "";
@@ -224,6 +199,8 @@ if (isset($_GET['section'])) {
 }
 
 $user = get_user_by('ID', get_current_user_id());
+$wallet = walletController::getInstance();
+$user_credit = $wallet->getUserCredit(get_current_user_id());
 
 include_once(SAMYAR_DIR_TEMPLATE . '/parts/notification-sidebar.php');
 ?>
@@ -258,7 +235,7 @@ include_once(SAMYAR_DIR_TEMPLATE . '/parts/notification-sidebar.php');
                                                                class="panel-header-wallet" data-wpel-link="internal"
                                                                style="padding-right: 0px;">
                         <i class="elegant-icon icon_wallet"></i>
-                        <span style="margin-right: 10px;"><?= walletController::getInstance()->getUserCredit(get_current_user_id())['price_for_show_formatted'] ?></span>
+                        <span style="margin-right: 10px;"><?= walletController::getInstance()->getUserCreditByCurrency(get_current_user_id()) ?></span>
                     </a>
                                         </span>
 
@@ -369,10 +346,10 @@ include_once(SAMYAR_DIR_TEMPLATE . '/parts/notification-sidebar.php');
                                             <div class="balance-dropdown">
                                                 <?php
 
-                                                $selected_currency = currencyController::getInstance()->getUserCurrency();
+                                                $selected_currency = currencyController::getInstance()->get_user_currency();
                                                 $currencies = currencyController::getInstance()->get_all_currencies();
 
-                                                $selected_currency_symbol = currencyController::getInstance()->getUserCurrency();
+                                                $selected_currency_symbol = currencyController::getInstance()->get_user_currency();
 
                                                 foreach ($currencies as $key => $value) {
                                                     if ($key === $selected_currency) {
@@ -481,7 +458,267 @@ include_once(SAMYAR_DIR_TEMPLATE . '/parts/notification-sidebar.php');
 
                                         <div class="kando-panel2-MyAccount-content">
                                             <div class="kando-panel2-notices-wrapper"></div>
-                                            <?php include(SAMYAR_DIR_TEMPLATE . '/template-switcher.php') ?>
+                                            <?php
+                                            switch ($action) {
+                                                case "dashboard":
+                                                    include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/dashboard.php');
+                                                    break;
+                                                case "orders":
+                                                    switch ($section) {
+                                                        case "new":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/add.php');
+                                                            break;
+                                                        case "edit":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/admin/edit.php');
+                                                            break;
+                                                        case "user-orders":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/admin/user-orders.php');
+                                                            break;
+                                                        case "dripfeed":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/dripfeed/dripfeed.php');
+                                                            break;
+                                                        case "subscriptions":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/dripfeed/subscriptions.php');
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/orders.php');
+                                                    }
+
+                                                    break;
+                                                case "refill":
+                                                    switch ($section) {
+                                                        case "edit":
+                                                            if (kando_user_can('edit_order')):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/refill/edit.php');
+                                                            endif;
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/refill/orders.php');
+                                                    }
+
+                                                    break;
+                                                case "notifications":
+                                                    if (kando_user_can('show_notifications')):
+                                                        switch ($section) {
+                                                            case "new":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/notification/add.php');
+                                                                break;
+                                                            case "edit":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/notification/edit.php');
+                                                                break;
+                                                            default:
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/notification/notifications.php');
+                                                        }
+                                                    endif;
+                                                    break;
+                                                case "social":
+                                                    if (kando_user_can('show_brands')):
+                                                        switch ($section) {
+                                                            case "new":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/social/add.php');
+                                                                break;
+                                                            case "edit":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/social/edit.php');
+                                                                break;
+                                                            default:
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/social/socials.php');
+                                                        }
+                                                    endif;
+                                                    break;
+                                                case "categories":
+                                                    if (kando_user_can('show_categories')):
+                                                        switch ($section) {
+                                                            case "new":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/categories/add.php');
+                                                                break;
+                                                            case "edit":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/categories/edit.php');
+                                                                break;
+                                                            default:
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/categories/categories.php');
+                                                        }
+                                                    endif;
+                                                    break;
+
+                                                case "services":
+                                                    switch ($section) {
+                                                        case "new":
+                                                            if (kando_user_can('add_service')):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/add.php');
+                                                            endif;
+                                                            break;
+                                                        case "edit":
+                                                            if (kando_user_can('edit_service')):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/edit.php');
+                                                            endif;
+                                                            break;
+                                                        case "log":
+                                                            if (kando_user_can('show_service_log')):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/service_log.php');
+                                                            endif;
+                                                            break;
+                                                        case "all":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/services-all.php');
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/services.php');
+                                                    }
+                                                    break;
+                                                case "payments":
+                                                    switch ($section) {
+                                                        case "payments":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/payment/payments.php');
+                                                            break;
+//                                case "process":
+//                                    include_once(SAMYAR_DIR_TEMPLATE.'/dashboard/payment/process_payment.php');
+//                                    break;
+                                                        case "users-payment":
+                                                            if (samyar_is_admin()):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/payment/users-payment.php');
+                                                            endif;
+                                                            break;
+                                                        case "all":
+                                                            if (samyar_is_admin()):
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/payment/all-payments.php');
+                                                            endif;
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/payment/payments.php');
+                                                    }
+
+                                                    break;
+                                                case "tickets":
+                                                    switch ($section) {
+                                                        case "new":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/tickets/add.php');
+                                                            break;
+                                                        case "show":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/tickets/show.php');
+                                                            break;
+                                                        case "waiting":
+//									if ( samyar_is_admin() ):
+//										include_once( SAMYAR_DIR_TEMPLATE.'/dashboard/tickets/admin/waiting-tickets.php' );
+//									endif;
+//									break;
+                                                        case "answered":
+//									if ( samyar_is_admin() ):
+//										include_once( SAMYAR_DIR_TEMPLATE.'/dashboard/tickets/admin/answered-tickets.php' );
+//									endif;
+//									break;
+                                                        case "closed":
+//									if ( samyar_is_admin() ):
+//										include_once( SAMYAR_DIR_TEMPLATE.'/dashboard/tickets/admin/closed-tickets.php' );
+//									endif;
+//									break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/tickets/tickets.php');
+                                                    }
+                                                    break;
+                                                case "add-credit":
+                                                    switch ($section) {
+                                                        case "cart-to-cart":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/wallet/cart-to-cart.php');
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/wallet/add.php');
+                                                    }
+
+                                                    break;
+
+                                                case "providers":
+                                                    if (kando_user_can('show_providers')):
+                                                        switch ($section) {
+                                                            case "new":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api-provider/add.php');
+                                                                break;
+                                                            case "edit":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api-provider/edit.php');
+                                                                break;
+                                                            case "sync-services":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api-provider/sync-services.php');
+                                                                break;
+                                                            case "service-list":
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api-provider/service-list.php');
+                                                                break;
+                                                            default:
+                                                                include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api-provider/providers.php');
+                                                        }
+                                                    endif;
+                                                    break;
+//						case "api":
+//							include_once( SAMYAR_DIR_TEMPLATE.'/dashboard/api.php' );
+//							break;
+                                                case "edit-profile":
+                                                    switch ($section) {
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/profile/edit.php');
+                                                    }
+
+                                                    break;
+                                                case "api":
+                                                    switch ($section) {
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/api/api.php');
+                                                    }
+
+                                                    break;
+                                                case "timeline":
+                                                    if (samyar_is_admin()):
+                                                        include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/timeline.php');
+                                                    endif;
+                                                    break;
+                                                case "get-package":
+                                                    include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/packages/packages.php');
+
+                                                    break;
+                                                case "updates":
+                                                    include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/updates/updates.php');
+
+                                                    break;
+                                                case "bulk-update-price":
+                                                    if (kando_user_can('show_bulk_update_price')):
+                                                        include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/services/bulk/bulk-update-price.php');
+                                                    endif;
+                                                    break;
+                                                case "dripfeeds":
+                                                    switch ($section) {
+                                                        case "dripfeeds":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/dripfeed/dripfeeds.php');
+                                                            break;
+                                                        case "drips":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/dripfeed/drips.php');
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/dripfeed/dripfeeds.php');
+                                                            break;
+                                                    }
+
+                                                    break;
+                                                case "subscriptions":
+                                                    switch ($section) {
+                                                        case "subscriptions":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/subscriptions/subscriptions.php');
+                                                            break;
+                                                        case "childs":
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/subscriptions/childs.php');
+                                                            break;
+                                                        default:
+                                                            include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/orders/subscriptions/subscriptions.php');
+                                                            break;
+                                                    }
+
+                                                    break;
+                                                case "verify-mobile":
+
+                                                    include_once(SAMYAR_DIR_TEMPLATE . '/dashboard/verify-mobile.php');
+
+                                                    break;
+                                                default:
+                                                    do_action('panel_page_list');
+                                                    break;
+                                            }
+                                            ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -498,7 +735,7 @@ include_once(SAMYAR_DIR_TEMPLATE . '/parts/notification-sidebar.php');
 </div><!--#main-site-wrap-->
 <?php
 $options = settingsController::getInstance();
-$samyar_footer = kando_get_option('samyar-footer', 0);
+$samyar_footer = $options->get_option('samyar-footer', 0);
 
 ?>
 <footer class="footer_wrap clear user_footer">
@@ -507,7 +744,7 @@ $samyar_footer = kando_get_option('samyar-footer', 0);
             <div class="gototop"><i class="fal fa-angle-up"></i></div>
             <div class="copy_right">
                 <?php
-                echo kando_get_option('copyright', __("All material and intellectual rights of this website belong to <a href=\"http://127.0.0.1/kandopanel\" data-wpel-link=\"internal\">Kandopanel</a>, and any copying is legally pursued.", SAMYAR_TEXT_DOMAIN));
+                echo $options->get_option('copyright', "تمامی حقوق مادی و معنوی این وبسایت متعلق به <a href=\"http://127.0.0.1/kandopanel\" data-wpel-link=\"internal\">کندو پنل</a> می باشد و هر گونه کپی برداری پیگرد قانونی دارد.");
                 ?>
             </div>
         </div>
@@ -537,7 +774,7 @@ $samyar_footer = kando_get_option('samyar-footer', 0);
 </form>
 
 <?php
-$enable_mobile_menu = kando_get_option('enable-mobile-menu', 1);
+$enable_mobile_menu = $options->get_option('enable-mobile-menu', 1);
 if ($enable_mobile_menu === "1" || $enable_mobile_menu) {
     include_once(SAMYAR_DIR_TEMPLATE . "/mobile-menu.php");
 } ?>

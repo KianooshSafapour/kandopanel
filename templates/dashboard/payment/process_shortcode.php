@@ -21,7 +21,7 @@ $options = settingsController::getInstance();
 $payment = false;
 $result = [
     'success' => false,
-    'data' => __("No active gateway available", SAMYAR_TEXT_DOMAIN)
+    'data' => "درگاه فعالی وجود ندارد"
 ];
 
 switch ($_REQUEST['gateway']) {
@@ -30,6 +30,22 @@ switch ($_REQUEST['gateway']) {
         $payment_id = (int)$_REQUEST['payment_id'];
         $payment = Payment::find($payment_id);
         $result = $bitpay->back($payment->amount, $_REQUEST);
+        $pay = new paymentController();
+        $result = $pay->final_proccess_payment($result, $payment);
+        break;
+    case 'idpay':
+        $idpay = \samyar_idpay::get_instance();
+        $payment_id = (int)$_REQUEST['payment_id'];
+        $payment = Payment::find($payment_id);
+        $result = $idpay->back($payment->amount, $_REQUEST);
+        $pay = new paymentController();
+        $result = $pay->final_proccess_payment($result, $payment);
+        break;
+    case 'payir':
+        $payir = \samyar_payir::get_instance();
+        $payment_id = (int)$_REQUEST['payment_id'];
+        $payment = Payment::find($payment_id);
+        $result = $payir->back($payment->amount, $_REQUEST);
         $pay = new paymentController();
         $result = $pay->final_proccess_payment($result, $payment);
         break;
@@ -81,7 +97,7 @@ switch ($_REQUEST['gateway']) {
             $wallet = walletController::getInstance();
 
 
-            if (round($wallet->getUserCredit(get_current_user_id())['price']) >= round($order->charge)) {//چک می کنیم ببینیم مبلغ سفارش بیشتر از کیف پول نباشه
+            if (round($wallet->getUserCredit(get_current_user_id())) >= round($order->charge)) {//چک می کنیم ببینیم مبلغ سفارش بیشتر از کیف پول نباشه
 
 
                 if ($payment->order_type === "number") {
@@ -95,7 +111,7 @@ switch ($_REQUEST['gateway']) {
                         'status' => 1,
                     ]);
 
-                    $delay_sending_order = kando_get_option('delay-sending-order', 0);
+                    $delay_sending_order = $options->get_option('delay-sending-order', 0);
                     if ($delay_sending_order == 1 || $delay_sending_order === "1") {
                         //سفارش با موفقیت تغییر وضعیت داد
                         $order->update([
@@ -117,7 +133,7 @@ switch ($_REQUEST['gateway']) {
                     //ارسال پیامک مدیر
                     $options = settingsController::getInstance();
                     $sms = new smsController();
-                    $pattern_code = kando_get_option('send-order-to-admin-pattern');
+                    $pattern_code = $options->get_option('send-order-to-admin-pattern');
                     if (!empty($pattern_code)) {
                         $check_service = Service::find($order->service_id);
                         $input_data = array("order-id" => $order->id, "service-name" => $check_service->name, "quantity" => $order->quantity, "amount" => number_format_i18n(round($order->charge)));
@@ -130,7 +146,7 @@ switch ($_REQUEST['gateway']) {
 
 
 //ارسال پیامک به کاربر
-                    $pattern_code_order_to_user = kando_get_option('send-order-to-user-pattern');
+                    $pattern_code_order_to_user = $options->get_option('send-order-to-user-pattern');
                     if (!empty($pattern_code_order_to_user)) {
                         $input_data_order_to_user = array("order-id" => $order->id);
                         $mobile = get_user_meta($order->uid, 'mobile', true);
@@ -380,7 +396,7 @@ if (!$payment) {//اگر هیچ پرداختی پیدا نشد به صفحه ا�
 
 
                                 //گرفتن اعتبار کیف پول
-                                $wallet =  walletController::getInstance();
+                                $wallet = new walletController();
                                 $data = $wallet->calculate_wallet_payment($total_service);
 
                                 $number = new Number2Word();
@@ -434,7 +450,7 @@ if (!$payment) {//اگر هیچ پرداختی پیدا نشد به صفحه ا�
                             </table>
 
                             <?php
-                            $default_gateway = kando_get_option('default-gateway', "zarinpal");
+                            $default_gateway = $options->get_option('default-gateway', "zarinpal");
                             ?>
                             <script>
                                 jQuery(document).ready(function ($) {

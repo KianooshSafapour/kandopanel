@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('.kando-site-mask').click(function() {
+    $('.mweb-site-mask').click(function() {
         $('body').removeClass('account_area my_account_s sidebar_open open_cart_sidebar open_filter_sidebar open_categories_sidebar');
     });
 

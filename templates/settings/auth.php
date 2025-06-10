@@ -2,23 +2,23 @@
 defined('ABSPATH') || exit('No Access!');
 
 
-$site_favicon = kando_get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
+$site_favicon = $options->get_option('site-favicon', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_favicon) && !empty($site_favicon) && is_numeric($site_favicon)) {
-    $site_favicon = kando_get_option('site-favicon');
+    $site_favicon = $options->get_option('site-favicon');
     $site_favicon = wp_get_attachment_url($site_favicon);
 }
 
 
-$site_logo = kando_get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_logo = $options->get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_logo) && !empty($site_logo) && is_numeric($site_logo)) {
-    $site_logo = kando_get_option('site-logo');
+    $site_logo = $options->get_option('site-logo');
     $site_logo = wp_get_attachment_url($site_logo);
 }
 
 
-$site_mobile_logo = kando_get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_mobile_logo = $options->get_option('site-mobile-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mobile_logo)) {
-    $site_mobile_logo = kando_get_option('site-mobile-logo');
+    $site_mobile_logo = $options->get_option('site-mobile-logo');
     $site_mobile_logo = wp_get_attachment_url($site_mobile_logo);
 }
 ?>
@@ -37,39 +37,41 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
         <li>
             <div class="uk-margin">
                 <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e('Send verification code and validate mobile number during registration and login', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label">ارسال کد تایید و بررسی صحت شماره همراه در ثبت نام و ورود</label>
                     <div class="uk-margin-small">
                         <label>
                             <input class="uk-checkbox" type="hidden" name="enable-otp-register" value="0">
                             <input class="uk-checkbox" type="checkbox" name="enable-otp-register"
-                                   value="1" <?php echo checked(kando_get_option('enable-otp-register', 1), 1); ?>><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></label>
+                                   value="1" <?php echo checked($options->get_option('enable-otp-register', 1), 1); ?>>فعال</label>
                     </div>
 
                 </div>
 
                 <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e('Send verification code and validate mobile number during order submission', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label">ارسال کد تایید و بررسی صحت شماره همراه در ارسال سفارش</label>
                     <div class="uk-margin-small">
                         <label>
                             <input class="uk-checkbox" type="hidden" name="enable-otp-order" value="0">
                             <input class="uk-checkbox" type="checkbox" name="enable-otp-order"
-                                   value="1" <?php echo checked(kando_get_option('enable-otp-order', 1), 1); ?>><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></label>
+                                   value="1" <?php echo checked($options->get_option('enable-otp-order', 1), 1); ?>>فعال</label>
                     </div>
 
                 </div>
 
 
                 <?php
-                $rest_password_type = kando_get_option('rest-password-type', 'active-code');
+                $rest_password_type = $options->get_option('rest-password-type', 'active-code');
                 ?>
                 <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e('Password recovery type', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label">نوع بازیابی رمز عبور</label>
                     <div uk-form-custom="target: > * > span:first-child">
                         <select name="rest-password-type">
                             <option <?php if ($rest_password_type === "active-code"): ?> selected <?php endif; ?>
-                                    value="active-code"><?php _e('Send verification code to mobile or email and allow the customer to set a custom password', SAMYAR_TEXT_DOMAIN); ?></option>
+                                    value="active-code">ارسال کد تایید به موبایل یا ایمیل و تعیین رمز دلخواه توسط مشتری
+                            </option>
                             <option <?php if ($rest_password_type === "random-pass"): ?> selected <?php endif; ?>
-                                    value="random-pass"><?php _e('Send a random password to the user\'s mobile or email', SAMYAR_TEXT_DOMAIN); ?></option>
+                                    value="random-pass">ارسال رمز عبور رندوم به موبایل یا ایمیل کاربر
+                            </option>
                         </select>
                         <button class="uk-button uk-button-default" type="button" tabindex="-1">
                             <span></span>
@@ -78,95 +80,57 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
                     </div>
                 </div>
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="samyar-redirect-register"><?php _e('The link you want the user to be redirected to after registration', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label" for="samyar-redirect-register">لینکی که می خواهید کاربر بعد از ثبت نام
+                        به آن هدایت شود</label>
                     <input type="text" class="uk-input ltr" id="samyar-redirect-register" name="redirect-register"
-                           value="<?php echo esc_attr(kando_get_option('redirect-register', home_url('dashboard'))); ?>">
+                           value="<?php echo esc_attr($options->get_option('redirect-register', home_url('dashboard'))); ?>">
                 </div>
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="samyar-redirect-login"><?php _e('The link you want the user to be redirected to after login', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label" for="samyar-redirect-login">لینکی که می خواهید کاربر بعد از ورود به آن
+                        هدایت شود</label>
                     <input type="text" class="uk-input ltr" id="samyar-redirect-login" name="redirect-login"
-                           value="<?php echo esc_attr(kando_get_option('redirect-login', home_url('dashboard'))); ?>">
+                           value="<?php echo esc_attr($options->get_option('redirect-login', home_url('dashboard'))); ?>">
                 </div>
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="samyar-redirect-logout"><?php _e('The link you want the user to be redirected to after logout', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label" for="samyar-redirect-logout">لینکی که می خواهید کاربر بعد از خروج از
+                        حساب به آن هدایت شود</label>
                     <input type="text" class="uk-input ltr" id="samyar-redirect-logout" name="redirect-logout"
-                           value="<?php echo esc_attr(kando_get_option('redirect-logout', home_url('login'))); ?>">
+                           value="<?php echo esc_attr($options->get_option('redirect-logout', home_url('login'))); ?>">
                 </div>
                 <hr>
-                <div class="uk-alert-primary uk-alert" uk-alert="">
-                    <p style="margin-top: 0">
-                        <?php _e("This section is for when you want to replace the default Condopanel login and registration with your own custom login and registration (for example, using the Digits plugin).", SAMYAR_TEXT_DOMAIN); ?>
-                    <p>
-                </div>
-
-                <?php
-                $samyar_login_page = kando_get_option('samyar-login-page', 0);
-                $pages = kando_get_published_pages();
-                ?>
-                <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e("Select Login Page", SAMYAR_TEXT_DOMAIN); ?></label>
-                    <div uk-form-custom="target: > * > span:first-child">
-                        <select name="samyar-login-page">
-                            <option value=""><?php _e("Please select an item.", SAMYAR_TEXT_DOMAIN); ?></option>
-                            <?php foreach ($pages as $page): ?>
-                                <option value="<?= $page->ID ?>" <?php selected( $samyar_login_page, $page->ID ); ?>><?= esc_html($page->post_title) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <button class="uk-button uk-button-default" type="button" tabindex="-1">
-                            <span></span>
-                            <span uk-icon="icon: chevron-down"></span>
-                        </button>
-                    </div>
-                </div>
-                <hr>
-                <?php
-                $samyar_register_page = kando_get_option('samyar-register-page', 0);
-                ?>
-                <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e("Select Register Page", SAMYAR_TEXT_DOMAIN); ?></label>
-                    <div uk-form-custom="target: > * > span:first-child">
-                        <select name="samyar-register-page">
-                            <option value=""><?php _e("Please select an item.", SAMYAR_TEXT_DOMAIN); ?></option>
-                            <?php foreach ($pages as $page): ?>
-                                <option value="<?= $page->ID ?>" <?php selected( $samyar_register_page, $page->ID ); ?>><?= esc_html($page->post_title) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <button class="uk-button uk-button-default" type="button" tabindex="-1">
-                            <span></span>
-                            <span uk-icon="icon: chevron-down"></span>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="uk-margin">
                     <div class="uk-alert-primary" uk-alert>
                         <p style="margin-top: 0">
-                        <p><b><?php _e('What is Google Captcha?', SAMYAR_TEXT_DOMAIN); ?>:</b> <?php _e('To prevent bots from repeatedly submitting forms to find user or admin passwords, Google has designed a form checker. By enabling this, you can prevent such activities and ensure the security of user login and registration. We highly recommend enabling this feature.', SAMYAR_TEXT_DOMAIN); ?></p>
-                        <b><?php _e('To get Google Captcha, first turn on your VPN and then click the link below:', SAMYAR_TEXT_DOMAIN); ?></b><br><br>
-                        <a href="https://www.google.com/recaptcha/admin" target="_blank"><?php _e('Create Google Captcha', SAMYAR_TEXT_DOMAIN); ?></a>
+                        <p><b>گوگل کپچا چیست؟:</b> برای اینکه ربات ها نتونن در فرم ها، ارسال های پیاپی برای یافتن رمز
+                            عبور کاربر یا مدیر انجام بدن گوگل یه چک کننده فرم طراحی کرده که با تنظیمش شما می تونید جلوی
+                            این مورد رو بگیرید و دیگه از بابت ربات ها خیالتون راحت هست و امنیت ورود و ثبت نام کاربران هم
+                            تامین خواهد شد. توصیه ما این هست که حتما این مورد رو فعال کنید </p>
+                        <b>برای گرفتن گوگل کپچا ، ابتدا فیلتر شکن خود را روشن کرده و سپس بر روی لینک زیر کلیک
+                            کنید:</b><br><br>
+                        <a href="https://www.google.com/recaptcha/admin" target="_blank">ساخت گوگل کپچا</a>
                         <br>
-                        <p><b><?php _e('Note: You must select version 2.', SAMYAR_TEXT_DOMAIN); ?></b></p>
+                        <p><b>توجه کنید که باید ورژن 2 را انتخاب نمایید</b></p>
                         </p>
                     </div>
                 </div>
                 <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e('Enable Google Captcha', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label">فعالسازی گوگل کپچا</label>
                     <div class="uk-margin-small">
                         <label>
                             <input class="uk-checkbox" type="hidden" name="google-captcha-enable" value="0">
                             <input class="uk-checkbox" type="checkbox" name="google-captcha-enable"
-                                   value="1" <?php echo checked(kando_get_option('google-captcha-enable', 0), 1); ?>><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></label>
+                                   value="1" <?php echo checked($options->get_option('google-captcha-enable', 0), 1); ?>>فعال</label>
                     </div>
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="google-captcha-key"><?php _e('Site key', SAMYAR_TEXT_DOMAIN); ?></label>
+                        <label class="uk-form-label" for="google-captcha-key">کلید سایت (site key)</label>
                         <input type="text" dir="ltr" class="uk-input" id="google-captcha-key" name="google-captcha-key"
-                               value="<?php echo esc_attr(kando_get_option('google-captcha-key', "")); ?>">
+                               value="<?php echo esc_attr($options->get_option('google-captcha-key', "")); ?>">
                     </div>
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="google-captcha-secret-key"><?php _e('Secret key', SAMYAR_TEXT_DOMAIN); ?></label>
+                        <label class="uk-form-label" for="google-captcha-secret-key">کلید مخفی سایت (secret key)</label>
                         <input type="text" dir="ltr" class="uk-input" id="google-captcha-secret-key"
                                name="google-captcha-secret-key"
-                               value="<?php echo esc_attr(kando_get_option('google-captcha-secret-key', "")); ?>">
+                               value="<?php echo esc_attr($options->get_option('google-captcha-secret-key', "")); ?>">
                     </div>
                 </div>
                 <?php do_action('kando_auth_settings') ?>
@@ -176,30 +140,30 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
         <li>
 
             <div class="uk-margin">
-                <label class="uk-form-label">Enable animated background</label>
+                <label class="uk-form-label">فعالسازی پس زمینه متحرک</label>
                 <div class="uk-margin-small">
                     <label>
                         <input class="uk-checkbox" type="hidden" name="enable-animation-background" value="0">
-                        <input class="uk-checkbox" type="checkbox" name="enable-animation-background" value="1" <?php echo checked(kando_get_option('enable-animation-background', 0), 1); ?>>Active</label>
+                        <input class="uk-checkbox" type="checkbox" name="enable-animation-background" value="1" <?php echo checked($options->get_option('enable-animation-background', 0), 1); ?>>فعال</label>
                 </div>
 
             </div>
 
             <div class="uk-margin">
                 <?php
-        $background1 = kando_get_option('background1', SAMYAR_DIR_IMG . '/backgrounds/background1.jpeg');
+        $background1 = $options->get_option('background1', SAMYAR_DIR_IMG . '/backgrounds/background1.jpeg');
         if (isset($background1) && !empty($background1) && is_numeric($background1)) {
-            $background1 = kando_get_option('background1');
+            $background1 = $options->get_option('background1');
             $background1 = wp_get_attachment_url($background1);
         }
         ?>
-                <label class="uk-form-label">First image</label>
+                <label class="uk-form-label">تصویر اول</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="background1" value="<?php echo esc_attr($background1); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-site-logo" readonly value="<?php echo esc_attr($background1); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: Delete"><span uk-icon="trash"></a>
-                        <a href="<?php echo esc_attr($background1); ?>" class="samyar-url" uk-tooltip="title: View" target="_blank"><span
+                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: حذف"><span uk-icon="trash"></a>
+                        <a href="<?php echo esc_attr($background1); ?>" class="samyar-url" uk-tooltip="title: مشاهده" target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
                 </div>
@@ -207,19 +171,19 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 
             <div class="uk-margin">
                 <?php
-        $background2 = kando_get_option('background2', SAMYAR_DIR_IMG . '/backgrounds/background2.jpeg');
+        $background2 = $options->get_option('background2', SAMYAR_DIR_IMG . '/backgrounds/background2.jpeg');
         if (isset($background2) && !empty($background2) && is_numeric($background2)) {
-            $background2 = kando_get_option('background2');
+            $background2 = $options->get_option('background2');
             $background2 = wp_get_attachment_url($background2);
         }
         ?>
-                <label class="uk-form-label">Second image</label>
+                <label class="uk-form-label">تصویر دوم</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="background2" value="<?php echo esc_attr($background2); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-site-logo" readonly value="<?php echo esc_attr($background2); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: Delete"><span uk-icon="trash"></a>
-                        <a href="<?php echo esc_attr($background2); ?>" class="samyar-url" uk-tooltip="title: View" target="_blank"><span
+                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: حذف"><span uk-icon="trash"></a>
+                        <a href="<?php echo esc_attr($background2); ?>" class="samyar-url" uk-tooltip="title: مشاهده" target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
                 </div>
@@ -227,19 +191,19 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 
             <div class="uk-margin">
                 <?php
-        $background3 = kando_get_option('background3', "");
+        $background3 = $options->get_option('background3', "");
         if (isset($background3) && !empty($background3) && is_numeric($background3)) {
-            $background3 = kando_get_option('background3');
+            $background3 = $options->get_option('background3');
             $background3 = wp_get_attachment_url($background3);
         }
         ?>
-                <label class="uk-form-label">Third image</label>
+                <label class="uk-form-label">تصویر سوم</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="background3" value="<?php echo esc_attr($background3); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-site-logo" readonly value="<?php echo esc_attr($background3); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: Delete"><span uk-icon="trash"></a>
-                        <a href="<?php echo esc_attr($background3); ?>" class="samyar-url" uk-tooltip="title: View" target="_blank"><span
+                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: حذف"><span uk-icon="trash"></a>
+                        <a href="<?php echo esc_attr($background3); ?>" class="samyar-url" uk-tooltip="title: مشاهده" target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
                 </div>
@@ -247,19 +211,19 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 
             <div class="uk-margin">
                 <?php
-        $background4 = kando_get_option('background4', "");
+        $background4 = $options->get_option('background4', "");
         if (isset($background4) && !empty($background4) && is_numeric($background4)) {
-            $background4 = kando_get_option('background4');
+            $background4 = $options->get_option('background4');
             $background4 = wp_get_attachment_url($background4);
         }
         ?>
-                <label class="uk-form-label">Fourth image</label>
+                <label class="uk-form-label">تصویر چهارم</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="background4" value="<?php echo esc_attr($background4); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-site-logo" readonly value="<?php echo esc_attr($background4); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: Delete"><span uk-icon="trash"></a>
-                        <a href="<?php echo esc_attr($background4); ?>" class="samyar-url" uk-tooltip="title: View" target="_blank"><span
+                        <a href="#" class="samyar-remove" data-toggle="site-logo" uk-tooltip="title: حذف"><span uk-icon="trash"></a>
+                        <a href="<?php echo esc_attr($background4); ?>" class="samyar-url" uk-tooltip="title: مشاهده" target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
                 </div>
@@ -270,24 +234,24 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 
             <div class="uk-margin">
                 <?php
-                $login_background = kando_get_option('login-background', SAMYAR_DIR_IMG . '/auth/auth-bg.png');
+                $login_background = $options->get_option('login-background', SAMYAR_DIR_IMG . '/auth/auth-bg.png');
 
 
                 if (isset($login_background) && !empty($login_background) && is_numeric($login_background)) {
-                    $login_background = kando_get_option('login-background');
+                    $login_background = $options->get_option('login-background');
                     $login_background = wp_get_attachment_url($login_background);
                 }
                 ?>
-                <label class="uk-form-label"><?php _e('Login background image', SAMYAR_TEXT_DOMAIN); ?></label>
+                <label class="uk-form-label">تصویر پس زمینه ورود</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="login-background" value="<?php echo esc_attr($login_background); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-login-background"
                                readonly value="<?php echo esc_attr($login_background); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="login-background" uk-tooltip="title: Delete"><span
+                        <a href="#" class="samyar-remove" data-toggle="login-background" uk-tooltip="title: حذف"><span
                                     uk-icon="trash"></a>
                         <a href="<?php echo esc_attr($login_background); ?>" class="samyar-url"
-                           uk-tooltip="title: View" target="_blank"><span
+                           uk-tooltip="title: مشاهده" target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
                 </div>
@@ -295,21 +259,21 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
 
             <div class="uk-margin">
                 <?php
-                $login_item_pic = kando_get_option('login-item-pic', SAMYAR_DIR_IMG . '/auth/auth-screens.png');
+                $login_item_pic = $options->get_option('login-item-pic', SAMYAR_DIR_IMG . '/auth/auth-screens.png');
                 if (isset($login_item_pic) && !empty($login_item_pic) && is_numeric($login_item_pic)) {
-                    $login_item_pic = kando_get_option('login-item-pic');
+                    $login_item_pic = $options->get_option('login-item-pic');
                     $login_item_pic = wp_get_attachment_url($login_item_pic);
                 }
                 ?>
-                <label class="uk-form-label"><?php _e('Login item image', SAMYAR_TEXT_DOMAIN); ?></label>
+                <label class="uk-form-label">تصویر آیتم در ورود</label>
                 <div class="uk-margin-small">
                     <div class="samyar-upload-file-wrapper">
                         <input type="hidden" name="login-item-pic" value="<?php echo esc_attr($login_item_pic); ?>">
                         <input type="text" dir="ltr" class="samyar-upload-file uk-input" id="samyar-login-item-pic"
                                readonly value="<?php echo esc_attr($login_item_pic); ?>">
-                        <a href="#" class="samyar-remove" data-toggle="login-item-pic" uk-tooltip="title: Delete"><span
+                        <a href="#" class="samyar-remove" data-toggle="login-item-pic" uk-tooltip="title: حذف"><span
                                     uk-icon="trash"></a>
-                        <a href="<?php echo esc_attr($login_item_pic); ?>" class="samyar-url" uk-tooltip="title: View"
+                        <a href="<?php echo esc_attr($login_item_pic); ?>" class="samyar-url" uk-tooltip="title: مشاهده"
                            target="_blank"><span
                                     uk-icon="link"></a>
                     </div>
@@ -317,12 +281,12 @@ if (isset($site_mobile_logo) && !empty($site_mobile_logo) && is_numeric($site_mo
             </div>
             <div class="uk-margin">
                 <div class="uk-margin">
-                    <label class="uk-form-label"><?php _e('Use username instead of mobile number during registration (by default, the mobile number is used as the username. If you enable this feature, the mobile number field will be removed from the registration form and replaced with a username field)', SAMYAR_TEXT_DOMAIN); ?></label>
+                    <label class="uk-form-label">استفاده از نام کاربری به جای شماره همراه در ثبت نام (به صورت عادی شماره همراه به جای نام کاربری در نظر گرفته می شود اگر این ویژگی رو فعال کنید شماره همراه از بخش ثبت نام حذف و نام کاربری جایگزین خواهد شد)</label>
                     <div class="uk-margin-small">
                         <label>
                             <input class="uk-checkbox" type="hidden" name="enable-custom-username" value="0">
                             <input class="uk-checkbox" type="checkbox" name="enable-custom-username"
-                                   value="1" <?php echo checked(kando_get_option('enable-custom-username', 0), 1); ?>><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></label>
+                                   value="1" <?php echo checked($options->get_option('enable-custom-username', 0), 1); ?>>فعال</label>
                     </div>
 
                 </div>

@@ -319,7 +319,6 @@ function ktOnLoad() {
     SamyarAjaxCloseTicket();
     SamyarAjaxEditTicket();
     SamyarAjaxNewTicket();
-    kandoChangeTicketStatus()
 
     SamyarAjaxNewApiProvider();
     SamyarAjaxInquiryRateApiProvider();
@@ -328,7 +327,6 @@ function ktOnLoad() {
     SamyarAjaxSyncCreditProvider();
     SamyarAjaxSyncApiProvider();
     SamyarAjaxApiProviderServiceList();
-    SamyarAjaxApiProviderNewServiceList();
     SamyarAjaxLoadServiceInfo();
     // SamyarAjaxSyncBalanceProvider();
     SamyarAjaxLoadServiceDescription();
@@ -336,9 +334,6 @@ function ktOnLoad() {
 
     SamyarAjaxNewSocial();
     SamyarAjaxDeleteSocial();
-
-    SamyarAjaxNewTag();
-    SamyarAjaxDeleteTag();
 
     SamyarAjaxNewCategory();
     SamyarAjaxDeleteCategory();
@@ -352,7 +347,6 @@ function ktOnLoad() {
     SamyarAjaxDeleteAllService();
     SamyarAjaxGetServiceList();
     samyarShowOrderServices();
-    samyarGetServiceById();
     samyarShowServiceInfo();
     samyarProccessOrderPrice();
     SamyarAjaxNewOrder();
@@ -364,12 +358,9 @@ function ktOnLoad() {
     SamyarAjaxGetOrders();
     SamyarAjaxUpdateOrder();
     SamyarAjaxUpdateRefillOrder();
-    SamyarAjaxUpdateCancelOrder();
     SamyarAjaxDeleteOrder();
     SamyarAjaxDeleteRefillOrder();
-    SamyarAjaxDeleteCancelOrder();
     SamyarAjaxCancelOrder();
-    SamyarAjaxCancelInOrder();
     SamyarAjaxSendFastOrder();
     SamyarAjaxAddCredit();
     SamyarAjaxNewNotification();
@@ -378,9 +369,8 @@ function ktOnLoad() {
     SamyarAjaxLike();
     SamyarSocialShare();
     SamyarConsultation();
-    // SamyarAjaxFilterOrders();
+    SamyarAjaxFilterOrders();
     SamyarAjaxFilterRefillOrders();
-    SamyarAjaxFilterCancelOrders();
     SamyarAjaxSearchPayment();
     SamyarAjaxSearchServices();
     SamyarAjaxFilterServices();
@@ -422,13 +412,6 @@ function ktOnLoad() {
 
     kandoNotificationAlert();
     kandoChangeLanguage();
-    kando_checkbox_category();
-    kandoChangeCurrency();
-
-    SamyarAjaxAddBulkServiceFromProvider();
-    perfectPanelEnable2fa();
-    perfectPanelApprove2fa();
-
     /*
         jQuery('.hasDatepicker').persianDatepicker({
             initialValue: false,
@@ -448,6 +431,7 @@ function ktOnLoad() {
         $j('#' + alert_id).slideToggle(500);
         return false;
     });
+
 
 
     $j(document).on('click', '.up_top_notify', function (e) {
@@ -1124,8 +1108,8 @@ function SamyarAjaxNewTicket() {
         user_id = $j('.new-ticket-form').attr('data-user-id');
     $j('.new-ticket-form').submit(function () {
         var $this = $j(this),
-            text = $this.find('.new-ticket-form-text').val().trim(), // حذف فاصله‌های اضافی
-            title = $this.find('.new-ticket-form-title').val().trim(),
+            text = $this.find('.new-ticket-form-text').val(),
+            title = $this.find('.new-ticket-form-title').val(),
             order = $this.find('.new-ticket-form-order-id').val(),
             errors = $this.find('.new-ticket-form-errors'),
             sms = $j('#new-ticket-noti').is(':checked'),
@@ -1154,7 +1138,6 @@ function SamyarAjaxNewTicket() {
         formData.append('sms', sms);
         formData.append('order', order);
         formData.append('post_id', post_id);
-        formData.append('nonce', kando_data.nonce);
         if (!$this.hasClass('is-loading')) {
             $this.addClass('is-loading');
             $this.find('.new-ticket-form-loading').fadeIn(200);
@@ -1167,16 +1150,9 @@ function SamyarAjaxNewTicket() {
                 data: formData,
                 success: function (response) {
                     if (response.success) {
-                        setTimeout(function () {
-                            Swal.fire({
-                                icon: 'success',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
+                        errors.slideUp(speed, 'easeInOutCubic', function () {
                             window.location.href = response.data.url;
-                        }, 200);
-
+                        });
                     } else {
                         Swal.fire({
                             title: kando_data.langs.an_error,
@@ -1214,54 +1190,6 @@ function SamyarAjaxNewTicket() {
     });
 }
 
-function kandoChangeTicketStatus() {
-    $j('select[name=ticket-status]').on('change', function () {
-        var ticket_id = $j('.ticket-single-form').attr('data-ticket-id');
-        var status = this.value;
-        var form = $j('.show-ticket-form');
-        if (!form.hasClass('is-loading')) {
-            form.addClass('is-loading');
-            form.find('.samyar-form-loading').fadeIn(200);
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: {id: ticket_id, status: status, action: 'kando_change_ticket_status'},
-                success: function (response) {
-
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            // window.location.reload();
-                        }, 200);
-
-                    }
-                    form.find('.samyar-form-loading').fadeOut(200);
-                    form.removeClass('is-loading');
-                },
-                error: function () {
-                    form.find('.samyar-form-loading').fadeOut(200);
-                    form.removeClass('is-loading');
-                }
-            });
-        }
-    });
-}
-
 function SamyarAjaxNewTicketReply() {
     var ticket_id = $j('.ticket-single-form').attr('data-ticket-id'),
         user_id = $j('.ticket-single-form').attr('data-user-id');
@@ -1284,7 +1212,6 @@ function SamyarAjaxNewTicketReply() {
         formData.append('user_id', user_id);
         formData.append('ticket_id', ticket_id);
         formData.append('action', 'samyar_ajax_ticket_reply');
-        formData.append('nonce', kando_data.nonce);
         formData.append('text', text);
         if (!$this.hasClass('is-loading')) {
             $this.addClass('is-loading');
@@ -1298,16 +1225,7 @@ function SamyarAjaxNewTicketReply() {
                 data: formData,
                 success: function (response) {
                     if (response.success) {
-                        setTimeout(function () {
-                            Swal.fire({
-                                icon: 'success',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            location.reload();
-                        }, 200);
-
+                        location.reload();
                     } else {
                         Swal.fire({
                             title: kando_data.langs.an_error,
@@ -1366,7 +1284,7 @@ function SamyarAjaxDeleteTicket() {
                 $j.ajax({
                     url: kando_data.ajaxurl,
                     type: 'post',
-                    data: {id: ticket_id, action: 'samyar_ticket_delete', 'nonce': kando_data.nonce},
+                    data: {id: ticket_id, action: 'samyar_ticket_delete'},
                     success: function (response) {
                         if (!response.success) {
                             Swal.fire({
@@ -1424,7 +1342,7 @@ function SamyarAjaxCloseTicket() {
                 $j.ajax({
                     url: kando_data.ajaxurl,
                     type: 'post',
-                    data: {id: ticket_id, action: 'samyar_ticket_close', 'nonce': kando_data.nonce},
+                    data: {id: ticket_id, action: 'samyar_ticket_close'},
                     success: function (response) {
                         if (!response.success) {
                             Swal.fire({
@@ -1518,8 +1436,7 @@ function SamyarAjaxEditTicket() {
                 data: {
                     action: 'samyar_update_message',
                     message: message,
-                    id: message_id,
-                    nonce: kando_data.nonce
+                    id: message_id
                 },
                 success: function (response) {
                     if (!response.success) {
@@ -1585,8 +1502,7 @@ function SamyarAjaxEditTicket() {
                     type: 'post',
                     data: {
                         action: 'samyar_delete_message',
-                        id: message_id,
-                        nonce: kando_data.nonce
+                        id: message_id
                     },
                     success: function (response) {
                         if (!response.success) {
@@ -1629,7 +1545,7 @@ function SamyarAjaxEditTicket() {
 
     $j(document).on('click', '.approve-cart-to-cart', function () {
         let amount = $j(this).data('amount');
-        // amount = kando_number_format(amount);
+        amount = kando_number_format(amount);
         Swal.fire({
             title: kando_data.langs._are_you_sure,
             // text: "حساب کاربر به مبلغ " + amount + " " + kando_base_rate_text(kando_data.base_rate) + " شارژ خواهد شد",
@@ -1746,217 +1662,6 @@ function SamyarAjaxNewApiProvider() {
     });
 }
 
-function SamyarAjaxAddBulkServiceFromProvider() {
-
-    $j(document).on('submit', '.bulk-add-service-form', function () {
-        var $this = $j(this);
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-                    if (!response.success) {
-                        // نمایش خطا
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        });
-                    } else {
-                        // نمایش موفقیت و جزئیات در جدول
-                        let successMessage = response.data.message; // پیام کلی
-                        let details = response.data.details; // جزئیات هر سرویس
-
-                        // ایجاد یک جدول از جزئیات
-                        let detailsHtml = `
-                        <div>
-                            <p>${successMessage}</p>
-                            <table class="samyar-results-table" style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr>
-                                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">${kando_data.langs.service_name}</th>
-                                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">${kando_data.langs.status}</th>
-                                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">${kando_data.langs.message}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
-
-                        details.forEach(function (item) {
-                            // تعیین رنگ بر اساس وضعیت
-                            let statusColor = item.status === 'success' ? 'green' : 'red';
-                            detailsHtml += `
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 8px;">${item.service_name}</td>
-                                <td style="border: 1px solid #ddd; padding: 8px;color: ${statusColor};">${item.status_message}</td>
-                                <td style="border: 1px solid #ddd; padding: 8px;">${item.message}</td>
-                            </tr>
-                        `;
-                        });
-
-                        detailsHtml += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-
-                        // نمایش پیام موفقیت و جدول جزئیات
-                        Swal.fire({
-                            icon: 'success',
-                            title: kando_data.langs.results_adding_services,
-                            html: detailsHtml,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                            customClass: {
-                                popup: 'samyar-swal-popup', // کلاس برای تنظیم عرض و سایر استایل‌ها
-                            },
-                        });
-                    }
-
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                    Swal.fire({
-                        title: kando_data.langs.an_error,
-                        icon: 'error',
-                        text: kando_data.langs.error_server,
-                        showCloseButton: true,
-                        confirmButtonText: kando_data.langs.ok,
-                    });
-                }
-            });
-        }
-
-        return false;
-    });
-}
-
-function perfectPanelEnable2fa() {
-
-    $j('#2fa-generate-form').submit(function () {
-        var $this = $j(this);
-        var $btn = $j(this).find('button');
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {
-
-                        $j('#2fa-generate-form').hide();
-                        $j('#2fa-approve-form').show();
-
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            location.reload();
-                        }, 200);
-
-                    }
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
-function perfectPanelApprove2fa() {
-
-    $j('#2fa-approve-form').submit(function () {
-        var $this = $j(this);
-        var $btn = $j(this).find('button');
-
-
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-
-
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {
-
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            location.reload();
-                        }, 200);
-
-                    }
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
-function setCategoryValue(catId) {
-    if (catId && $j('#samyar_select_category').find('option[value="' + catId + '"]').length > 0) {
-        $j('#samyar_select_category').val(catId).trigger('change');
-    } else {
-        console.warn('مقدار cat_id معتبر نیست یا در گزینه‌ها وجود ندارد.');
-    }
-}
-
 function SamyarAjaxInquiryRateApiProvider() {
 
     $j(document).on('click', '#inquiry_rate', function () {
@@ -2018,7 +1723,7 @@ function SamyarAjaxDeleteApiProvider() {
 
         Swal.fire({
             title: kando_data.langs.are_you_sure,
-            text: kando_data.langs.all_services_provider_removed,
+            text: "تمام سرویس های این ارائه دهنده نیز حذف خواهد شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2116,9 +1821,9 @@ function SamyarAjaxDisableApiProvider() {
         });
         // if(this.checked) {
         //     var returnVal = confirm("Are you sure?");
-        //     $j(this).prop("checked", returnVal);
+        //     $(this).prop("checked", returnVal);
         // }
-        // $j('.ajax-switch').val(this.checked);
+        // $('.ajax-switch').val(this.checked);
     });
 }
 
@@ -2321,52 +2026,6 @@ function SamyarAjaxApiProviderServiceList() {
     });
 }
 
-function SamyarAjaxApiProviderNewServiceList() {
-
-    $j('.provider-new-service-list-form').submit(function () {
-        var $this = $j(this);
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-
-                    if (isJson(response)) {//اگر نوعش جیسون هست یعنی خطایی رخ داده و خطا رو نشون بده
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {// در غیر اینصورت جدول خدمات رو بر گردون
-
-                        $j('#provider-services-result').slideUp(400, 'easeInOutCubic', function () {
-                            $j(this).empty().html(response).slideDown(500, 'easeInOutCubic');
-                        });
-                    }
-
-
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-
-
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
 function SamyarAjaxLoadServiceInfo() {
     $j(document).on('click', '.add_service_from_list', function () {
 
@@ -2387,8 +2046,7 @@ function SamyarAjaxLoadServiceInfo() {
         $j(".kt-service-modal input[name=api_provider_id]").val($j(this).attr('data-provider'));
         $j(".kt-service-modal input[name=api_service_id]").val($j(this).attr('data-service'));
         $j(".kt-service-modal textarea[name=description]").val($j(this).attr('data-desc'));
-        $j(".kt-service-modal .api_currency").text($j(this).attr('data-currency'));
-        $j(".kt-service-modal input[name=brand]").text($j(this).attr('brand'));
+        $j(".kt-service-modal #api_currency").text($j(this).attr('data-currency'));
     });
 }
 
@@ -2396,17 +2054,16 @@ function SamyarAjaxLoadServiceDescription() {
     $j(document).on('click', '.samyar-show-description-service', function () {
         $j(".kt-show-description-modal .kt-modal-content").html('')
         let service_id = $j(this).attr('data-id');
-        let desc = $j(this).attr('data-desc');
-        // $j.ajax({
-        //     url: kando_data.ajaxurl,
-        //     type: 'post',
-        //     data: {id: service_id, action: 'show_service_description'},
-        //     success: function (response) {
-        $j(".kt-show-description-modal .kt-modal-content").html(desc);
-        //     },
-        //     error: function () {
-        //     }
-        // });
+        $j.ajax({
+            url: kando_data.ajaxurl,
+            type: 'post',
+            data: {id: service_id, action: 'show_service_description'},
+            success: function (response) {
+                $j(".kt-show-description-modal .kt-modal-content").html(response);
+            },
+            error: function () {
+            }
+        });
 
 
     });
@@ -2535,121 +2192,6 @@ function SamyarAjaxDeleteSocial() {
     })
 }
 
-function SamyarAjaxNewTag() {
-
-    $j('.new-tag-form').submit(function () {
-        var $this = $j(this);
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            if (response.data.link !== undefined) {
-                                window.location = response.data.link;
-                            }
-
-                        }, 200);
-
-                    }
-
-
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-
-
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
-function SamyarAjaxDeleteTag() {
-    $j(document).on('click', '.delete-tag', function () {
-
-        Swal.fire({
-            title: kando_data.langs.are_you_sure,
-            // text: "همه سرویس های این دسته نیز حذف خواهند شد",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: kando_data.langs.yes_delete,
-            cancelButtonText: kando_data.langs.cancel
-        }).then((result) => {
-            let tag_id = $j(this).data('id');
-            if (result.isConfirmed) {
-                $j.ajax({
-                    url: kando_data.ajaxurl,
-                    type: 'post',
-                    data: {id: tag_id, action: 'samyar_tag_delete'},
-                    success: function (response) {
-                        if (!response.success) {
-                            Swal.fire({
-                                title: kando_data.langs.an_error,
-                                icon: 'error',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                        } else {
-                            $j('#tag-' + tag_id).slideUp(1000, function () {
-                                $j(this).remove();
-                            });
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                        }
-
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    }
-                });
-
-            }
-        })
-
-    })
-}
-
 
 function SamyarAjaxNewCategory() {
 
@@ -2712,7 +2254,7 @@ function SamyarAjaxDeleteCategory() {
 
         Swal.fire({
             title: kando_data.langs.are_you_sure,
-            text: kando_data.langs.all_services_category_removed,
+            text: "همه سرویس های این دسته نیز حذف خواهند شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2811,9 +2353,9 @@ function SamyarAjaxDisableCategory() {
         });
         // if(this.checked) {
         //     var returnVal = confirm("Are you sure?");
-        //     $j(this).prop("checked", returnVal);
+        //     $(this).prop("checked", returnVal);
         // }
-        // $j('.ajax-switch').val(this.checked);
+        // $('.ajax-switch').val(this.checked);
     });
 }
 
@@ -2821,8 +2363,8 @@ function SamyarAjaxDeleteAllCategory() {
     $j(document).on('click', '#delete-category-all', function () {
 
         Swal.fire({
-            title: kando_data.langs.delete_all_categories,
-            text: kando_data.langs.all_categories_deleted,
+            title: 'آیا شما از حذف همه دسته ها مطمئن هستید؟',
+            text: "همه دسته ها و سرویس های زیر مجموعه حذف خواهند شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2845,7 +2387,7 @@ function SamyarAjaxDeleteAllCategory() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -3006,7 +2548,7 @@ function SamyarAjaxDeleteService() {
 
         Swal.fire({
             title: kando_data.langs.are_you_sure,
-            text: kando_data.langs.service_removed,
+            text: "این سرویس حذف خواهد شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -3065,8 +2607,8 @@ function SamyarAjaxDeleteAllService() {
     $j(document).on('click', '#delete-service-all', function () {
 
         Swal.fire({
-            title: kando_data.langs.delete_all_services,
-            text: kando_data.langs.all_services_removed,
+            title: 'آیا شما از حذف همه سرویس ها مطمئن هستید؟',
+            text: "همه سرویس ها حذف خواهند شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -3089,7 +2631,7 @@ function SamyarAjaxDeleteAllService() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -3148,69 +2690,9 @@ function SamyarAjaxGetServiceList() {
     });
 }
 
-function samyarGetServiceById() {
-    $j(document).on("click", ".search-service-btn", function () {
-        var $this = $j(".new-order-form");
-        var $btn = $j(this);
-        if (!$btn.hasClass('clicked') && !$btn.hasClass('is-loading')) {
-            $btn.addClass('is-loading');
-            $btn.addClass('clicked');
-            // $this.find('.samyar-form-loading').fadeIn(200);
-            var service_id = $j('#input_service').val();
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: {action: 'kando_get_service_info', service: service_id, nonce: kando_data.nonce},
-                success: function (response) {
-
-                    //اگر مرحله شروع پرداخت موفقیت آمیز بود به درگاه پرداخت برو
-                    if (response.success) {
-                        $j('#samyar_select_category').val(response.data.category).trigger('change');
-
-
-                        // سپس با کمی تاخیر دسته‌بندی را انتخاب کنید
-                        setTimeout(function () {
-                            $j('#select-order-service select').val(service_id).trigger('change');
-                        }, 3000); // تاخیر 100 میلی‌ثانیه
-
-
-                    } else {
-                        setTimeout(function () {
-
-                            Swal.fire({
-                                title: kando_data.langs.an_error,
-                                icon: 'error',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-
-
-                        }, 200);
-
-                        // $this.find('.samyar-form-loading').fadeOut(200);
-                    }
-                    $btn.removeClass('is-loading');
-                    $btn.removeClass('clicked');
-
-                },
-                error: function () {
-                    $btn.removeClass('is-loading');
-                    $btn.removeClass('clicked');
-                    // $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
 //افزودن سفارش
 function samyarShowOrderServices() {
-    $j(document).on("change", "#samyar_select_category", function () {
-
+    $j('#samyar_select_category').on('change', function () {
         //reset basket
         const baskett = ({url, img, title}) => `<table class="shop_table woocommerce-checkout-review-order-table">
 <thead>
@@ -3257,206 +2739,57 @@ function samyarShowOrderServices() {
 
         let Category_id = this.value;
         let form = $j('.new-api-form-outer');
-
         if (Category_id !== "0") {
             form.addClass('is-loading');
             form.find('.samyar-form-loading').fadeIn(200);
-
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
                 data: {id: Category_id, action: 'samyar_get_services'},
                 success: function (response) {
+
                     let service_html = '';
                     service_html += `<option value='0'>${kando_data.langs.select_service}</option>`;
                     const services_data = response.data.services;
 
                     let dataArray = Object.values(services_data);
 
-                    // مرتب‌سازی گزینه‌ها بر اساس قیمت یا ترتیب
-                    if (kando_data.select_service_order === "price") {
-                        dataArray.sort(function (a, b) {
+                    if(kando_data.select_service_order==="price"){
+                        dataArray.sort(function(a, b) {
                             return a.price - b.price;
                         });
-                    } else {
-                        dataArray.sort(function (a, b) {
+                    }else{
+                        dataArray.sort(function(a, b) {
                             return a.order - b.order;
                         });
                     }
 
-                    // ایجاد گزینه‌ها
                     for (let i = 0; i < dataArray.length; i++) {
                         let item = dataArray[i];
-                        service_html += `
-                    <option value="${item.service_id}" 
-                            data-average="${item.average}" 
-                            data-min="${item.min}" 
-                            data-max="${item.max}"
-                            data-type="${item.type}" 
-                            data-cancel="${item.cancel}" 
-                            data-refill="${item.refill}" 
-                            data-refill-period="${item.refill_period}" 
-                            data-link-type="${item.link_type}"
-                            data-dripfeed="${item.dripfeed}" 
-                            data-price="${item.price}" 
-                            data-name="${item.name}" 
-                            data-speed="${item.speed}" 
-                            data-quality="${item.quality}"
-                            data-description="${item.description}" 
-                            data-is-free="${item.is_free}" 
-                            data-free-number="${item.free_number}"
-                            data-tags="${item.tags}"
-                            >
-                        ${item.text}
-                    </option>`;
+                        service_html += `<option value="${item.service_id}" data-average="${item.average}" data-min="${item.min}" data-max="${item.max}"
+                                                                data-type="${item.type}"
+                                                                data-dripfeed="${item.dripfeed}" data-price="${item.price}" data-name="${item.name}"
+                                                                data-description="" data-is-free="${item.is_free}" data-free-number="${item.free_number}">${item.text}
+                                                        </option>`;
                     }
 
-                    // قرار دادن گزینه‌ها در select
                     $j('#select-order-service select').html(service_html);
 
-                    // به‌روزرسانی توضیحات
-                    $j('.new-order-form .new-ticket-help ul, .service-description .s-d-text').html(response.data.category_desc);
+                    $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html(response.data.category_desc);
 
-                    // نمایش select
+
                     $j('#select-order-service').slideDown(400, 'easeOutCubic');
-
-                    // غیرفعال کردن حالت لودینگ
                     form.removeClass('is-loading');
                     form.find('.samyar-form-loading').fadeOut(200);
-
-                    // مقداردهی اولیه Select2
-                    // $j('#select-order-service select').select2();
-
-                    $j('#select-order-service select').select2({
-                        templateResult: formatOption,
-                        placeholder: kando_data.langs.select_service,
-                        allowClear: true,
-                        width: '100%',
-                        templateSelection: formatSelection,
-                        matcher: function (params, data) {
-                            // اگر جستجو خالی باشد، همه گزینه‌ها را نشان بده
-                            if ($j.trim(params.term) === '') {
-                                return data;
-                            }
-
-                            // جستجو بر اساس متن گزینه
-                            if (data.text.toLowerCase().indexOf(params.term.toLowerCase()) >= 0) {
-                                return data;
-                            }
-
-                            // جستجو بر اساس service_id
-                            var serviceId = $j(data.element).val();
-                            if (serviceId && serviceId.toString().toLowerCase().indexOf(params.term.toLowerCase()) >= 0) {
-                                return data;
-                            }
-
-                            // اگر هیچ‌کدام مطابقت نداشت، گزینه را نشان نده
-                            return null;
-                        }
-                    });
-
-                    function formatOption(option) {
-                        if (!option.id) {
-                            return option.text;
-                        }
-
-                        // دریافت مقادیر data-* از option
-                        var $optionElement = $j(option.element);
-                        var min = $optionElement.data('min');
-                        var max = $optionElement.data('max');
-                        var service_id = $optionElement.val();
-                        var avgTime = $optionElement.data('avaerage'); // توجه: 'avaerage' باید 'average' باشد؟
-
-                        // ساخت HTML سفارشی
-                        var detailsHtml = '<div class="service-option-details">';
-
-                        if (min) {
-                            detailsHtml += '<span class="min">' + kando_data.langs.min + ' ' + min + '</span>';
-                        }
-                        if (max) {
-                            detailsHtml += '<span class="max">' + kando_data.langs.max + ' ' + max + '</span>';
-                        }
-                        if (avgTime) {
-                            detailsHtml += '<span class="avg-time">' + kando_data.langs.avg + ' ' + avgTime + '</span>';
-                        }
-
-                        detailsHtml += '</div>';
-
-                        let tags = $optionElement.data('tags');
-
-                        if (tags) {
-                            try {
-                                // let tagss = JSON.parse(tags);
-                                // console.log(tagss);
-                                detailsHtml += '<div class="service-option-details">';
-                                if (tags) {
-                                    tags.forEach(tag => {
-                                        detailsHtml += `<span class="button service-tag ${tag.background_color}">
-                            <i class="${tag.icon}"></i>
-                            ${tag.name}
-                        </span>`;
-                                    });
-                                }
-                                detailsHtml += '</div>';
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        }
-
-
-                        // اگر service_id برابر 0 نباشد، آن را نمایش بده
-                        var serviceIdHtml = '';
-                        if (service_id != 0) {
-                            serviceIdHtml = '<span class="st-id">' + service_id + '</span>';
-                        }
-
-                        var $option = $j(
-                            '<div>' + serviceIdHtml + option.text + '</div>' + detailsHtml
-                        );
-                        return $option;
-                    }
-
-                    function formatSelection(option) {
-                        if (!option.id) {
-                            return option.text;
-                        }
-
-                        // دریافت شناسه سرویس از option
-                        var $optionElement = $j(option.element);
-                        var service_id = $optionElement.val();
-
-                        // اگر service_id برابر 0 نباشد، آن را نمایش بده
-                        if (service_id != 0) {
-                            return $j('<span><span class="st-id">' + service_id + '</span> ' + option.text + '</span>');
-                        }
-
-                        // اگر service_id برابر 0 باشد، فقط متن گزینه را نمایش بده
-                        return option.text;
-                    }
-
-
-
-                    // انتخاب اولین گزینه غیر از 0
-                    let selectElement = $j('#select-order-service select');
-                    var kando_selected_service = $j('#kando_selected_service').val();
-
-                    if (kando_selected_service === "") {
-                        if (selectElement.find('option').length > 1) {
-                            let firstNonZeroOption = selectElement.find('option:not([value="0"]):first');
-                            if (firstNonZeroOption.length) {
-                                selectElement.val(firstNonZeroOption.val()).trigger('change');
-                            }
-                        }
-                    } else {
-                        selectElement.val(kando_selected_service).trigger('change');
-                    }
-
                 },
                 error: function () {
                     form.removeClass('is-loading');
                     form.find('.samyar-form-loading').fadeOut(200);
                 }
             });
+
+
+
         }
     });
 }
@@ -3521,15 +2854,7 @@ function samyarShowServiceInfo() {
         $j('.shop_table').slideDown(400, 'easeOutCubic');
 
 
-        // تنظیم مقدار .ajaxQuantity اگر GetQuantity وجود دارد
-// تنظیم مقدار .ajaxQuantity اگر GetQuantity وجود دارد
-        if (jQuery(".ajaxQuantity").length > 0 && typeof GetQuantity !== 'undefined' && GetQuantity) {
-            jQuery(".ajaxQuantity").val(GetQuantity).trigger('input');
-        } else {
-            jQuery(".new-order-form .order-default-quantity input[name=quantity]").val('');
-        }
-
-
+        $j(".new-order-form .order-default-quantity input[name=quantity]").val('');
         // let _total_charge = 0;
         // let _currency_symbol = $j(".new-order-form input[name=currency_symbol]").val();
         // $j(".new-order-form input[name=total_charge]").val(_total_charge);
@@ -3552,11 +2877,11 @@ function samyarShowServiceInfo() {
                 $j(".new-order-form .order-poll").addClass("d-none");
                 $j(".new-order-form .order-subscriptions").removeClass("d-none");
 
-                // $j('.kando_show_factor').show();
+                $j('.kando_show_factor').show();
 
                 // console.log(_service_type);
                 // if(type !== "" && type=="subscriptions"){
-                // $j('ul.payment_methods').slideUp(400, 'easeOutCubic');
+                $j('ul.payment_methods').slideUp(400, 'easeOutCubic');
                 // }
                 break;
 
@@ -3851,24 +3176,16 @@ function samyarShowServiceInfo() {
         let form = $j('.new-api-form-outer');
 
         if (service_id !== "0") {
-            let service_name = $j(this).children("option:selected").text();
             let min = $j(this).children("option:selected").attr("data-min");
             let max = $j(this).children("option:selected").attr("data-max");
             var price = $j(this).children("option:selected").attr("data-price");
             var is_free = $j(this).children("option:selected").attr("data-is-free");
-            var description = $j(this).children("option:selected").attr("data-description");
             var free_number = $j(this).children("option:selected").attr("data-free-number");
-            var cancel = $j(this).children("option:selected").attr("data-cancel");
-            var refill = $j(this).children("option:selected").attr("data-refill");
-            var refill_period = $j(this).children("option:selected").attr("data-refill-period");
-            var link_type = $j(this).children("option:selected").attr("data-link-type");
-            var link_quality = $j(this).children("option:selected").attr("data-quality") || '-';
-            var link_speed = $j(this).children("option:selected").attr("data-speed") || '-';
             // let price_format = Intl.NumberFormat('fa-IR', {}).format(price);
             let average_time = $j(this).children("option:selected").attr("data-average");
             let average_time_display = "";
             let price_format = kando_number_format(price);
-            if (kando_data.enable_average_time === "0" || average_time == "") {
+            if(kando_data.enable_average_time === "0" || average_time == ""){
                 average_time = "";
                 average_time_display = "d-none";
             }
@@ -3885,98 +3202,84 @@ function samyarShowServiceInfo() {
             // price_per_1 = Intl.NumberFormat('fa-IR', {}).format(price_per_1);
             price_per_1 = kando_number_format(price_per_1);
 
+            let description = get_service_description(service_id);
 
-            //TODO این سرعت رو کند میکنه بهبودش بده
-            // let description = get_service_description(service_id);
-            // let description = "";
+            const service_info = ({url, img, title}) => `<li>${kando_data.langs.minimum_quantity}: <strong>${min}</strong></li>
+<li>${kando_data.langs.maximum_quantity}: <strong>${max}</strong></li>
+<li>${kando_data.langs.price_per_1000}: <strong>${price_format}</strong></li>
+<li class="${average_time_display}">${kando_data.langs.estimated_order}: <strong>${average_time} </strong></li>
+ <li> <strong>${kando_data.langs.description}: </strong>${description}</li>
+`;
 
-            // تعیین متن بر اساس مقدار refill
-            var refillText = refill == 1 ? '<span style="color:#4CAF50">'+kando_data.langs.yes+'</span>' : '<span style="color:#E93E3E">'+kando_data.langs.no+'</span>';
-            var cancelText = cancel == 1 ? '<span style="color:#4CAF50">'+kando_data.langs.yes+'</span>' : '<span style="color:#E93E3E">'+kando_data.langs.no+'</span>';
+            const service_info2 = ({
+                                       url,
+                                       img,
+                                       title
+                                   }) => `<li>${kando_data.langs.charge}: <strong>${price_per_1} </strong></li><li class="${average_time_display}">${kando_data.langs.estimated_order}: <strong>${average_time} </strong></li><li> <strong>${kando_data.langs.description}: </strong>${description}</li>`;
 
+            const service_info4 = ({
+                                       url,
+                                       img,
+                                       title
+                                   }) => `<li>${kando_data.langs.minimum_quantity}: <strong>${min}</strong></li>
+<li>${kando_data.langs.maximum_quantity}: <strong>${max}</strong></li><li>${kando_data.langs.charge}: <strong>${price_per_1} </strong></li><li> <strong>${kando_data.langs.description}: </strong>${description}</li>`;
 
-            // link_quality = link_quality == "" ? '-' : link_quality;
-            // link_speed = link_speed == "" ? '-' : link_speed;
-
-            let services = [];
 
             if (_service_type === "gift_card") {
+                price_per_1 = price;
+                price_per_1 = kando_number_format(price_per_1);
+                $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html([
+                    {url: '/foo', img: 'foo.png', title: 'Foo item'},
+                ].map(service_info4).join(''));
 
+            }else if (_service_type === "package") {
+                price_per_1 = price;
+                price_per_1 = kando_number_format(price_per_1);
+                $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html([
+                    {url: '/foo', img: 'foo.png', title: 'Foo item'},
+                ].map(service_info2).join(''));
             } else {
-                services = [
-                    {
-                        label: kando_data.langs.quality,
-                        icon: 'elegant-icon icon_star',
-                        text: `<span data-id="serviceQuality">${link_quality}</span>`,
-                    },
-                    {
-                        label: kando_data.langs.speed,
-                        icon: 'elegant-icon icon_shield',
-                        text: `<span data-id="serviceSpeed">${link_speed}</span>`,
-                    },
-                    {
-                        label: kando_data.langs.guarantee,
-                        icon: 'elegant-icon icon_check',
-                        text: `<span data-id="serviceRefill">${refill_period}</span>`,
-                    },
-                    {
-                        label: kando_data.langs.link,
-                        icon: 'elegant-icon icon_link_alt',
-                        text: `<span data-id="serviceLink">${link_type}</span>`,
-                    },
-                    {
-                        label: kando_data.langs.cancel_button,
-                        icon: 'elegant-icon icon_stop_alt',
-                        text: `<span id="cancel_text">${cancelText}</span>`,
-                    },
-                    {
-                        label: kando_data.langs.refill_button,
-                        icon: 'elegant-icon icon_refresh',
-                        text: `<span id="refill_text">${refillText}</span>`,
-                    },
-                ];
+                if (is_free === "1") {
+                    const service_info3 = ({url, img, title}) => `<li>${kando_data.langs.minimum_quantity}: <strong>${min}</strong></li>
+<li>${kando_data.langs.maximum_quantity}: <strong>${max}</strong></li>
+<li class="${average_time_display}">${kando_data.langs.estimated_order}: <strong>${average_time} </strong></li>
+<li>${kando_data.langs.estimated_order}: <strong>${kando_data.langs.free} </strong></li>
+<li>${kando_data.langs.order_limit_per_day_label}: <strong>${free_number} بار</strong></li>
+ <li> <strong>${kando_data.langs.description}: </strong>${description}</li>
+`;
+                    $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html([
+                        {url: '/foo', img: 'foo.png', title: 'Foo item'},
+                    ].map(service_info3).join(''));
+                } else {
+                    $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html([
+                        {url: '/foo', img: 'foo.png', title: 'Foo item'},
+                    ].map(service_info).join(''));
+                }
+
             }
 
-
-            const renderServices = (services) => {
-                return services.map(service => `
-        <div class="kt-col-md-6 kt-col-xs-6 mb-4 px-10">
-            <div class="form-label">${service.label}</div>
-            <div class="desc-list">
-                <div class="icon">
-                    <i class="${service.icon}"></i>
-                </div>
-                <div class="text">${service.text}</div>
-            </div>
-        </div>
-    `).join('');
-            };
-
-            const service_info = renderServices(services);
-
-            //set service info
-            $j('.service-info-box .dashboard-posts-title').html(service_name);
-            $j('.service-info-box .dashboard-posts-list .kt-row.service-info-container').html(service_info);
-            $j('.help-block.min-max').html(kando_data.langs.min + min + " - " + kando_data.langs.max + max);
-
-
-            // جایگزینی خطوط جدید (\n) با تگ <br>
-            // const formattedDescription = description.replace(/\n/g, '<br>');
-
-            // نمایش متن در یک عنصر HTML
-            $j('#srv-desc').hide();
-            if (description !== "") {
-                $j('#srv-desc').html(description);
-                $j('#srv-desc').show();
-            }
-
-            if (description !== "" && $j('.s-d-text').length>0) {
-                $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').html(description);
-                $j('.new-order-form .new-ticket-help ul,.service-description .s-d-text').show();
-            }
 
             $j('#insert-order-data').slideDown(400, 'easeOutCubic');
-
+            /*
+            $j.ajax({
+                url: kando_data.ajaxurl,
+                type: 'post',
+                data: {id: service_id, action: 'samyar_get_service_info'},
+                success: function (response) {
+                    if (response) {
+                        $j('.new-ticket-help ul').html(response);
+                        $j('.new-ticket-help ul').slideDown(400, 'easeOutCubic');
+                    }
+                    $j('#insert-order-data').slideDown(400, 'easeOutCubic');
+                    form.removeClass('is-loading');
+                    form.find('.samyar-form-loading').fadeOut(200);
+                },
+                error: function () {
+                    form.removeClass('is-loading');
+                    form.find('.samyar-form-loading').fadeOut(200);
+                }
+            });
+            */
         } else {
             $j('.new-ticket-help ul').html('<li>${kando_data.langs.service_description_placeholder}</li>');
         }
@@ -3984,6 +3287,7 @@ function samyarShowServiceInfo() {
 
     });
 }
+
 
 
 function get_service_description(service_id) {
@@ -4041,7 +3345,7 @@ function samyarProccessOrderPrice() {
         }
 
 
-        sendOrderFormData(service_id, total_quantity, table, type);
+        sendOrderFormData(service_id, total_quantity, table,type);
     });
 
     // callback ajax_custom_comments
@@ -4126,31 +3430,6 @@ function samyarProccessOrderPrice() {
         // $j(".new-order-form input[name=total_charge]").val(total_charge);
         // $j(".new-order-form .total_charge span").html(total_charge +' '+ currency_symbol);//morteza
     })
-
-    //subscriptions
-    var inputs = "input[name=sub_max], input[name=sub_old_posts], input[name=sub_posts]";
-    $j(document).on("input", inputs, function () {
-        // let that = $j(this);
-        // let quantity = that.val();
-        let total_quantity = "";
-        let service_id = $j("#select-order-service select option:selected").val();
-        let table = $j('.samyar_order_table');
-
-        let type = $j("#select-order-service select option:selected").data('type');
-        let sub_max = parseInt($j("input[name=sub_max]").val(), 10);
-        let sub_old_posts = parseInt($j("input[name=sub_old_posts]").val(), 10);
-        let sub_posts = parseInt($j("input[name=sub_posts]").val(), 10);
-
-        total_quantity = sub_max * (sub_old_posts + sub_posts);
-
-        if (total_quantity > 0) {
-            $j('.kando_show_factor').show();
-        } else {
-            $j('.kando_show_factor').hide();
-        }
-
-        sendOrderFormData(service_id, total_quantity, table, type);
-    });
 }
 
 function numberFormat(value, decimals = 0, decimal_sep = '.', thousand_sep = ',') {
@@ -4175,26 +3454,25 @@ function kando_number_format(price) {
     var _currency_symbol = kando_data.currency.symbol;
 
     // price = Intl.NumberFormat('en-US').format(price);
-    price = numberFormat(price, decimals, decimal_sep, thousand_sep)
+    price = numberFormat(price, decimals , decimal_sep, thousand_sep)
 
     switch (currency_pos) {
         case 'left':
-            return price + '' + _currency_symbol;
+            return price+''+_currency_symbol;
             break;
         case 'right':
-            return _currency_symbol + '' + price;
+            return _currency_symbol+''+price;
             break;
         case 'left_space':
-            return price + ' ' + _currency_symbol;
+            return price+' '+_currency_symbol;
             break;
         case 'right_space':
-            return _currency_symbol + ' ' + price;
+            return _currency_symbol+' '+price;
             break;
     }
 }
 
-function sendOrderFormData(service_id, quantity, place, type = "") {
-
+function sendOrderFormData(service_id, quantity, place,type="") {
     let user_credit, total_service, total_service_format;
     let numberToWords = "";
     let display_wallet_payment = "none";
@@ -4212,39 +3490,42 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
         user_credit = kando_data.wallet;
     }
 
-    if (kando_data.currency.selected_currency === "IRT") {
+    if(kando_data.currency.selected_currency==="IRT"){
         total_service = Math.floor((price / 1000) * quantity)
-    } else {
+    }else{
         total_service = (price / 1000) * quantity;
     }
 
 
-    if (type !== "" && type == "gift_card") {
-        if (kando_data.currency.selected_currency === "IRT") {
-            total_service = Math.floor(price * quantity)
-        } else {
-            total_service = price * quantity;
+
+
+    if(type !== "" && type=="gift_card"){
+        if(kando_data.currency.selected_currency==="IRT"){
+            total_service = Math.floor(price  * quantity)
+        }else{
+            total_service = price  * quantity;
         }
 
     }
 
     total_service_format = kando_number_format(total_service);
     // Intl.NumberFormat('fa-IR', {}).format(total_service);
+
     if (user_credit > 0) {//اگر اعتبار در کیف پول کاربر بزرگتر از صفر بود
         // چک می کنیم ببینیم آیا کیف پول، پول سرویس رو جواب میده یا نه
         if (total_service > user_credit) {//اگر مبلغ سفارش بالاتر از اعتبار کاربر بود
-            if (kando_data.currency.selected_currency === "IRT") {
+            if(kando_data.currency.selected_currency==="IRT"){
                 data['total_payment'] = Math.floor(total_service - user_credit);//مبلغ قابل پرداخت
-            } else {
+            }else{
                 data['total_payment'] = total_service - user_credit;//مبلغ قابل پرداخت
             }
 
             // data['total_payment_format'] = Intl.NumberFormat('fa-IR', {}).format(Math.floor(data['total_payment']));//مبلغ قابل پرداخت
             data['total_payment_format'] = kando_number_format(data['total_payment']);//مبلغ قابل پرداخت
 
-            if (kando_data.currency.selected_currency === "IRT") {
+            if(kando_data.currency.selected_currency==="IRT"){
                 data['wallet_payment'] = Math.floor(user_credit);//کل کیف پول کاربر کسر میشه
-            } else {
+            }else{
                 data['wallet_payment'] = user_credit;//کل کیف پول کاربر کسر میشه
             }
 
@@ -4252,9 +3533,9 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
             data['wallet_payment_format'] = kando_number_format(user_credit);//کل کیف پول کاربر کسر میشه
             numberToWords = Num2persian(data['total_payment']);
         } else if (total_service === user_credit) {//اگر مقدار کیف پول با سرویس مساوی بود
-            if (kando_data.currency.selected_currency === "IRT") {
+            if(kando_data.currency.selected_currency==="IRT"){
                 data['wallet_payment'] = Math.floor(user_credit); //مبلغی که از کیف پول باید کسر بشه
-            } else {
+            }else{
                 data['wallet_payment'] = user_credit; //مبلغی که از کیف پول باید کسر بشه
             }
 
@@ -4266,9 +3547,9 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
 
             display_total_payment = "none";
         } else {//اگر مقدار کیف پول از مقدار سرویس بیشتر بود
-            if (kando_data.currency.selected_currency === "IRT") {
+            if(kando_data.currency.selected_currency==="IRT"){
                 data['wallet_payment'] = Math.floor(total_service); //مبلغی که از کیف پول باید کسر بشه
-            } else {
+            }else{
                 data['wallet_payment'] = total_service; //مبلغی که از کیف پول باید کسر بشه
             }
 
@@ -4285,9 +3566,9 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
     } else {
         //اگر کیف پول کلا صفر بود مبلغ سرویس و مبلغ قابل پرداخت یکی هست
         data['wallet_payment'] = 0;
-        if (kando_data.currency.selected_currency === "IRT") {
+        if(kando_data.currency.selected_currency==="IRT"){
             data['total_payment'] = Math.floor(total_service);
-        } else {
+        }else{
             data['total_payment'] = total_service;
         }
 
@@ -4298,7 +3579,7 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
     }
 
     var selected_currency = kando_data.currency.selected_currency;
-    if (selected_currency !== "IRT") {
+    if(selected_currency !== "IRT"){
         display_total_payment = "none";
     }
 
@@ -4333,7 +3614,7 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
             </tr>
 
             <tr style="display: ${display_total_payment}">
-                <th colspan="2">${kando_data.langs.in_letters}<strong><span class="woocommerce-Price-amount amount">${numberToWords}&nbsp;<span class="woocommerce-Price-currencySymbol"></span>${kando_base_rate_text(kando_data.base_rate)}</span></strong></th>
+                <th colspan="2">به حروف: <strong><span class="woocommerce-Price-amount amount">${numberToWords}&nbsp;<span class="woocommerce-Price-currencySymbol"></span>${kando_base_rate_text(kando_data.base_rate)}</span></strong></th>
             </tr>
             </tfoot>
         </table> `;
@@ -4353,10 +3634,11 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
 
     var sum = Number(data['total_payment']) + Number(data['wallet_payment']);
     if (isNaN(sum)) {
-        $j(".final-price-number").html(kando_data.langs.select_category);
+        $j(".final-price-number").html('لطفا دسته و سرویس را انتخاب نمایید');
     } else {
         $j(".final-price-number").html(kando_number_format(sum));
     }
+
 
 
 }
@@ -4364,13 +3646,13 @@ function sendOrderFormData(service_id, quantity, place, type = "") {
 function kando_base_rate_text($base_rate) {
     switch ($base_rate) {
         case "IRT":
-            return kando_data.langs.currency_toman;
+            return "تومان";
             break;
         case "USD":
-            return kando_data.langs.currency_dollar;
+            return "دلار";
             break;
         case "AFN":
-            return kando_data.langs.currency_afghani;
+            return "افغانی";
             break;
         default:
             return "";
@@ -4424,20 +3706,20 @@ function SamyarAjaxNewOrder() {
                         }, 1000);
                     } else {
                         setTimeout(function () {
-                            if (response.data?.no_credit) {
+                            if (response.data.no_credit) {
                                 Swal.fire({
                                     title: kando_data.langs.an_error,
                                     icon: 'error',
                                     html: response.data.message,
                                     showCloseButton: true,
                                     confirmButtonText: kando_data.langs.ok,
-                                    footer: '<a target="_blank" href="' + response.data.add_credit_credit + '">' + kando_data.langs.add_credit + '</a>'
+                                    footer: '<a target="_blank" href="' + response.data.add_credit_credit + '">'+kando_data.langs.add_credit+'</a>'
                                 })
                             } else {
                                 Swal.fire({
                                     title: kando_data.langs.an_error,
                                     icon: 'error',
-                                    html: response.data?.message || 'An error occurred',
+                                    html: response.data.message,
                                     showCloseButton: true,
                                     confirmButtonText: kando_data.langs.ok,
                                 })
@@ -4515,14 +3797,14 @@ function SamyarAjaxMassOrder() {
                             }, 2000);
                         } else {
                             setTimeout(function () {
-                                if (response.data?.no_credit) {
+                                if (response.data.no_credit) {
                                     Swal.fire({
                                         title: kando_data.langs.an_error,
                                         icon: 'error',
                                         html: response.data.message,
                                         showCloseButton: true,
                                         confirmButtonText: kando_data.langs.ok,
-                                        footer: '<a target="_blank" href="' + response.data.add_credit_credit + '">' + kando_data.langs.add_credit + '</a>'
+                                        footer: '<a target="_blank" href="' + response.data.add_credit_credit + '">'+kando_data.langs.add_credit+'</a>'
                                     })
                                 } else {
                                     Swal.fire({
@@ -4571,7 +3853,7 @@ function samyarDeleteAllOrders() {
 
         Swal.fire({
             title: kando_data.langs.are_you_sure,
-            text: kando_data.langs.all_services_removed,
+            text: "تمام سفارش ها حذف خواهند شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -4634,13 +3916,7 @@ function SamyarAjaxShowPackageForm() {
         $j.ajax({
             url: kando_data.ajaxurl,
             type: 'post',
-            data: {
-                service_id: service_id,
-                quantity: quantity,
-                title: title,
-                price: price,
-                action: 'samyar_show_package_form'
-            },
+            data: {service_id: service_id, quantity: quantity, title: title, price: price, action: 'samyar_show_package_form'},
             success: function (response) {
                 // if (response.success) {
                 $j(".kt-send-package-modal .kt-modal-content").html(response);
@@ -4669,7 +3945,6 @@ function SamyarAjaxShowOrderForm() {
             success: function (response) {
                 // if (response.success) {
                 $j(".kt-send-package-modal .kt-modal-content").html(response);
-                setCategoryValue(cat_id);
                 // }
             },
             error: function () {
@@ -4871,67 +4146,12 @@ function SamyarAjaxUpdateRefillOrder() {
     });
 }
 
-function SamyarAjaxUpdateCancelOrder() {
-
-    $j('.update-order-cancel-form').submit(function () {
-        var $this = $j(this);
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data.message,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            if (response.data.link !== undefined) {
-                                window.location = response.data.link;
-                            }
-
-                        }, 200);
-
-                    }
-
-
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-
-
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
 function SamyarAjaxDeleteOrder() {
     $j(document).on('click', '.delete-order', function () {
 
         Swal.fire({
-            title: kando_data.langs.confirm_order_deletion,
-            text: kando_data.langs.refund_if_order_not_completed,
+            title: 'آیا شما از حذف این سفارش مطمئن هستید؟',
+            text: "اگر وضعیت سفارش کامل نشده باشد مبلغ عودت داده خواهد شد",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -4954,7 +4174,7 @@ function SamyarAjaxDeleteOrder() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -4983,7 +4203,7 @@ function SamyarAjaxDeleteRefillOrder() {
     $j(document).on('click', '.delete-refill-order', function () {
 
         Swal.fire({
-            title: kando_data.langs.confirm_delete_order,
+            title: 'آیا شما از حذف این سفارش مطمئن هستید؟',
             text: "",
             icon: 'warning',
             showCancelButton: true,
@@ -5007,60 +4227,7 @@ function SamyarAjaxDeleteRefillOrder() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
-                                response.data,
-                                'success'
-                            )
-                            window.location.reload();
-                        }
-
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    }
-                });
-
-            }
-        })
-
-    })
-}
-
-function SamyarAjaxDeleteCancelOrder() {
-    $j(document).on('click', '.delete-cancel-order', function () {
-
-        Swal.fire({
-            title: kando_data.langs.confirm_delete_order,
-            text: "",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: kando_data.langs.yes_delete,
-            cancelButtonText: kando_data.langs.cancel
-        }).then((result) => {
-            let order_id = $j(this).data('id');
-            if (result.isConfirmed) {
-                $j.ajax({
-                    url: kando_data.ajaxurl,
-                    type: 'post',
-                    data: {id: order_id, action: 'samyar_cancel_order_delete'},
-                    success: function (response) {
-                        if (!response.success) {
-                            Swal.fire(
-                                kando_data.langs.an_error,
-                                response.data,
-                                'error'
-                            )
-                        } else {
-                            Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -5089,11 +4256,11 @@ function SamyarAjaxCancelOrder() {
     $j(document).on('click', '.cancel-order', function () {
 
         Swal.fire({
-            title: kando_data.langs.cancel_order,
+            title: 'آیا شما از لغو این سفارش مطمئن هستید؟',
             text: "",
             html: '<div id="recaptcha"></div>',
             didOpen: () => {
-                if (kando_data.google_captcha_enable == 1) {
+                if(kando_data.google_captcha_enable==1){
                     grecaptcha.render('recaptcha', {
                         'sitekey': kando_data.captcha_google_key
                     })
@@ -5101,9 +4268,9 @@ function SamyarAjaxCancelOrder() {
 
             },
             preConfirm: function () {
-                if (kando_data.google_captcha_enable == 1) {
+                if(kando_data.google_captcha_enable==1) {
                     if (grecaptcha.getResponse().length === 0) {
-                        Swal.showValidationMessage(kando_data.langs.confirm_robot)
+                        Swal.showValidationMessage(`لطفاً تایید کنید که ربات نیستید`)
                     }
                 }
             },
@@ -5111,8 +4278,8 @@ function SamyarAjaxCancelOrder() {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: kando_data.langs.yes_cancel,
-            cancelButtonText: kando_data.langs.cancel
+            confirmButtonText: 'بله، لغو کن',
+            cancelButtonText: 'انصراف از لغو'
         }).then((result) => {
             let order_id = $j(this).data('id');
             let token = $j("#g-recaptcha-response").val();
@@ -5124,66 +4291,9 @@ function SamyarAjaxCancelOrder() {
                     data: {id: order_id, action: 'samyar_order_cancel', token: token},
                     success: function (response) {
                         if (!response.success) {
-                            if (kando_data.google_captcha_enable === "1") {
+                            if(kando_data.google_captcha_enable==="1"){
                                 grecaptcha.reset();
                             }
-                            Swal.fire(
-                                kando_data.langs.an_error,
-                                response.data,
-                                'error'
-                            )
-                        } else {
-                            Swal.fire(
-                                kando_data.langs.cancelled,
-                                response.data,
-                                'success'
-                            )
-                            window.location.reload();
-                        }
-
-                    },
-                    error: function () {
-                        if (kando_data.google_captcha_enable === "1") {
-                            grecaptcha.reset();
-                        }
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    }
-                });
-                // });
-            }
-        })
-
-    })
-}
-
-function SamyarAjaxCancelInOrder() {
-    $j(document).on('click', '.cancel-in-order', function () {
-
-        Swal.fire({
-            title: kando_data.langs.cancel_order,
-            text: "",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: kando_data.langs.yes_cancel,
-            cancelButtonText: kando_data.langs.cancel
-        }).then((result) => {
-            let order_id = $j(this).data('id');
-            if (result.isConfirmed) {
-                // ktRecaptcha('samyar_order_cancel', function (token) {
-                $j.ajax({
-                    url: kando_data.ajaxurl,
-                    type: 'post',
-                    data: {id: order_id, action: 'samyar_cancel_in_order'},
-                    success: function (response) {
-                        if (!response.success) {
                             Swal.fire(
                                 kando_data.langs.an_error,
                                 response.data,
@@ -5200,6 +4310,9 @@ function SamyarAjaxCancelInOrder() {
 
                     },
                     error: function () {
+                        if(kando_data.google_captcha_enable==="1"){
+                            grecaptcha.reset();
+                        }
                         Swal.fire({
                             title: kando_data.langs.an_error,
                             icon: 'error',
@@ -5618,45 +4731,6 @@ function SamyarAjaxFilterRefillOrders() {
     });
 }
 
-function SamyarAjaxFilterCancelOrders() {
-
-    $j('.filter-cancel-orders-form').submit(function () {
-        var $this = $j(this);
-        if (!$this.hasClass('is-loading')) {
-            $this.addClass('is-loading');
-            $this.find('.samyar-form-loading').fadeIn(200);
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: $this.serialize(),
-                success: function (response) {
-
-                    if (isJson(response) && !response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                    } else {
-                        $j('.dashboard-tickets-box').html(response)
-                    }
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                },
-                error: function () {
-                    $this.removeClass('is-loading');
-                    $this.find('.samyar-form-loading').fadeOut(200);
-                }
-            });
-
-        }
-
-        return false;
-    });
-}
-
 function SamyarAjaxSearchPayment() {
 
     $j('.filter-payments-form').submit(function () {
@@ -5952,12 +5026,12 @@ function SamyarAjaxEditProfile() {
 
 function SamyarAjaxUpdateTicketSettingsProfile() {
 
-    $j('.update-profile-settings-form').submit(function () {
+    $j('.update-ticket-settings-form').submit(function () {
         var $this = $j(this);
         if (!$this.hasClass('is-loading')) {
             $this.addClass('is-loading');
             $this.find('.samyar-form-loading').fadeIn(200);
-            // tinyMCE.triggerSave();
+            tinyMCE.triggerSave();
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
@@ -6452,17 +5526,17 @@ function SamyarAjaxChangeMobileNumber() {
         var $select = $j('.kando_change_selected').val();
         if ($select === "change-status") {
             const {value: formValues} = Swal.fire({
-                title: kando_data.langs.please_select_status,
-                text: kando_data.langs.note_amount_will_be_refunded_on_cancel,
+                title: 'لطفا وضعیت مورد نظر را انتخاب نمایید',
+                text: "توجه:مبلغ در وضعیت لغو برگشت خواهد خورد",
                 html:
-                    '<b style="margin-bottom: 30px;display: block;">' + kando_data.langs.note_orders_with_api_id_cannot_be_canceled + '</b>\n' +
-                    '<select class="swal2-select kando-select-new-status" id="kando-select-new-order-status" style="display: flex;"><option value="" disabled="">' + kando_data.langs.select_status_placeholder + '</option><option value="pending">' + kando_data.langs.status_pending + '</option><option value="completed">' + kando_data.langs.status_completed + '</option><option value="canceled">' + kando_data.langs.status_canceled + '</option></select>' +
+                    '<b style="margin-bottom: 30px;display: block;">توجه:سفارش هایی که شناسه سفارش در api گرفته باشند قابلیت لغو شدن نخواهند داشت.</b>\n' +
+                    '<select class="swal2-select kando-select-new-status" id="kando-select-new-order-status" style="display: flex;"><option value="" disabled="">انتخاب وضعیت</option><option value="pending">در دست انجام</option><option value="completed">کامل شده</option><option value="canceled">لغو</option></select>' +
                     '<input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-11" name="cb-select-all-11">\n' +
-                    '<label class="not-refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;display: none;" for="cb-select-all-11">' + kando_data.langs.refund_label + '</label>',
-                inputPlaceholder: kando_data.langs.select_status_placeholder,
+                    '<label class="not-refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;display: none;" for="cb-select-all-11">نمی خواهم مبلغ برگشت بخورد</label>',
+                inputPlaceholder: 'انتخاب وضعیت',
                 showCancelButton: true,
-                confirmButtonText: kando_data.langs.apply_button_text,
-                cancelButtonText: kando_data.langs.cancel_button_text,
+                confirmButtonText: 'اعمال کن',
+                cancelButtonText: 'بی خیال',
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     var checked = 0;
@@ -6522,79 +5596,13 @@ function SamyarAjaxChangeMobileNumber() {
                     });
                 }
             })
-        }else if ($select === "enable-automatic-resend") {
-            Swal.fire({
-                title: kando_data.langs._are_you_sure,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: kando_data.langs.yes,
-                cancelButtonText: kando_data.langs.cancel,
-                preConfirm: () => {
-                    var checked = 0;
-                    if ($j('#cb-select-all-12').is(':checked')) {
-                        checked = 1;
-                    }
-                    return [
-                        checked,
-                    ]
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var orders = [];
-                    $j('.shop_table .kando-cb-checkbox:checkbox:checked').each(function () {
-                        orders.push($j(this).attr('name'));
-                    });
-
-                    $j.ajax({
-                        url: kando_data.ajaxurl,
-                        type: 'post',
-                        data: {
-                            action: 'kando_auto_to_pending_orders',
-                            not_refund: result.value[0],
-                            orders: orders,
-                        },
-                        success: function (response) {
-                            if (!response.success) {
-                                Swal.fire({
-                                    title: kando_data.langs.an_error,
-                                    icon: 'error',
-                                    html: response.data,
-                                    showCloseButton: true,
-                                    confirmButtonText: kando_data.langs.ok,
-                                });
-                                // $this.removeClass('clicked');
-                                $this.removeClass('is-loading');
-                            } else {
-                                setTimeout(function () {
-                                    Swal.fire({
-                                        // title: kando_data.langs.an_error,
-                                        icon: 'success',
-                                        html: response.data,
-                                        showCloseButton: true,
-                                        confirmButtonText: kando_data.langs.ok,
-                                    })
-                                    window.location.reload();
-                                }, 200);
-                            }
-                            $this.removeClass('is-loading');
-                        },
-                        error: function () {
-                            $this.removeClass('clicked');
-                            $this.removeClass('is-loading');
-                        }
-                    });
-                }
-            });
-
         } else {
             Swal.fire({
-                title: kando_data.langs.confirm_delete_selected_orders,
+                title: 'آیا شما از حذف سفارش های انتخاب شده مطمئن هستید؟',
                 html:
-                    '<b style="margin-bottom: 30px;display: block;">' + kando_data.langs.note_amount_will_be_refunded + '</b>\n' +
+                    '<b style="margin-bottom: 30px;display: block;">توجه:مبلغ برگشت خواهد خورد</b>\n' +
                     '<input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-12" name="cb-select-all-12">\n' +
-                    '<label class="not-refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;" for="cb-select-all-12">' + kando_data.langs.refund_label + '</label>',
+                    '<label class="not-refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;" for="cb-select-all-12">نمی خواهم مبلغ برگشت بخورد</label>',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -6755,7 +5763,6 @@ function SamyarAjaxChangeMobileNumber() {
                             })
                         }, 200);
                         $j('#order-' + order_id).slideUp(500, 'easeInOutCubic');
-                        $j('.order-' + order_id).slideUp(500, 'easeInOutCubic');
                     }
                     $this.removeClass('is-loading');
                 },
@@ -6819,61 +5826,6 @@ function SamyarAjaxChangeMobileNumber() {
         }
         return false;
     })
-
-    $j('.auto-to-pending').click(function () {
-        if (!$j(this).hasClass('clicked') && !$j(this).hasClass('is-loading')) {
-            var $this = $j(this);
-            var order_id = $this.attr('data-id');
-
-
-            $this.addClass('clicked');
-            $this.addClass('is-loading');
-
-
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: {
-                    action: 'samyar_auto_to_pending',
-                    order_id: order_id,
-                },
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        });
-                        $this.removeClass('clicked');
-                        $this.removeClass('is-loading');
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                        }, 200);
-                        $j('#order-' + order_id).slideUp(500, 'easeInOutCubic');
-                        $j('.order-' + order_id).slideUp(500, 'easeInOutCubic');
-                    }
-                    $this.removeClass('is-loading');
-                },
-                error: function () {
-                    $this.removeClass('clicked');
-                    $this.removeClass('is-loading');
-                }
-            });
-
-
-        }
-        return false;
-    })
-
     //ارسال مجدد سفارش های خطا خورده
     $j('.resend-refill-order').click(function () {
         if (!$j(this).hasClass('clicked') && !$j(this).hasClass('is-loading')) {
@@ -6914,7 +5866,6 @@ function SamyarAjaxChangeMobileNumber() {
                             })
                         }, 200);
                         $j('#order-' + order_id).slideUp(500, 'easeInOutCubic');
-                        $j('.order-' + order_id).slideUp(500, 'easeInOutCubic');
                     }
                     $this.removeClass('is-loading');
                 },
@@ -6928,112 +5879,6 @@ function SamyarAjaxChangeMobileNumber() {
         }
         return false;
     })
-
-
-    $j('.samyar-resend-cancel-orders').click(function () {
-        if (!$j(this).hasClass('clicked') && !$j(this).hasClass('is-loading')) {
-            var $this = $j(this);
-
-            // $this.addClass('clicked');
-            $this.addClass('is-loading');
-
-            // ktRecaptcha('send_code_again', function (token) {
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: {
-                    action: 'samyar_resend_cancel_orders',
-                },
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        });
-                        // $this.removeClass('clicked');
-                        $this.removeClass('is-loading');
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                            location.reload();
-                        }, 200);
-                    }
-                    $this.removeClass('is-loading');
-                },
-                error: function () {
-                    $this.removeClass('clicked');
-                    $this.removeClass('is-loading');
-                }
-            });
-            // });
-
-        }
-        return false;
-    })
-    //ارسال مجدد سفارش های خطا خورده
-    $j('.resend-cancel-order').click(function () {
-        if (!$j(this).hasClass('clicked') && !$j(this).hasClass('is-loading')) {
-            var $this = $j(this);
-            var order_id = $this.attr('data-id');
-
-
-            $this.addClass('clicked');
-            $this.addClass('is-loading');
-
-
-            $j.ajax({
-                url: kando_data.ajaxurl,
-                type: 'post',
-                data: {
-                    action: 'samyar_resend_cancel_order',
-                    order_id: order_id,
-                },
-                success: function (response) {
-                    if (!response.success) {
-                        Swal.fire({
-                            title: kando_data.langs.an_error,
-                            icon: 'error',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        });
-                        $this.removeClass('clicked');
-                        $this.removeClass('is-loading');
-                    } else {
-                        setTimeout(function () {
-                            Swal.fire({
-                                // title: kando_data.langs.an_error,
-                                icon: 'success',
-                                html: response.data,
-                                showCloseButton: true,
-                                confirmButtonText: kando_data.langs.ok,
-                            })
-                        }, 200);
-                        $j('#order-' + order_id).slideUp(500, 'easeInOutCubic');
-                        $j('.order-' + order_id).slideUp(500, 'easeInOutCubic');
-                    }
-                    $this.removeClass('is-loading');
-                },
-                error: function () {
-                    $this.removeClass('clicked');
-                    $this.removeClass('is-loading');
-                }
-            });
-
-
-        }
-        return false;
-    })
-
 
     //ارسال مجدد سفارش های خطا خورده
     // $j('.kando-send-refill').click(function () {
@@ -7210,7 +6055,7 @@ function SamyarAjaxDeleteNotification() {
     $j(document).on('click', '.delete-notification', function () {
 
         Swal.fire({
-            title: kando_data.langs.confirm_delete_notification,
+            title: 'آیا شما از حذف این اطلاعیه مطمئن هستید؟',
             text: "",
             icon: 'warning',
             showCancelButton: true,
@@ -7234,7 +6079,7 @@ function SamyarAjaxDeleteNotification() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -7339,9 +6184,9 @@ function SamyarAjaxDisable() {
         });
         // if(this.checked) {
         //     var returnVal = confirm("Are you sure?");
-        //     $j(this).prop("checked", returnVal);
+        //     $(this).prop("checked", returnVal);
         // }
-        // $j('.ajax-switch').val(this.checked);
+        // $('.ajax-switch').val(this.checked);
     });
 }
 
@@ -7514,7 +6359,7 @@ function SamyarAjaxDeleteUpdate() {
                             )
                         } else {
                             Swal.fire(
-                                kando_data.langs.deleted,
+                                'حذف شد',
                                 response.data,
                                 'success'
                             )
@@ -7541,8 +6386,8 @@ function SamyarAjaxDeleteUpdate() {
 
 
 function SamyarAjaxBulkUpdatePrice() {
-    $j(document).on('submit', '.bulk-update-price-form', function (event) {
-        event.preventDefault(); // جلوگیری از رفتار پیش‌فرض فرم
+
+    $j('.bulk-update-price-form').submit(function () {
         var $this = $j(this);
         if (!$this.hasClass('is-loading')) {
             $this.addClass('is-loading');
@@ -7559,28 +6404,36 @@ function SamyarAjaxBulkUpdatePrice() {
                             html: response.data,
                             showCloseButton: true,
                             confirmButtonText: kando_data.langs.ok,
-                        });
+                        })
                     } else {
                         setTimeout(function () {
                             Swal.fire({
+                                // title: kando_data.langs.an_error,
                                 icon: 'success',
                                 html: response.data,
                                 showCloseButton: true,
                                 confirmButtonText: kando_data.langs.ok,
-                            });
+                            })
                             location.reload();
                         }, 200);
+
                     }
+
 
                     $this.removeClass('is-loading');
                     $this.find('.samyar-form-loading').fadeOut(200);
+
+
                 },
                 error: function () {
                     $this.removeClass('is-loading');
                     $this.find('.samyar-form-loading').fadeOut(200);
                 }
             });
+
         }
+
+        return false;
     });
 }
 
@@ -7728,7 +6581,7 @@ $j(document).on('click', '.CopyToClipBoard3', function (event) {
     var id = $j(this).data('copy');
     var $temp = $j("<textarea></textarea>");
     $j("body").append($temp);
-    var comments = $j('#' + id).html();
+    var comments = $j('#'+id).html();
     $temp.val(comments.replace(/<br>/g, '')).select();
     document.execCommand("copy");
     $temp.remove();
@@ -7819,7 +6672,7 @@ function SamyarAjaxPackageOrder() {
                                     html: response.data.message,
                                     showCloseButton: true,
                                     confirmButtonText: kando_data.langs.ok,
-                                    footer: '<a target="_blank" href="' + response.data.login_page + '">' + kando_data.langs.go_to_login_page + '</a>'
+                                    footer: '<a target="_blank" href="' + response.data.login_page + '">'+kando_data.langs.go_to_login_page+'</a>'
                                 })
                             } else {
 
@@ -7963,12 +6816,7 @@ function KandoAjaxLoginStep1() {//این مرحله ایمیل یا نام کا�
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    emailOrUsername: emailOrUsername,
-                    mobile: mobile,
-                    login_type: login_type,
-                    action: 'kando_check_user'
-                },
+                data: {emailOrUsername: emailOrUsername, mobile: mobile, login_type: login_type, action: 'kando_check_user'},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8010,7 +6858,7 @@ function KandoAjaxLoginStep2() {//این مرحله ایمیل یا نام کا�
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: $form.serialize() + '&do=login' + '&redirect=' + $redirect,
+                data: $form.serialize() + '&do=login'+ '&redirect=' + $redirect,
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8024,7 +6872,7 @@ function KandoAjaxLoginStep2() {//این مرحله ایمیل یا نام کا�
                         }, 1000);
 
                     } else {
-                        if (kando_data.google_captcha_enable === "1") {
+                        if(kando_data.google_captcha_enable==="1"){
                             grecaptcha.reset();
                         }
                         $form.find('.kt-login-password').addClass('is-invalid');
@@ -8044,7 +6892,7 @@ function KandoAjaxLoginStep2() {//این مرحله ایمیل یا نام کا�
 function KandoAjaxSendOtpCode() {//این مرحله ایمیل یا نام کاربر و یا موبایل رو بررسی میکنه ببینه وجود داره یا خیر
     $j(document).on('click', '.kt-login-form .kt-send-otp', function () {
         var $form = $j(".kt-login-form");
-        var $redirect = $form.data('redirect');
+        var $redirect= $form.data('redirect');
         var $btn = $j(this);
         var $SendAgainbtn = $j('#kando-login-tab .kt-verify-form .kt-verify-send-again');
         // var errors = $form.find('.kt-login-form-errors');
@@ -8062,15 +6910,7 @@ function KandoAjaxSendOtpCode() {//این مرحله ایمیل یا نام کا
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    email: emailOrUsername,
-                    mobile: mobile,
-                    type: type,
-                    action: 'kando_ajax_login',
-                    do: 'send_otp_code',
-                    redirect: $redirect,
-                    token: token
-                },
+                data: {email: emailOrUsername, mobile: mobile, type: type, action: 'kando_ajax_login', do: 'send_otp_code',redirect:$redirect,token:token},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8106,7 +6946,7 @@ function KandoAjaxSendOtpCode() {//این مرحله ایمیل یا نام کا
 function KandoAjaxSendOtpCodeAgain() {//این مرحله ایمیل یا نام کاربر و یا موبایل رو بررسی میکنه ببینه وجود داره یا خیر
     $j(document).on('click', '#kando-login-tab .kt-verify-form .kt-verify-send-again', function () {
         var $form = $j(".kt-login-form");
-        var $redirect = $form.data('redirect');
+        var $redirect= $form.data('redirect');
         var $btn = $j(this);
         var $SendAgainbtn = $j('#kando-login-tab .kt-verify-form .kt-verify-send-again');
         // var errors = $form.find('.kt-login-form-errors');
@@ -8124,14 +6964,7 @@ function KandoAjaxSendOtpCodeAgain() {//این مرحله ایمیل یا نام
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    email: emailOrUsername,
-                    mobile: mobile,
-                    type: type,
-                    action: 'kando_ajax_login',
-                    do: 'send_otp_code',
-                    redirect: $redirect
-                },
+                data: {email: emailOrUsername, mobile: mobile, type: type, action: 'kando_ajax_login', do: 'send_otp_code',redirect:$redirect},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8166,7 +6999,7 @@ function KandoAjaxSendOtpCodeAgain() {//این مرحله ایمیل یا نام
 function KandoAjaxSendOtpCodeDashboard() {//این مرحله ایمیل یا نام کاربر و یا موبایل رو بررسی میکنه ببینه وجود داره یا خیر
     $j(document).on('click', '#kando-verify-form .kt-verify-send-again', function () {
         var $form = $j("#kando-verify-form");
-        var $redirect = $form.data('redirect');
+        var $redirect= $form.data('redirect');
         var $btn = $j(this);
         // var $SendAgainbtn = $j('#kando-login-tab .kt-verify-form .kt-verify-send-again');
         // var errors = $form.find('.kt-login-form-errors');
@@ -8224,7 +7057,7 @@ function KandoAjaxSendOtpCodeDashboard() {//این مرحله ایمیل یا ن
 function KandoAjaxVerifyOtpCodeDashboard() {//این مرحله ایمیل یا نام کاربر و یا موبایل رو بررسی میکنه ببینه وجود داره یا خیر
     $j(document).on('click', '#kando-verify-form .kt-verify-otp-code', function () {
         var $form = $j("#kando-verify-form");
-        var $redirect = $form.data('redirect');
+        var $redirect= $form.data('redirect');
         var $btn = $j(this);
         // var $SendAgainbtn = $j('#kando-login-tab .kt-verify-form .kt-verify-send-again');
         // var errors = $form.find('.kt-login-form-errors');
@@ -8323,7 +7156,7 @@ function KandoAjaxRegisterStep1() {//این مرحله ایمیل یا نام ک
         var $form = $j(".kt-register-form");
         var $btn = $j(this);
         var mobile = $form.find('.kt-register-mobile').val();
-        var $redirect = $form.data('redirect');
+        var  $redirect = $form.data('redirect');
         var token = $form.find('.g-recaptcha-response').val();
         if (!$btn.hasClass('is-loading')) {
             $btn.addClass('is-loading');
@@ -8331,13 +7164,7 @@ function KandoAjaxRegisterStep1() {//این مرحله ایمیل یا نام ک
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    mobile: mobile,
-                    do: 'check_mobile',
-                    action: 'kando_ajax_register',
-                    redirect: $redirect,
-                    token: token
-                },
+                data: {mobile: mobile, do: 'check_mobile', action: 'kando_ajax_register',redirect:$redirect,token:token},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8364,7 +7191,7 @@ function KandoAjaxRegisterStep1() {//این مرحله ایمیل یا نام ک
 function KandoAjaxRegisterStep2() {
     $j(document).on('click', '.kt-register-form #kando_check_password', function () {
         var $form = $j(".kt-register-form");
-        var $redirect = $form.data('redirect');
+        var  $redirect = $form.data('redirect');
         var $btn = $j(this);
         var $SendAgainbtn = $j('#kando-register-tab .kt-verify-form .kt-verify-send-again');
         var password = $form.find('.kt-register-password').val();
@@ -8377,15 +7204,7 @@ function KandoAjaxRegisterStep2() {
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    mobile: mobile,
-                    name: name,
-                    password: password,
-                    do: 'check_password',
-                    action: 'kando_ajax_register',
-                    redirect: $redirect,
-                    token: token
-                },
+                data: {mobile: mobile, name: name, password: password, do: 'check_password', action: 'kando_ajax_register',redirect:$redirect,token:token},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8409,7 +7228,7 @@ function KandoAjaxRegisterStep2() {
 
 
                     } else {
-                        if (kando_data.google_captcha_enable === "1") {
+                        if(kando_data.google_captcha_enable==="1"){
                             grecaptcha.reset();
                         }
                         kando_show_toast(response.data)
@@ -8429,7 +7248,7 @@ function KandoAjaxRegisterStep2() {
 function KandoAjaxRegisterStep3() {//این مرحله ایمیل یا نام کاربر و یا موبایل رو بررسی میکنه ببینه وجود داره یا خیر
     $j(document).on('click', '#kando-register-tab .kt-verify-form .kt-verify-otp-code', function () {
         var $form = $j("#kando-register-tab .kt-verify-form");
-        var $redirect = $form.data('redirect');
+        var  $redirect = $form.data('redirect');
         var $btn = $j(this);
         // var errors = $form.find('.kt-login-form-errors');
         // var speed = errors.is(':empty') ? 0 : 400;
@@ -8445,7 +7264,7 @@ function KandoAjaxRegisterStep3() {//این مرحله ایمیل یا نام ک
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: $form.serialize() + '&password=' + password + '&mobile=' + mobile + '&name=' + name + '&redirect=' + $redirect + '&action=kando_ajax_register&do=register',
+                data: $form.serialize() + '&password=' + password + '&mobile=' + mobile + '&name=' + name +'&redirect=' + $redirect + '&action=kando_ajax_register&do=register',
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8541,14 +7360,7 @@ function KandoAjaxForgetStep1() {//این مرحله ایمیل یا نام کا
             $j.ajax({
                 url: kando_data.ajaxurl,
                 type: 'post',
-                data: {
-                    emailOrUsername: emailOrUsername,
-                    mobile: mobile,
-                    forget_type: forget_type,
-                    do: 'check_user',
-                    action: 'kando_ajax_forget',
-                    token: token
-                },
+                data: {emailOrUsername: emailOrUsername, mobile: mobile, forget_type: forget_type, do: 'check_user', action: 'kando_ajax_forget', token: token},
                 beforeSend: function () {
                     $form.find('.field-error').remove();
                     $form.find('input').removeClass('is-invalid');
@@ -8562,7 +7374,7 @@ function KandoAjaxForgetStep1() {//این مرحله ایمیل یا نام کا
                         onTimer($SendAgainbtn);
 
                     } else {
-                        if (kando_data.google_captcha_enable === "1") {
+                        if(kando_data.google_captcha_enable==="1"){
                             grecaptcha.reset();
                         }
                         kando_show_toast(response.data);
@@ -8756,51 +7568,47 @@ function kandoNotificationAlert() {
     });
 }
 
-function kandoChangeLanguage() {
+function kandoChangeLanguage(){
+    jQuery(document).ready(function ($) {
+        $('.kando-language-icon').on('click', function () {
+            $('.kando-language-dropdown').toggleClass('active');
+        });
 
-    $j('.kando-language-icon').on('click', function () {
-        $j('.kando-language-dropdown').toggleClass('active');
-    });
+        $('#kando-language-selector').on('change', function () {
+            $j.ajax({
+                url: kando_data.ajaxurl,
+                type: 'post',
+                data: $('#kando-change-language').serialize(),
+                success: function (response) {
 
-    $j('#kando-language-selector').on('change', function () {
-        $j.ajax({
-            url: kando_data.ajaxurl,
-            type: 'post',
-            data: $('#kando-change-language').serialize(),
-            success: function (response) {
-
-                if (!response.success) {
-                    Swal.fire({
-                        title: kando_data.langs.an_error,
-                        icon: 'error',
-                        html: response.data,
-                        showCloseButton: true,
-                        confirmButtonText: kando_data.langs.ok,
-                    })
-                } else {
-                    setTimeout(function () {
+                    if (!response.success) {
                         Swal.fire({
-                            // title: kando_data.langs.an_error,
-                            icon: 'success',
+                            title: kando_data.langs.an_error,
+                            icon: 'error',
                             html: response.data,
                             showCloseButton: true,
                             confirmButtonText: kando_data.langs.ok,
                         })
-                        window.location.reload();
-                    }, 200);
+                    } else {
+                        setTimeout(function () {
+                            Swal.fire({
+                                // title: kando_data.langs.an_error,
+                                icon: 'success',
+                                html: response.data,
+                                showCloseButton: true,
+                                confirmButtonText: kando_data.langs.ok,
+                            })
+                            window.location.reload();
+                        }, 200);
 
+                    }
+                },
+                error: function () {
                 }
-            },
-            error: function () {
-            }
+            });
         });
     });
-
-
-    // رویداد کلیک بر روی لینک‌های زبان
-
 }
-
 $j(document).on('click', '.kando-select-order', function () {
     var $btn = $j(this);
     $j(".kando-select-order").removeClass('multi-btn');
@@ -8818,152 +7626,9 @@ $j(document).on('click', '.kando-select-order', function () {
     return false;
 });
 
-// $j(document).on('click', '#cb-select-all-0,#cb-select-all-1', function () {
-//     $j('input.kando-cb-checkbox:checkbox').prop('checked', this.checked);
-// });
-
-function kando_checkbox_category() {
-    // انتخاب تمام چک‌بکس‌های اصلی (دسته‌چک‌بکس)
-
-    /** Style 1 **/
-    $j(document).on('click', 'thead .kando-cb-checkbox', function () {
-        // پیدا کردن کارت سرویس مربوطه
-        var serviceCard = $j(this).closest('table.shop_table');
-
-        // فعال یا غیرفعال کردن تمام چک‌بکس‌های سرویس‌های داخل این کارت
-        serviceCard.find('tbody td .kando-cb-checkbox').prop('checked', this.checked);
-    });
-
-    $j(document).on('click', 'tbody td .kando-cb-checkbox', function () {
-        var serviceCard = $j(this).closest('table.shop_table');
-        var allChecked = true;
-
-        // بررسی می‌کنیم که آیا همه چک‌بکس‌های سرویس‌ها فعال هستند یا خیر
-        serviceCard.find('tbody td .kando-cb-checkbox:checkbox').each(function () {
-            if (!$j(this).prop('checked')) {
-                allChecked = false;
-                return false; // خارج شدن از حلقه
-            }
-        });
-        // اگر همه چک‌بکس‌های سرویس‌ها فعال باشند، چک‌بکس اصلی را نیز فعال می‌کنیم
-        serviceCard.find('thead .kando-cb-checkbox:checkbox').prop('checked', allChecked);
-    });
-
-
-    /** Style 2 **/
-    $j(document).on('click', '.card-header .kando-cb-checkbox', function () {
-        // پیدا کردن کارت سرویس مربوطه
-        var serviceCard = $j(this).closest('.service-card');
-
-        // فعال یا غیرفعال کردن تمام چک‌بکس‌های سرویس‌های داخل این کارت
-        serviceCard.find('.service-item .kando-cb-checkbox').prop('checked', this.checked);
-    });
-
-    // اگر یکی از چک‌بکس‌های سرویس‌ها تغییر کند، بررسی می‌کنیم که آیا همه چک‌بکس‌ها فعال هستند یا خیر
-
-    $j(document).on('click', '.service-item .kando-cb-checkbox', function () {
-        var serviceCard = $j(this).closest('.service-card');
-        var allChecked = true;
-
-        // بررسی می‌کنیم که آیا همه چک‌بکس‌های سرویس‌ها فعال هستند یا خیر
-        serviceCard.find('.service-item .kando-cb-checkbox:checkbox').each(function () {
-            if (!$j(this).prop('checked')) {
-                allChecked = false;
-                return false; // خارج شدن از حلقه
-            }
-        });
-        console.log(allChecked);
-        // اگر همه چک‌بکس‌های سرویس‌ها فعال باشند، چک‌بکس اصلی را نیز فعال می‌کنیم
-        serviceCard.find('.card-header .kando-cb-checkbox:checkbox').prop('checked', allChecked);
-    });
-
-
-    /** برای بخش افزودن سرویس از ارائه دهنده **/
-    $j(document).on('click', '.bulk-add-service-form .dashboard-posts-title-holder .kando-cb-checkbox', function () {
-        // پیدا کردن کارت سرویس مربوطه
-        var serviceCard = $j(this).closest('.dashboard-posts-box');
-
-        // فعال یا غیرفعال کردن تمام چک‌بکس‌های سرویس‌های داخل این کارت
-        serviceCard.find('tr td .kando-cb-checkbox').prop('checked', this.checked);
-    });
-
-    // اگر یکی از چک‌بکس‌های سرویس‌ها تغییر کند، بررسی می‌کنیم که آیا همه چک‌بکس‌ها فعال هستند یا خیر
-
-    $j(document).on('click', 'tr td .kando-cb-checkbox', function () {
-        var serviceCard = $j(this).closest('.dashboard-posts-box');
-        var allChecked = true;
-
-        // بررسی می‌کنیم که آیا همه چک‌بکس‌های سرویس‌ها فعال هستند یا خیر
-        serviceCard.find('tr td .kando-cb-checkbox:checkbox').each(function () {
-            if (!$j(this).prop('checked')) {
-                allChecked = false;
-                return false; // خارج شدن از حلقه
-            }
-        });
-        console.log(allChecked);
-        // اگر همه چک‌بکس‌های سرویس‌ها فعال باشند، چک‌بکس اصلی را نیز فعال می‌کنیم
-        serviceCard.find('.dashboard-posts-title-holder .kando-cb-checkbox:checkbox').prop('checked', allChecked);
-    });
-}
-
-function kandoChangeCurrency() {
-// مقداردهی اولیه Select2
-//     $j('#currency-select').select2({
-//         templateResult: formatCurrency,
-//         templateSelection: formatCurrency
-//     });
-
-    // تابع برای فرمت‌دهی نماد ارز
-    // function formatCurrency(currency) {
-    //     if (!currency.id) { return currency.text; }
-    //     var $result = $j(
-    //         '<span><span class="currency-flag">' + currency.text.substring(0, 1) + '</span>' + currency.text.substring(1) + '</span>'
-    //     );
-    //     return $result;
-    // }
-
-    // ارسال درخواست AJAX هنگام تغییر ارز
-    $j('#currency-select').on('change', function () {
-        var selectedCurrency = $j(this).val(); // دریافت ارز انتخاب شده
-
-        // ارسال درخواست AJAX
-        $j.ajax({
-            url: kando_data.ajaxurl, // آدرس AJAX وردپرس
-            type: 'POST',
-            data: {
-                action: 'save_user_currency', // اکشن وردپرس
-                currency: selectedCurrency, // ارز انتخاب شده
-                save_user_currency_nonce: kando_data.currency_nonce // nonce برای امنیت
-            },
-            success: function (response) {
-                if (!response.success) {
-                    Swal.fire({
-                        title: kando_data.langs.an_error,
-                        icon: 'error',
-                        html: response.data,
-                        showCloseButton: true,
-                        confirmButtonText: kando_data.langs.ok,
-                    })
-                } else {
-                    setTimeout(function () {
-                        Swal.fire({
-                            // title: kando_data.langs.an_error,
-                            icon: 'success',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        })
-                        window.location.reload();
-                    }, 200);
-
-                }
-            },
-            error: function () {
-
-            }
-        });
-    });
-}
+$j(document).on('click', '#cb-select-all-0,#cb-select-all-1', function () {
+    $j('.shop_table input.kando-cb-checkbox:checkbox').prop('checked', this.checked);
+});
 
 $j(document).on('click', '.kando-show-order-filter', function () {
     $j('.filter-orders-form').toggle();
@@ -8972,11 +7637,6 @@ $j(document).on('click', '.kando-show-order-filter', function () {
 
 $j(document).on('click', '.kando-show-refill-order-filter', function () {
     $j('.filter-refill-orders-form').toggle();
-    return false;
-});
-
-$j(document).on('click', '.kando-show-cancel-order-filter', function () {
-    $j('.filter-cancel-orders-form').toggle();
     return false;
 });
 
@@ -8999,49 +7659,41 @@ $j(document).on('click', '.kando-show-services-filter', function () {
 });
 
 
-if($j('#samyar_select_category').length>0){
-    var allOptions = $j('#samyar_select_category').html();
+$j(document).on('click', '.brand-category', function (event) {
+    event.preventDefault();
+    var brand = jQuery(this).data('id');
 
-    $j(document).on('click', '.brand-category', function (event) {
-        event.preventDefault();
+    jQuery('.new-api-form-outer').find('.samyar-form-loading').fadeIn(200);
+    // $('#orderform-category').html("");
+    jQuery("#samyar_select_category").val(0);
+    $j('#select-order-service').slideUp(400, 'easeOutCubic');
+    jQuery("#samyar_select_category option").each(function () {
 
-        // بررسی وجود سلکت باکس در صفحه
-        // var $select = $j('#samyar_select_category');
-        // if ($select.length === 0) return;
+        if (brand == "others") {//اگر گفته دیگر رو نشون بده
 
-        // دریافت شناسه برند از دکمه کلیک شده
-        var brandId = $j(this).data('id');
-
-        // بازیابی تمام گزینه‌ها
-        $j('#samyar_select_category').html(allOptions);
-
-        // اگر برند خاصی انتخاب شده باشد
-        if (brandId !== 'all' && brandId !== 'others') {
-            // پنهان کردن گزینه‌هایی که مطابقت ندارند
-            $j('#samyar_select_category option').each(function() {
-                var optionBrand = $j(this).data('brand');
-                if (optionBrand != brandId) {
-                    $j(this).remove();
-                }
-            });
+            if (jQuery(this).data('brand') === "") {
+                jQuery(this).show();
+            } else {
+                jQuery(this).hide();
+            }
+        } else if (brand == "all") {//اگر گفته همه رو نشون بده
+            jQuery(this).show();
+        } else if (jQuery(this).data('brand') !== brand) {
+            jQuery(this).hide();
+        } else {
+            jQuery(this).show();
         }
-        // اگر "دیگر" انتخاب شده باشد
-        else if (brandId === 'others') {
-            $j('#samyar_select_category option').each(function() {
-                var optionBrand = $j(this).data('brand');
-                if (optionBrand) { // اگر گزینه برند داشته باشد (یعنی جزو دیگران نیست)
-                    $j(this).remove();
-                }
-            });
+        if (jQuery(this).val() == 0) {
+            jQuery(this).show();
         }
-        // در غیر این صورت همه گزینه‌ها نمایش داده می‌شوند
-
-        // به روزرسانی سلکت۲ برای اعمال تغییرات
-        $j('#samyar_select_category').trigger('change.select2');
     });
-}
 
 
+    jQuery('#samyar_select_category').trigger('change');
+
+    jQuery('.new-api-form-outer').find('.samyar-form-loading').fadeOut(200);
+
+});
 
 //تغییر وضعیت پرداخت
 
@@ -9066,16 +7718,16 @@ $j(document).on('click', '.kando-change-payment-status', function (event) {
 
 
     const {value: formValues} = Swal.fire({
-        title: kando_data.langs.select_desired_status,
-        text: kando_data.langs.note_amount_added_to_wallet,
+        title: 'لطفا وضعیت مورد نظر را انتخاب نمایید',
+        text: "توجه:اگر وضعیت را از ناموفق به موفق تغییر دهید مبلغ به کیف پول اضافه خواهد شد",
         html:
-            '<select class="swal2-select kando-select-new-payment-status" id="kando-select-new-payment-status" style="display: flex;"><option value="" disabled="">' + kando_data.langs.select_payment_status + '</option><option value="0">' + kando_data.langs.unsuccessful_status + '</option><option value="1">' + kando_data.langs.successful_status + '</option></select>' +
+            '<select class="swal2-select kando-select-new-payment-status" id="kando-select-new-payment-status" style="display: flex;"><option value="" disabled="">انتخاب وضعیت</option><option value="0">ناموفق</option><option value="1">موفق</option></select>' +
             '<input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-11" name="cb-select-all-11">\n' +
-            '<label class="refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;display: none;" for="cb-select-all-11">' + kando_data.langs.refund_to_wallet_label + '</label>',
-        inputPlaceholder: kando_data.langs.select_status_placeholder,
+            '<label class="refund" style="padding-right: 36px; position: relative; cursor: pointer; font-size: 18px;text-align: right;display: none;" for="cb-select-all-11">مبلغ به کیف پول واریز شود</label>',
+        inputPlaceholder: 'انتخاب وضعیت',
         showCancelButton: true,
-        confirmButtonText: kando_data.langs.apply_button_text,
-        cancelButtonText: kando_data.langs.cancel_button_text,
+        confirmButtonText: 'اعمال کن',
+        cancelButtonText: 'بی خیال',
         showLoaderOnConfirm: true,
         preConfirm: () => {
             var checked = 0;
@@ -9148,60 +7800,29 @@ $j(document).on('click', '.kando-change-service-status', function (event) {
     var $this = $j(this);
 
     const {value: formValues} = Swal.fire({
-        title: kando_data.langs.please_select_desired_action,
+        title: 'لطفا عملیات مورد نظر را انتخاب نمایید',
         html:
-            '<select class="swal2-select kando-select-new-status" id="kando-select-service-status" style="display: flex;"><option value="" disabled="">' + kando_data.langs.select_status_placeholder + '</option><option value="1">' + kando_data.langs.activate + '</option><option value="0">' + kando_data.langs.deactivate + '</option><option value="2">' + kando_data.langs.delete + '</option><option value="3">' + kando_data.langs.change_category + '</option></select>' +
-            '<div id="kando-category-select-container" style="display: none;"><select class="swal2-select" id="kando-select-category" style="display: flex; margin-top: 10px;"><option value="" disabled="">' + kando_data.langs.select_category_placeholder + '</option></select></div>' +
+            '<select class="swal2-select kando-select-new-status" id="kando-select-service-status" style="display: flex;"><option value="" disabled="">انتخاب وضعیت</option><option value="1">فعال سازی</option><option value="0">غیرفعال سازی</option><option value="2">حذف</option></select>' +
             '<input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-11" name="cb-select-all-11">',
-        inputPlaceholder: kando_data.langs.select_status_placeholder,
+        inputPlaceholder: 'انتخاب وضعیت',
         showCancelButton: true,
-        confirmButtonText: kando_data.langs.apply_button_text,
-        cancelButtonText: kando_data.langs.cancel_button_text,
+        confirmButtonText: 'اعمال کن',
+        cancelButtonText: 'بی خیال',
         showLoaderOnConfirm: true,
-        didOpen: () => {
-            // وقتی فرم باز می‌شود، وضعیت اولیه را بررسی کنید
-            $j('#kando-select-service-status').on('change', function () {
-                if (this.value === '3') {
-                    $j('#kando-category-select-container').show();
-                    // اگر دسته‌ها هنوز لود نشده‌اند، آنها را لود کنید
-                    if ($j('#kando-select-category').children().length <= 1) {
-                        $j.ajax({
-                            url: kando_data.ajaxurl,
-                            type: 'post',
-                            data: {
-                                action: 'kando_get_categories_for_js'
-                            },
-                            success: function (response) {
-                                if (response.success) {
-                                    response.data.forEach(category => {
-                                        $j('#kando-select-category').append(`<option value="${category.id}">${category.name}</option>`);
-                                    });
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    $j('#kando-category-select-container').hide();
-                }
-            });
-        },
         preConfirm: () => {
             var checked = 0;
             if ($j('#cb-select-all-11').is(':checked')) {
                 checked = 1;
             }
-            var selectedStatus = document.getElementById('kando-select-service-status').value;
-            var selectedCategory = selectedStatus === '3' ? document.getElementById('kando-select-category').value : null;
             return [
                 checked,
-                selectedStatus,
-                selectedCategory
+                document.getElementById('kando-select-service-status').value
             ]
         }
     }).then((result) => {
         if (result.isConfirmed) {
             var services = [];
-            $j('.service-item input.kando-cb-checkbox:checked,tbody td input.kando-cb-checkbox:checked').each(function () {
+            $j('.shop_table input.kando-cb-checkbox:checked').each(function () {
                 services.push($j(this).attr('name'));
             });
 
@@ -9211,7 +7832,6 @@ $j(document).on('click', '.kando-change-service-status', function (event) {
                 data: {
                     action: 'kando_change_service_status',
                     new_status: result.value[1],
-                    category_id: result.value[2], // ارسال دسته انتخاب شده
                     services: services,
                 },
                 success: function (response) {
@@ -9223,10 +7843,12 @@ $j(document).on('click', '.kando-change-service-status', function (event) {
                             showCloseButton: true,
                             confirmButtonText: kando_data.langs.ok,
                         });
+                        // $this.removeClass('clicked');
                         $this.removeClass('is-loading');
                     } else {
                         setTimeout(function () {
                             Swal.fire({
+                                // title: kando_data.langs.an_error,
                                 icon: 'success',
                                 html: response.data,
                                 showCloseButton: true,
@@ -9243,10 +7865,11 @@ $j(document).on('click', '.kando-change-service-status', function (event) {
                 }
             });
         }
-    });
+    })
+
 
     return false;
-});
+})
 
 
 $j(document).on("click", " .kando-tabs > .tabs-title-holder > .tab-title", function () {
@@ -9280,22 +7903,7 @@ $j(document).on("click", " .kando-tabs > .tabs-title-holder > .tab-title", funct
 })
 
 
-$j(document).on("change", "select[name='kando_select_item_per_page']", function () {
-    const selectedValue = $j(this).val();
-
-    $j.post(kando_data.ajaxurl, {
-        action: 'save_items_per_page',
-        items_per_page: selectedValue
-    }, function (response) {
-        if (response.success) {
-            location.reload();
-        }
-    });
-});
-
-
-
-jQuery(document).on('focus', ".hasDatepicker", function () {
+jQuery(document).on('focus',".hasDatepicker", function(){
     jQuery(this).persianDatepicker({
         initialValue: false,
         format: 'YYYY-MM-DD',
@@ -9303,6 +7911,7 @@ jQuery(document).on('focus', ".hasDatepicker", function () {
     });
 
 });
+
 
 
 // $j(document).on('click', '.btn-toggler', function () {
@@ -9432,411 +8041,3 @@ window.addEventListener('load', function () {
     }
 });
 */
-"use strict";
-var PasswordMeter = function (element, options) {
-    var the = this;
-
-    if (!element) {
-        return;
-    }
-
-    // Default Options
-    var defaultOptions = {
-        minLength: 8,
-        checkUppercase: true,
-        checkLowercase: true,
-        checkDigit: true,
-        checkChar: true,
-        scoreHighlightClass: 'active',
-        strongPasswordThreshold: 80 // آستانه برای رمز عبور قوی
-    };
-
-    // Constructor
-    var _construct = function () {
-
-        // if (element.dataset.passwordMeter === 'true') {
-        //     the = element._passwordMeterInstance;
-        // } else {
-        _init();
-        // }
-    }
-
-    // Initialize
-    var _init = function () {
-        // Variables
-        the.options = Object.assign({}, defaultOptions, options);
-        the.score = 0;
-        the.checkSteps = 5;
-
-        // Elements
-        the.element = element;
-        the.inputElement = the.element.querySelector('input[type]');
-        the.visibilityElement = the.element.querySelector('[data-password-meter-control="visibility"]');
-        the.highlightElement = the.element.querySelector('[data-password-meter-control="highlight"]');
-        the.submitButton = document.getElementById('kt_sign_up_submit'); // دکمه ارسال
-        // Set initialized
-        the.element.dataset.passwordMeter = 'true';
-
-        // Event Handlers
-        _handlers();
-
-        // Bind Instance
-        element._passwordMeterInstance = the;
-    }
-
-    // Handlers
-    var _handlers = function () {
-        if (the.highlightElement) {
-            the.inputElement.addEventListener('input', function () {
-                _check();
-            });
-        }
-
-        if (the.visibilityElement) {
-            the.visibilityElement.addEventListener('click', function () {
-                _visibility();
-            });
-        }
-    }
-
-    // Event handlers
-    var _check = function () {
-        var score = 0;
-        var checkScore = _getCheckScore();
-
-        if (_checkLength() === true) {
-            score = score + checkScore;
-        }
-
-        if (the.options.checkUppercase === true && _checkLowercase() === true) {
-            score = score + checkScore;
-        }
-
-        if (the.options.checkLowercase === true && _checkUppercase() === true) {
-            score = score + checkScore;
-        }
-
-        if (the.options.checkDigit === true && _checkDigit() === true) {
-            score = score + checkScore;
-        }
-
-        if (the.options.checkChar === true && _checkChar() === true) {
-            score = score + checkScore;
-        }
-
-        the.score = score;
-
-        _highlight();
-
-        // فعال یا غیرفعال کردن دکمه ارسال
-        if (the.score >= the.options.strongPasswordThreshold) {
-            the.submitButton.disabled = false; // فعال کردن دکمه
-        } else {
-            the.submitButton.disabled = true; // غیرفعال کردن دکمه
-        }
-
-    }
-
-    var _checkLength = function () {
-        return the.inputElement.value.length >= the.options.minLength;  // 20 score
-    }
-
-    var _checkLowercase = function () {
-        return /[a-z]/.test(the.inputElement.value);  // 20 score
-    }
-
-    var _checkUppercase = function () {
-        return /[A-Z]/.test(the.inputElement.value);  // 20 score
-    }
-
-    var _checkDigit = function () {
-        return /[0-9]/.test(the.inputElement.value);  // 20 score
-    }
-
-    var _checkChar = function () {
-        return /[~`!#@$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(the.inputElement.value);  // 20 score
-    }
-
-    var _getCheckScore = function () {
-        var count = 1;
-
-        if (the.options.checkUppercase === true) {
-            count++;
-        }
-
-        if (the.options.checkLowercase === true) {
-            count++;
-        }
-
-        if (the.options.checkDigit === true) {
-            count++;
-        }
-
-        if (the.options.checkChar === true) {
-            count++;
-        }
-
-        the.checkSteps = count;
-
-        return 100 / the.checkSteps;
-    }
-
-    var _highlight = function () {
-        var items = [].slice.call(the.highlightElement.querySelectorAll('div'));
-        var total = items.length;
-        var index = 0;
-        var checkScore = _getCheckScore();
-        var score = _getScore();
-
-        items.map(function (item) {
-            index++;
-
-            if ((checkScore * index * (the.checkSteps / total)) <= score) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
-    }
-
-    var _visibility = function () {
-        var visibleIcon = the.visibilityElement.querySelector(':scope > i:not(.d-none)');
-        var hiddenIcon = the.visibilityElement.querySelector(':scope > i.d-none');
-
-        if (the.inputElement.getAttribute('type').toLowerCase() === 'password') {
-            the.inputElement.setAttribute('type', 'text');
-        } else {
-            the.inputElement.setAttribute('type', 'password');
-        }
-
-        visibleIcon.classList.add('d-none');
-        hiddenIcon.classList.remove('d-none');
-
-        the.inputElement.focus();
-    }
-
-    var _reset = function () {
-        the.score = 0;
-
-        _highlight();
-    }
-
-    // Gets current password score
-    var _getScore = function () {
-        return the.score;
-    }
-
-    var _destroy = function () {
-        delete element._passwordMeterInstance;
-    }
-
-    // Construct class
-    _construct();
-
-    ///////////////////////
-    // ** Public API  ** //
-    ///////////////////////
-
-    // Plugin API
-    this.check = function () {
-        return _check();
-    }
-
-    this.getScore = function () {
-        return _getScore();
-    }
-
-    this.reset = function () {
-        return _reset();
-    }
-
-    this.destroy = function () {
-        return _destroy();
-    }
-};
-
-// Static methods
-PasswordMeter.getInstance = function (element) {
-    if (element !== null && element._passwordMeterInstance) {
-        return element._passwordMeterInstance;
-    } else {
-        return null;
-    }
-}
-
-// Create instances
-PasswordMeter.createInstances = function (selector = '[data-password-meter]') {
-    // Get instances
-    var elements = document.body.querySelectorAll(selector);
-
-    if (elements && elements.length > 0) {
-        for (var i = 0, len = elements.length; i < len; i++) {
-            // Initialize instances
-            new PasswordMeter(elements[i]);
-        }
-    }
-}
-
-// Global initialization
-PasswordMeter.init = function () {
-    PasswordMeter.createInstances();
-};
-
-// Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', function () {
-    PasswordMeter.init();
-});
-
-jQuery(document).ready(function ($) {
-    $(document).on('click', '.toggle-head', function (e) {
-        e.preventDefault();
-        $(this).parent('.toggle-item').toggleClass('active');
-    });
-
-    // بستن منو وقتی خارج کلیک شود
-    $(document).on('click', function (event) {
-        if (!$(event.target).closest('.toggle-item').length) {
-            $('.toggle-item').removeClass('active');
-        }
-    });
-
-    $(document).on('click', '.currencyList .item', function (e) {
-        e.preventDefault(); // جلوگیری از رفت به لینک
-
-        // دریافت کد زبان از دیتا-اتributes یا مقدار مشابه
-        var selectedLanguageCode = $(this).data('language-code'); // این را تنظیم کنید در HTML
-
-        if (!selectedLanguageCode) {
-            // اگر کد زبان وجود نداشت، پیام خطا نمایش دهید
-            Swal.fire({
-                title: kando_data.langs.an_error,
-                icon: 'error',
-                html: kando_data.langs.no_language_selected,
-                showCloseButton: true,
-                confirmButtonText: kando_data.langs.ok,
-            });
-            return;
-        }
-
-        // ارسال درخواست AJAX برای تغییر زبان
-        $j.ajax({
-            url: kando_data.ajaxurl, // آدرس URL برای درخواست AJAX
-            type: 'post',
-            data: {
-                action: 'kando_change_language', // نام عملیات
-                language: selectedLanguageCode, // کد زبان انتخابی
-                change_language_nonce: kando_data.change_language_nonce, // Nonce برای امنیت
-            },
-            success: function (response) {
-                if (!response.success) {
-                    // نمایش پیام خطا
-                    Swal.fire({
-                        title: kando_data.langs.an_error,
-                        icon: 'error',
-                        html: response.data,
-                        showCloseButton: true,
-                        confirmButtonText: kando_data.langs.ok,
-                    });
-                } else {
-                    // نمایش پیام موفقیت و بازنشانی صفحه
-                    setTimeout(function () {
-                        Swal.fire({
-                            icon: 'success',
-                            html: response.data,
-                            showCloseButton: true,
-                            confirmButtonText: kando_data.langs.ok,
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    }, 200);
-                }
-            },
-            error: function () {
-            },
-        });
-    });
-
-});
-
-
-// بررسی بارگذاری jQuery و Select2
-
-jQuery(document).ready(function ($) {
-    // اعمال Select2 به عنصر select
-    // اعمال select2 به عنصر select
-    $('#samyar_select_category').select2({
-        placeholder: 'لطفا دسته مورد نظر خود را انتخاب کنید',
-        allowClear: true,
-        templateResult: formatOption,
-        templateSelection: formatSelection,
-        width: '100%',
-    });
-
-    function formatOption(option) {
-        if (!option.id) {
-            return option.text;
-        }
-
-        // دریافت مقادیر data-* از option
-        var $optionElement = $(option.element);
-        var icon = $optionElement.data('icon');
-
-        // ساخت HTML سفارشی
-        var serviceIdHtml = icon ? `<span class="category-icon"><i class="${icon}"></i></span>` : '';
-
-        return $(`<div>${serviceIdHtml}${option.text}</div>`);
-    }
-
-    function formatSelection(option) {
-        if (!option.id) {
-            return option.text;
-        }
-
-        // دریافت شناسه سرویس از option
-        var $optionElement = $(option.element);
-        var icon = $optionElement.data('icon');
-
-        // ساخت HTML سفارشی
-        return icon ? $(`<span><span class="category-icon"><i class="${icon}"></i></span> ${option.text}</span>`) : option.text;
-    }
-
-
-    // تابع برای تنظیم مقدار و اعمال تغییر
-    // function setCategoryValue(catId) {
-    //     if (catId && $('#samyar_select_category').find('option[value="' + catId + '"]').length > 0) {
-    //         $('#samyar_select_category').val(catId).trigger('change');
-    //     } else {
-    //         console.warn('مقدار cat_id معتبر نیست یا در گزینه‌ها وجود ندارد.');
-    //     }
-    // }
-
-// بررسی وجود catId
-    if (typeof catId !== 'undefined' && catId !== null) {
-        const targetNode = document.getElementById('samyar_select_category');
-
-        // اگر المان وجود دارد
-        if (targetNode) {
-            setCategoryValue(catId); // اعمال مقدار catId
-        } else {
-            // اگر المان وجود ندارد، از MutationObserver استفاده کنید
-            const observer = new MutationObserver(function (mutationsList, observer) {
-                const element = document.getElementById('samyar_select_category');
-                if (element) {
-                    setCategoryValue(catId); // اعمال مقدار catId
-                    observer.disconnect(); // متوقف کردن observer
-                }
-            });
-
-            // شروع نظارت بر تغییرات در DOM
-            observer.observe(document.body, { childList: true, subtree: true });
-        }
-    }
-
-
-    // رویداد change برای #select-order-service select
-    jQuery("#select-order-service select").change(function () {
-        samyarShowServiceInfo();
-    });
-
-
-});

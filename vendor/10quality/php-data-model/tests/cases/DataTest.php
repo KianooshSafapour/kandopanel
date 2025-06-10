@@ -1,7 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Tests data handling.
  *
@@ -10,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @package TenQuality\Data\Model
  * @version 1.0.1
  */
-class DataTest extends TestCase
+class DataTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Tests data handled in attributes.
@@ -25,8 +23,8 @@ class DataTest extends TestCase
         // Assert
         $this->assertNotNull($model->name);
         $this->assertNotNull($model->price);
-        $this->assertIsString($model->name);
-        $this->assertIsFloat($model->price);
+        $this->assertInternalType('string', $model->name);
+        $this->assertInternalType('float', $model->price);
         $this->assertEquals('Test', $model->name);
         $this->assertEquals(19.99, $model->price);
     }
@@ -40,7 +38,7 @@ class DataTest extends TestCase
         $model = new TestModel;
         $model->price = 19.99;
         // Assert
-        $this->assertIsString($model->displayPrice);
+        $this->assertInternalType('string', $model->displayPrice);
         $this->assertEquals('$19.99', $model->displayPrice);
     }
     /**
@@ -55,10 +53,10 @@ class DataTest extends TestCase
         // Execure
         $model->displayPrice = '$29.99';
         // Assert
-        $this->assertIsFloat($model->price);
+        $this->assertInternalType('float', $model->price);
         $this->assertEquals('$29.99', $model->displayPrice);
         $this->assertEquals(29.99, $model->price);
-        $this->assertIsString($model->displayPrice);
+        $this->assertInternalType('string', $model->displayPrice);
     }
     /**
      * Empty properties.
@@ -81,8 +79,8 @@ class DataTest extends TestCase
         $model = new TestModel(['price' => 19.99]);
         // Assert
         $this->assertNull($model->name);
-        $this->assertIsFloat($model->price);
-        $this->assertIsString($model->displayPrice);
+        $this->assertInternalType('float', $model->price);
+        $this->assertInternalType('string', $model->displayPrice);
         $this->assertEquals(19.99, $model->price);
         $this->assertEquals('$19.99', $model->displayPrice);
     }

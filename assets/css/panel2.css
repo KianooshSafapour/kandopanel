@@ -294,7 +294,7 @@ footer {
     padding: 0 0 20px 0;
     position: relative;
     z-index: 98;
-    /*overflow: hidden*/
+    overflow: hidden
 }
 
 .user_footer {

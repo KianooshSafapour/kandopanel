@@ -23,7 +23,3 @@ include('udisableservice.php');
 include('smeta.php');
 include('supdate.php');
 include('orderPaginate.php');
-include('cancel.php');
-include('favService.php');
-include('serviceTag.php');
-include('translate.php');

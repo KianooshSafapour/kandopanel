@@ -54,7 +54,7 @@ $enable_custom_username = settingsController::getInstance()->get_option('enable-
         <!--end::ایمیل-->
     </div>
     <!--begin::Input group-->
-    <div class="fv-row mb-8" data-password-meter="true">
+    <div class="fv-row mb-8" data-kt-password-meter="false">
         <!--begin::Wrapper-->
         <div class="mb-1">
             <!--begin::Input wrapper-->
@@ -63,25 +63,18 @@ $enable_custom_username = settingsController::getInstance()->get_option('enable-
                        placeholder="<?php _e('password',SAMYAR_TEXT_DOMAIN)?>"
                        name="password" autocomplete="off"/>
                 <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 start-0 ms-7"
-                      data-password-meter-control="visibility">
-												<i class="ki-outline fas fa-eye-slash fs-2"></i>
-												<i class=" ki-outline fas fa-eye fs-2 d-none"></i>
+                      data-kt-password-meter-control="visibility">
+												<i class="bi bi-eye-slash fs-2"></i>
+												<i class="bi bi-eye fs-2 d-none"></i>
 											</span>
             </div>
             <!--end::Input wrapper-->
-            <!--begin::Meter-->
-            <div class="d-flex align-items-center mb-3" data-password-meter-control="highlight">
-                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
-                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
-                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
-                <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
-            </div>
-            <!--end::Meter-->
+
         </div>
         <!--end::Wrapper-->
         <!--begin::Hint-->
         <div class="text-muted">
-            <?php _e('Use 8 or more characters with a mix of letters, numbers & symbols.',SAMYAR_TEXT_DOMAIN)?>
+            <?php _e('At least 6 characters',SAMYAR_TEXT_DOMAIN)?>
         </div>
         <!--end::Hint-->
     </div>
@@ -115,7 +108,7 @@ $enable_custom_username = settingsController::getInstance()->get_option('enable-
     <!--end::Accept-->
     <!--begin::ثبت button-->
     <div class="d-grid mb-10">
-        <button type="submit" id="kt_sign_up_submit" class="btn btn-primary" disabled>
+        <button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
             <!--begin::Indicator label-->
             <span class="indicator-label"><?php _e('Register',SAMYAR_TEXT_DOMAIN)?></span>
             <!--end::Indicator label-->

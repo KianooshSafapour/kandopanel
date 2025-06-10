@@ -65,7 +65,7 @@ $curauth = ( isset( $_GET['author_name'] ) ) ? get_user_by( 'slug', $author_name
 			}
 
 		} else {
-            echo '<h2>' . __('Currently, there is no content available', SAMYAR_TEXT_DOMAIN) . '</h2>';
+			echo '<h2>در حال حاضر مطلبی وجود ندارد</h2>';
 		}
 		?>
 

@@ -4,4 +4,3 @@
 # Generated
 /tests/.tmp
 composer.lock
-.phpunit.result.cache

@@ -43,10 +43,10 @@ $title = __("Your drip feeds orders", SAMYAR_TEXT_DOMAIN);
                         <option value="link"><?php _e("order link", SAMYAR_TEXT_DOMAIN); ?></option>
                         <option value="service-id"><?php _e("Service ID", SAMYAR_TEXT_DOMAIN); ?></option>
                         <?php if (kando_user_can('show_order_user_info')): ?>
-                            <option value="username"><?php _e("Username", SAMYAR_TEXT_DOMAIN); ?></option>
-                            <option value="email"><?php _e("User Email", SAMYAR_TEXT_DOMAIN); ?></option>
-                            <option value="mobile"><?php _e("Mobile Number", SAMYAR_TEXT_DOMAIN); ?></option>
-                            <option value="provider"><?php _e("Provider", SAMYAR_TEXT_DOMAIN); ?></option>
+                            <option value="username">نام کاربری</option>
+                            <option value="email">ایمیل کاربر</option>
+                            <option value="mobile">شماره همراه</option>
+                            <option value="provider">ارائه دهنده</option>
                         <?php endif; ?>
                     </select>
                 </div>
@@ -125,13 +125,7 @@ $title = __("Your drip feeds orders", SAMYAR_TEXT_DOMAIN);
         <?php
         // * paginate
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;//شماره صفحه فعلی
-
-        $user_id = get_current_user_id();
-        $items_per_page = get_user_meta($user_id, 'items_per_page', true);
-        $items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
-
-        $limit = $items_per_page; //تعداد قابل نمایش
-
+        $limit = 30; //تعداد قابل نمایش
         $offset = ($limit * $paged) - $limit;
 
 
@@ -171,11 +165,11 @@ $title = __("Your drip feeds orders", SAMYAR_TEXT_DOMAIN);
                     <th><span class="nobr"><?php _e("Update date", SAMYAR_TEXT_DOMAIN); ?></span></th>
 
                     <?php if (kando_user_can('show_order_user_info')) { ?>
-                        <th><span class="nobr"><?php _e("User Information", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                        <th><span class="nobr">اطلاعات کاربر</span></th>
                     <?php } ?>
                     <?php if (kando_user_can('show_order_provider_id')) { ?>
-                        <th><span class="nobr"><?php _e("API Order ID", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                        <th><span class="nobr"><?php _e("API Response", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                        <th><span class="nobr">شناسه سفارش در API</span></th>
+                        <th><span class="nobr">پاسخ API</span></th>
                     <?php } ?>
 
                     <th><span class="nobr"><?php _e("status", SAMYAR_TEXT_DOMAIN); ?></span></th>
@@ -196,38 +190,22 @@ $title = __("Your drip feeds orders", SAMYAR_TEXT_DOMAIN);
                 endforeach; ?>
                 </tbody>
             </table>
-            <div class="table-footer-container">
-                <div class="item-right">
-                    <label>
-                        <select name="kando_select_item_per_page">
-                            <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
-                            <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
-                            <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
-                            <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="item-center">
-                    <?php
-                    if (isset($_GET['status']) && !empty($_GET['status'])) {
-                        $status = $_GET['status'];
-                    } else {
-                        $status = 'all';
-                    }
+            <?php
+            if (isset($_GET['status']) && !empty($_GET['status'])) {
+                $status = $_GET['status'];
+            } else {
+                $status = 'all';
+            }
 
-                    if (isset($_GET['user']) && !empty($_GET['user'])) {
-                        $uid = $_GET['user'];
-                    } else {
-                        $uid = "";
-                    }
+            if (isset($_GET['user']) && !empty($_GET['user'])) {
+                $uid = $_GET['user'];
+            } else {
+                $uid = "";
+            }
 
-                    $total = get_count_dripfeed_orders($status, $uid);
-                    samyar_pagination($total, $limit, $paged)
-                    ?>
-                </div>
-            </div>
-
-
+            $total = get_count_dripfeed_orders($status, $uid);
+            samyar_pagination($total, $limit, $paged)
+            ?>
         <?php
         else:
             ?>

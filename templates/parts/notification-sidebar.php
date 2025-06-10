@@ -35,7 +35,7 @@ defined('ABSPATH') || exit('No Access!');
                     <?php }
                 } else {
                     ?>
-                    <span class="message-notfound"><?php _e("No new notifications available", SAMYAR_TEXT_DOMAIN); ?></span>
+                    <span class="message-notfound">اطلاعیه جدیدی وجود ندارد</span>
                     <?php
                 }
                 ?>

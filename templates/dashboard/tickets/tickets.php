@@ -7,12 +7,7 @@ use samyar\Ticket;
 
 // * paginate
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;//شماره صفحه فعلی
-$user_id = get_current_user_id();
-$items_per_page = get_user_meta($user_id, 'items_per_page', true);
-$items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
-
-$limit = $items_per_page; //تعداد قابل نمایش
-
+$limit = 10; //تعداد قابل نمایش
 $offset = ($limit * $paged) - $limit;
 
 if (kando_user_can('show_user_tickets')) {
@@ -23,13 +18,15 @@ if (kando_user_can('show_user_tickets')) {
         'limit' => $limit,
         'offset' => $offset
     ];
-    if (isset($_GET['status'])) {
-        $query['status'] = $_GET['status'];
+    if (isset($_GET['section'])) {
+        $query['status'] = $_GET['section'];
+    } else {
+        $query['status'] = "waiting";
     }
     $tickets = Ticket::where($query);
 
-    if (isset($_GET['status'])) {
-        switch ($_GET['status']) {
+    if (isset($_GET['section'])) {
+        switch ($_GET['section']) {
             case 'waiting':
                 $title = __("Tickets awaiting response", SAMYAR_TEXT_DOMAIN);
                 break;
@@ -54,8 +51,8 @@ if (kando_user_can('show_user_tickets')) {
         'offset' => $offset
     ];
 
-    if (isset($_GET['status'])) {
-        $query['status'] = $_GET['status'];
+    if (isset($_GET['section'])) {
+        $query['status'] = $_GET['section'];
     }
 
     $tickets = Ticket::where($query);
@@ -71,8 +68,6 @@ if (kando_user_can('show_user_tickets')) {
 </div>
 <div class="woocommerce-MyAccount-content">
     <div class="woocommerce-notices-wrapper"></div>
-
-    <?php include_once('statistics.php') ?>
     <?php include_once('buttons.php') ?>
     <?php if (kando_user_can('show_user_tickets')): ?>
         <div class="kt-row">
@@ -202,35 +197,21 @@ if (kando_user_can('show_user_tickets')) {
 
                     </a>
                 <?php endforeach; ?>
-                <div class="table-footer-container">
-                    <div class="item-right">
-                        <label>
-                            <select name="kando_select_item_per_page">
-                                <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
-                                <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
-                                <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
-                                <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="item-center">
-                        <?php
-                        if (kando_user_can('show_user_tickets')) {
-                            $query = [];
-                            if (isset($_GET['status'])) {
-                                $query['status'] = $_GET['status'];
-                            }
-                            $total = Ticket::count($query);
-                        } else {
-                            $total = Ticket::count(['uid' => get_current_user_id()]);
-                        }
+                <?php
+                if (kando_user_can('show_user_tickets')) {
+                    $query = [];
+                    if (isset($_GET['section'])) {
+                        $query['status'] = $_GET['section'];
+                    } else {
+                        $query['status'] = "waiting";
+                    }
+                    $total = Ticket::count($query);
+                } else {
+                    $total = Ticket::count(['uid' => get_current_user_id()]);
+                }
 
-                        samyar_pagination($total, $limit, $paged)
-                        ?>
-                    </div>
-                </div>
-
-
+                samyar_pagination($total, $limit, $paged)
+                ?>
             <?php else: ?>
                 <span class="services-notfound"><?php _e("No support requests have been submitted yet.", SAMYAR_TEXT_DOMAIN); ?></span>
             <?php endif; ?>

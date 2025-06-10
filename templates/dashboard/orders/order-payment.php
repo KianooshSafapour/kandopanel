@@ -1,12 +1,12 @@
-<?php
-use samyar\priceController;
-?>
 <div class="dashboard-posts-box dashboard-tickets-box payment-history-modal">
     <div class="dashboard-posts-list" style="padding:25px">
         <div style="clear:both;">
+            <?php if ($payment->payment_type === "refund"): ?>
+                <span class="price"><?= number_format_i18n((int)$payment->amount) ?>&nbsp;<?php kando_get_currency_base_text(true) ?></span>
+            <?php else: ?>
 
-                <span class="price"><?php echo priceController::kandoFormatPrice($payment->amount)['price_for_show_formatted'] ?></span>
-
+                <span class="price"><?= number_format_i18n((int)$payment->amount) ?>&nbsp;<?php kando_get_currency_base_text(true) ?></span>
+            <?php endif; ?>
 
             <span class="status">
                                                 <?php
@@ -52,6 +52,14 @@ use samyar\priceController;
                                                 case 'bitpay':
                                                     $text = __("Bitpay", SAMYAR_TEXT_DOMAIN);
                                                     $color = "button-red";
+                                                    break;
+                                                case 'idpay':
+                                                    $text = __("Idpay", SAMYAR_TEXT_DOMAIN);
+                                                    $color = "button-blue";
+                                                    break;
+                                                case 'payir':
+                                                    $text = __("Payir", SAMYAR_TEXT_DOMAIN);
+                                                    $color = "button-default";
                                                     break;
                                                 case 'zarinpal':
                                                     $text = __("Zarinpal", SAMYAR_TEXT_DOMAIN);
@@ -102,12 +110,6 @@ use samyar\priceController;
             <div class="row4">
                 <span class="title"><?php _e("Bank tracking code", SAMYAR_TEXT_DOMAIN); ?></span>
                 <span class="content"><?= $payment->transaction_id ?></span>
-            </div>
-        <?php } ?>
-        <?php if ($payment->note) { ?>
-            <div class="row4">
-                <span class="title"><?php _e("Description", SAMYAR_TEXT_DOMAIN); ?></span>
-                <span class="content"><?= $payment->note ?></span>
             </div>
         <?php } ?>
     </div>

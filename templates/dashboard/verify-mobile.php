@@ -80,7 +80,7 @@ if (!defined('ABSPATH')) {
         <div class="dashboard-posts-box dashboard-tickets-box">
             <div class="dashboard-posts-title-holder">
                 <i class="fal fa-mobile"></i>
-                <h5 class="dashboard-posts-title"><?php _e("Mobile Verification", SAMYAR_TEXT_DOMAIN); ?></h5>
+                <h5 class="dashboard-posts-title">صحت سنجی شماره همراه</h5>
             </div>
             <div class="dashboard-posts-list">
                 <div class="kt-row">
@@ -94,16 +94,11 @@ if (!defined('ABSPATH')) {
                             </div>
                             <div class="text-center mb-10">
                                 <!--begin::Title-->
-                                <?php if(isset($_GET['for']) && $_GET['for']==="2fa"){ ?>
-                                    <h1 class="text-dark mb-3"><?php _e("Two-factor authentication", SAMYAR_TEXT_DOMAIN); ?></h1>
-                                <?php }else{ ?>
-                                    <h1 class="text-dark mb-3"><?php _e("Verify Mobile Number", SAMYAR_TEXT_DOMAIN); ?></h1>
-                                <?php } ?>
-
+                                <h1 class="text-dark mb-3">تایید شماره همراه</h1>
                                 <!--end::Title-->
                                 <!--begin::Sub-title-->
                                 <div class="text-muted fw-semibold fs-5 mb-5">
-                                    <?php _e("Please enter the code sent to the following mobile number", SAMYAR_TEXT_DOMAIN); ?>
+                                    لطفا کد ارسال شده به شماره همراه زیر را وارد کنید
                                 </div>
                                 <!--end::Sub-title-->
                                 <!--begin::Mobile no-->
@@ -113,11 +108,7 @@ if (!defined('ABSPATH')) {
                                     if ($mobile) {
                                         echo $mobile;
                                     } else {
-                                        $profile_url = home_url('/dashboard/?action=edit-profile');
-                                        echo sprintf(
-                                            __('You have not entered a mobile number. Please go to your <a href="%s">profile</a> to enter it.', SAMYAR_TEXT_DOMAIN),
-                                            esc_url($profile_url)
-                                        );
+                                        echo 'شما شماره همراهی وارد نکرده اید لطفا جهت وارد کردن شماره همراه به <a href="'.home_url('/dashboard/?action=edit-profile').'">پروفایل</a> خود مراجعه نمایید';
                                     }
                                     ?>
                                 </div>
@@ -147,8 +138,9 @@ if (!defined('ABSPATH')) {
                                     </label>
                                 </div>
 
-                                <a href="#" class="button button-green kt-ajax-button kt-verify-otp-code"><?php _e("Check Code", SAMYAR_TEXT_DOMAIN); ?></a>
-                                <button class="button button-blue kt-ajax-button kt-verify-send-again"><?php _e("Send Code", SAMYAR_TEXT_DOMAIN); ?></button>
+                                <a href="#" class="button button-green kt-ajax-button kt-verify-otp-code">بررسی صحت
+                                    کد</a>
+                                <button class="button button-blue kt-ajax-button kt-verify-send-again">ارسال کد</button>
                             <?php } ?>
 
                         </form>
@@ -208,7 +200,7 @@ if (!defined('ABSPATH')) {
                 } else {
                     var number = $(this).inputFilter(function (value) {
                         return /^\d*$/.test(value);    // Allow digits only, using a RegExp
-                    }, kando_data.langs.only_numbers);
+                    }, "تنها عدد وارد نمایید");
 
                     if (number.val() == '') {
                         $(`.otp[tabindex='${tabIndex}']`).val(number.val());

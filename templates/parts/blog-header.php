@@ -3,7 +3,7 @@
         <div class="kt-row">
             <div class="column kt-col-xs-12 kt-col-sm-6">
                 <h3 class="blog-page-header-title farsi-title">
-                    <a href="<?php echo home_url( 'blog' ) ?>" data-wpel-link="internal"><strong><?php _e("Blog", SAMYAR_TEXT_DOMAIN); ?></strong></a>
+                    <a href="<?php echo home_url( 'blog' ) ?>" data-wpel-link="internal"><strong>بلاگ</strong></a>
                 </h3>
             </div>
             <div class="column kt-col-xs-12 kt-col-sm-6">
@@ -16,10 +16,10 @@
 </div>
 <?php
 $options      = settingsController::getInstance();
-$telegram_url  = kando_get_option( 'telegram-url', "" );
-$twitter_url   = kando_get_option( 'twitter-url', "" );
-$instagram_url = kando_get_option( 'instagram-url', "" );
-$linkedin_url  = kando_get_option( 'linkedin-url', "" );
+$telegram_url  = $options->get_option( 'telegram-url', "" );
+$twitter_url   = $options->get_option( 'twitter-url', "" );
+$instagram_url = $options->get_option( 'instagram-url', "" );
+$linkedin_url  = $options->get_option( 'linkedin-url', "" );
 ?>
 <div class="wrapper">
     <div class="blog-header-bar clearfix">

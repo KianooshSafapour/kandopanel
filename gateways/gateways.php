@@ -1,6 +1,8 @@
 <?php
 include("Gateway.php");
 include( 'zarinpal.php');
+include( 'idpay.php');
+include( 'payir.php');
 include( 'zibal.php');
 include( 'bitpay.php');
 include( 'nextpay.php');

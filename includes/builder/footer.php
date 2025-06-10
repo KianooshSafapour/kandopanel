@@ -4,17 +4,17 @@ function kando_footer_post_type(){
     $kandofooter_item_slug = "kandofooter-item";
 
     $labels = array(
-        'name'               => __('Footers', SAMYAR_TEXT_DOMAIN),
-        'singular_name'      => __('Footer Item', SAMYAR_TEXT_DOMAIN),
-        'add_new'            => __('Create New Footer', SAMYAR_TEXT_DOMAIN),
-        'add_new_item'       => __('Create New Footer', SAMYAR_TEXT_DOMAIN),
-        'edit_item'          => __('Edit Footer', SAMYAR_TEXT_DOMAIN),
-        'new_item'           => __('New Footer', SAMYAR_TEXT_DOMAIN),
-        'view_item'          => __('View Footer', SAMYAR_TEXT_DOMAIN),
-        'search_items'       => __('Search Footers', SAMYAR_TEXT_DOMAIN),
-        'not_found'          => __('No items found', SAMYAR_TEXT_DOMAIN),
-        'not_found_in_trash' => __('No items found in trash', SAMYAR_TEXT_DOMAIN),
-        'parent_item_colon'  => ''
+        'name' 					=> __('فوتر ها',SAMYAR_TEXT_DOMAIN),
+        'singular_name' 		=> __('فوتر آیتم',SAMYAR_TEXT_DOMAIN),
+        'add_new' 				=> __('ایجاد فوتر جدید',SAMYAR_TEXT_DOMAIN),
+        'add_new_item' 			=> __('ایجاد فوتر جدید',SAMYAR_TEXT_DOMAIN),
+        'edit_item' 			=> __('ویرایش فوتر',SAMYAR_TEXT_DOMAIN),
+        'new_item' 				=> __('فوتر جدید',SAMYAR_TEXT_DOMAIN),
+        'view_item' 			=> __('مشاهده فوتر',SAMYAR_TEXT_DOMAIN),
+        'search_items' 			=> __('جستجو بین فوتر ها',SAMYAR_TEXT_DOMAIN),
+        'not_found' 			=> __('آیتمی یافت نشد',SAMYAR_TEXT_DOMAIN),
+        'not_found_in_trash' 	=> __('آیتمی یافت نشد',SAMYAR_TEXT_DOMAIN),
+        'parent_item_colon' 	=> ''
     );
 
     $args = array(

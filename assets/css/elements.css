@@ -159,7 +159,7 @@ pack
     display: inline-block;
     position: absolute;
     top: -25px;
-    left: -42px;
+    right: -42px;
     -webkit-transition: all 800ms;
     -moz-transition: all 800ms;
     -ms-transition: all 800ms;
@@ -176,7 +176,7 @@ pack
     z-index: 9;
     position: relative;
     top: -89px;
-    right: -33px;
+    left: -33px;
     text-align: center;
 }
 
@@ -200,7 +200,7 @@ pack
 .kando-elementor-pack .iptsIconCircle i {
     font-size: 22px;
     position: relative;
-    right: -10px;
+    left: -10px;
     top: 9px;
 }
 
@@ -275,7 +275,7 @@ package 2
     border: 0;
     text-decoration: none !important;
     cursor: pointer;
-    float: right;
+    float: left;
     /*box-shadow:0 10px 37px 0 rgba(0,0,0,.5);*/
     border-radius: 5px;
     margin-top: 10px;
@@ -342,11 +342,11 @@ package 2
 }
 
 .kando-elementor-pack2.pckg > div:last-child {
-    border-right: 0
+    border-left: 0
 }
 
 .kando-elementor-pack2.pckg li {
-    float: left;
+    float: right;
 }
 
 .kando-elementor-pack2 .pckg-head {
@@ -371,13 +371,13 @@ package 2
 
 .kando-elementor-pack2 .pckg-price span sup {
     font-size: 0.45em;
-    margin: 0 -6px 0 8px;
+    margin: 0 8px 0 -6px;
 }
 
 .kando-elementor-pack2.pckg > div:nth-child(3) {
     width: 35%;
-    text-align: left;
-    padding-left: 22px;
+    text-align: right;
+    padding-right: 22px;
     font-size: 16px;
     position: relative;
     padding-top: 18px;
@@ -391,7 +391,7 @@ package 2
     position: absolute;
     top: -34px;
     background-repeat: no-repeat;
-    right: -40px
+    left: -40px
 }
 
 .kando-elementor-pack2 .pckg-head h2 {
@@ -434,7 +434,7 @@ package 2
     }
 
     .kando-elementor-pack2.pckg > div {
-        border-radius: 5px 0 0 5px;
+        border-radius: 5px 5px 0 0;
         line-height: 1.8;
         box-sizing: border-box;
     }
@@ -466,9 +466,9 @@ package 2
 div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
 .kando-elementor-pack2 .comboChooser:before {
     position: absolute;
-    content: "select";
+    content: "انتخاب کنید";
     top: 0;
-    right: 13px;
+    left: 13px;
     color: #868585;
     font-size: 10px;
     /* background: #f5f5f5; */
@@ -479,7 +479,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     border-radius: 3px 0 0 3px;
     z-index: 1;
     pointer-events: none;
-    border-left: 1px solid #e8e6e6;
+    border-right: 1px solid #e8e6e6;
     border-radius: 30px 0 0 30px;
 }
 
@@ -505,7 +505,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     border: 0;
     box-shadow: -1px 1px 4px rgba(100, 100, 100, .60);
     border-radius: 30px;
-    padding: 10px 100px 10px 15px;
+    padding: 10px 15px 10px 100px !important;
     background: #fff;
 }
 
@@ -519,7 +519,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
 
 .kando-elementor-pack2 .normal-text h2 {
     font-size: 14px;
-    text-align: left;
+    text-align: right;
     margin: 0;
     padding: 0;
     font-weight: normal;
@@ -567,7 +567,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
 
 
 .kando-elementor-pack2 ::-webkit-input-placeholder {
-    text-align: left;
+    text-align: right;
 }
 
 .kando-elementor-pack2.off {
@@ -575,25 +575,25 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     margin-top: -46px;
     border-radius: 50px;
     color: #d44650;
-    text-align: left !important;
+    text-align: right !important;
     box-shadow: 0 2px 4px rgba(100, 100, 100, 0.1);
     z-index: 1;
     padding: 0 !important;
-    padding-left: 75px !important;
-    padding-right: 25px !important;
+    padding-right: 75px !important;
+    padding-left: 25px !important;
     font-size: 13px;
     background: #ffffff;
     background: radial-gradient(circle, rgba(238, 238, 238, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(238, 238, 238, 1) 100%);
-    right: 50%;
+    left: 50%;
     display: inline-block !important;
-    margin-right: -89px;
+    margin-left: -89px;
 
 }
 
 .kando-elementor-pack2.off span {
     font-size: 36px;
     position: absolute;
-    left: 16px;
+    right: 16px;
     /*margin-top: 12px;*/
     font-weight: bold;
     color: #f16872;
@@ -610,8 +610,8 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     /*font-size: 29px;*/
     /*letter-spacing: 4px;*/
     /*line-height: 57px;*/
-    float: right;
-    padding-left: 6px;
+    float: left;
+    padding-right: 6px;
 }
 
 /* select nice */
@@ -619,9 +619,10 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     border-color: #999;
 }
 .kando-elementor-pack2 .nice-select {
-    text-align: left;
+    text-align: right;
     line-height: 1.8;
     cursor: pointer;
+
 }
 
 .kando-elementor-pack2 .nice-select:hover {
@@ -653,7 +654,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     pointer-events: none;
     position: absolute;
     top: 2px;
-    left: -10px;
+    right: -10px;
     -webkit-transform-origin: 50% 0;
     -ms-transform-origin: 50% 0;
     transform-origin: 50% 0;
@@ -676,7 +677,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
     list-style: none;
     min-height: 40px;
     outline: none;
-    text-align: left;
+    text-align: right;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
     float: none;
@@ -708,7 +709,7 @@ div#popup_cm div.popRight,div#popup_cm  div.popLeft{height: 630px;}*/
 }
 
 .kando-elementor-pack2 .option i {
-    text-align: right;
+    text-align: left;
     font-style: normal;
     color: #4c4c8e;
     /*margin-right: 10px;*/

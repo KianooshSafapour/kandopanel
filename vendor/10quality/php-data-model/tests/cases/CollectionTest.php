@@ -1,6 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use TenQuality\Data\Collection;
 
 /**
@@ -11,7 +10,7 @@ use TenQuality\Data\Collection;
  * @package TenQuality\Data\Model
  * @version 1.0.2
  */
-class CollectionTest extends TestCase
+class CollectionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Tests data handling and array properties.
@@ -43,9 +42,9 @@ class CollectionTest extends TestCase
         // Execute
         $array = $collection->toArray();
         // Assert
-        $this->assertIsArray($array);
+        $this->assertInternalType('array', $array);
         $this->assertEquals(1, count($array));
-        $this->assertIsArray($array[0]);
+        $this->assertInternalType('array', $array[0]);
         $this->assertEquals('Test', $array[0]['name']);
     }
     /**
@@ -64,11 +63,11 @@ class CollectionTest extends TestCase
         // Execute
         $array = $collection->toArray();
         // Assert
-        $this->assertIsArray($array);
+        $this->assertInternalType('array', $array);
         $this->assertEquals(1, count($array));
-        $this->assertIsArray($array[0]);
+        $this->assertInternalType('array', $array[0]);
         $this->assertEquals(1, count($array[0]));
-        $this->assertIsArray($array[0][0]);
+        $this->assertInternalType('array', $array[0][0]);
         $this->assertEquals('Test', $array[0][0]['name']);
     }
     /**
@@ -86,7 +85,7 @@ class CollectionTest extends TestCase
         // Execute
         $string = (string)$collection;
         // Assert
-        $this->assertIsString($string);
+        $this->assertInternalType('string', $string);
         $this->assertEquals('[{"name":"Test"}]', $string);
     }
     /**
@@ -104,7 +103,7 @@ class CollectionTest extends TestCase
         // Execute
         $json = $collection->toJSON();
         // Assert
-        $this->assertIsString($json);
+        $this->assertInternalType('string', $json);
         $this->assertEquals('[{"name":"Test"}]', $json);
     }
     /**

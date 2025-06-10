@@ -1,7 +1,7 @@
 <div class="wrap kando">
     <div id="elementor-template-library-tabs-wrapper" class="nav-tab-wrapper">
-        <a class="nav-tab" href="<?= admin_url('admin.php?page=kando-reports') ?>"><?php _e("Orders", SAMYAR_TEXT_DOMAIN); ?></a>
-        <a class="nav-tab nav-tab-active" href="<?= admin_url('admin.php?page=kando-users-reports') ?>"><?php _e("User Charges", SAMYAR_TEXT_DOMAIN); ?></a>
+        <a class="nav-tab" href="<?= admin_url('admin.php?page=kando-reports') ?>">سفارشات</a>
+        <a class="nav-tab nav-tab-active" href="<?= admin_url('admin.php?page=kando-users-reports') ?>">شارژ کاربران</a>
     </div>
     <div id="poststuff" class="kando-reports-wide">
         <div class="postbox">
@@ -11,7 +11,7 @@
                     <?php
                     /* translators: 1: start date 2: end date */
                     printf(
-                        esc_html__('From %1$s to %2$s', SAMYAR_TEXT_DOMAIN),
+                        esc_html__('From %1$s to %2$s', 'woocommerce'),
                         esc_html(wc_clean(wp_unslash($_GET['start_date']))),
                         esc_html(wc_clean(wp_unslash($_GET['end_date'])))
                     );
@@ -31,7 +31,7 @@
                     ?>
                     <!--
                     <li class="custom <?php echo ('custom' === $current_range) ? 'active' : ''; ?>">
-                        <?php _e("Custom:", SAMYAR_TEXT_DOMAIN); ?>
+                        دلخواه:
                         <form method="GET">
                             <div>
                                 <?php
@@ -47,10 +47,10 @@
                     }
                     ?>
                                 <input type="hidden" name="range" value="custom" />
-                                <input type="text" size="11" placeholder="<?php _e("yyyy-mm-dd", SAMYAR_TEXT_DOMAIN); ?>" value="<?php echo (!empty($_GET['start_date'])) ? esc_attr(wp_unslash($_GET['start_date'])) : ''; ?>" name="start_date" class="range_datepicker from" autocomplete="off" /><?php //@codingStandardsIgnoreLine ?>
+                                <input type="text" size="11" placeholder="yyyy-mm-dd" value="<?php echo (!empty($_GET['start_date'])) ? esc_attr(wp_unslash($_GET['start_date'])) : ''; ?>" name="start_date" class="range_datepicker from" autocomplete="off" /><?php //@codingStandardsIgnoreLine ?>
                                 <span>&ndash;</span>
-                                <input type="text" size="11" placeholder="<?php _e("yyyy-mm-dd", SAMYAR_TEXT_DOMAIN); ?>" value="<?php echo (!empty($_GET['end_date'])) ? esc_attr(wp_unslash($_GET['end_date'])) : ''; ?>" name="end_date" class="range_datepicker to" autocomplete="off" /><?php //@codingStandardsIgnoreLine ?>
-                                <button type="submit" class="button" value="<?php esc_attr_e('Go', SAMYAR_TEXT_DOMAIN); ?>"><?php esc_html_e('Go', SAMYAR_TEXT_DOMAIN); ?></button>
+                                <input type="text" size="11" placeholder="yyyy-mm-dd" value="<?php echo (!empty($_GET['end_date'])) ? esc_attr(wp_unslash($_GET['end_date'])) : ''; ?>" name="end_date" class="range_datepicker to" autocomplete="off" /><?php //@codingStandardsIgnoreLine ?>
+                                <button type="submit" class="button" value="<?php esc_attr_e('Go', 'woocommerce'); ?>"><?php esc_html_e('Go', 'woocommerce'); ?></button>
                                 <?php wp_nonce_field('custom_range', 'wc_reports_nonce', false); ?>
                         </form>
                     </li>

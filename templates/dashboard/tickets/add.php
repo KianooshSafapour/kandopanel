@@ -1,12 +1,9 @@
 <?php
-
-use samyar\Order;
-
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 ?>
-
+<?php if (kando_user_can('send_ticket_to_user')): ?>
     <style type="text/css">
 
         .select2-container {
@@ -52,21 +49,8 @@ if (!defined('ABSPATH')) {
             top: 21px;
         }
 
-        .select2-container--default.select2-container--focus .select2-selection--multiple {
-            border: 1px solid #ededed;
-        }
-
-        .select2-container--default .select2-selection--multiple {
-            /*height: 40px;*/
-            border: 1px solid #ededed;
-        }
-
-        .select2-container--default[dir="rtl"] .select2-selection--multiple .select2-selection__clear {
-            color: #c2c2c2;
-        }
-
     </style>
-
+<?php endif; ?>
     <div class="kt-row">
         <div class="column kt-col-xs-12">
             <?php kando_show_alerts('ticket'); ?>
@@ -80,7 +64,9 @@ if (!defined('ABSPATH')) {
                     <img src="<?php echo SAMYAR_DIR_IMG ?>/new-ticket-help.png"/>
                     <ul>
                         <?php if (kando_user_can('send_ticket_to_user')): ?>
-                            <li><?php _e("To select a user, simply enter 3 characters from the phone number, name, or username and choose from the list of users that appear.", SAMYAR_TEXT_DOMAIN); ?></li>
+                            <li>برای انتخاب کاربر، تنها کافیست 3 حرف از شماره همراه یا نام و یا نام کاربری را زده و از
+                                بین کاربران پیدا شده انتخاب کنید
+                            </li>
                         <?php else: ?>
                             <li><?php _e("Enter your request carefully so that our experts can send you a complete answer.", SAMYAR_TEXT_DOMAIN); ?></li>
                             <li><?php _e("It is enough to create a ticket for each topic. Please avoid repeating the same issue.", SAMYAR_TEXT_DOMAIN); ?></li>
@@ -109,20 +95,11 @@ if (!defined('ABSPATH')) {
                         <div class="clearfix">
                             <input type="text" class="new-ticket-form-title"
                                    placeholder="<?php _e("title", SAMYAR_TEXT_DOMAIN); ?>">
-
                             <?php
-                            $order_id = isset($_GET['order-id']) ? (int)$_GET['order-id'] : 0;
-                            $selected_id = Order::find_where(['id' => $order_id, 'uid' => get_current_user_id()]);
+                            $order_id = $_GET['order-id'] ?? "";
                             ?>
-                            <select class="new-ticket-form-order-id" name="order[]" multiple="multiple">
-                                <option value=""><?php _e("Please choose Order IDs", SAMYAR_TEXT_DOMAIN); ?></option>
-                                <?php if ($selected_id): ?>
-                                    <option value="<?php echo $order_id; ?>" selected="selected">
-                                        <?php echo __('Order ID:', SAMYAR_TEXT_DOMAIN) . ' ' . esc_html($selected_id->id) . ' - ' . __('Link:', SAMYAR_TEXT_DOMAIN) . ' ' . esc_html($selected_id->link); ?>
-                                    </option>
-                                <?php endif; ?>
-                            </select>
-
+                            <input type="text" class="new-ticket-form-order-id" style="margin-top: 10px"
+                                   value="<?= $order_id ?>" placeholder="<?php _e("Order ID", SAMYAR_TEXT_DOMAIN); ?>">
                             <?php if (kando_user_can('send_ticket_to_user')): ?>
 
                                 <select class="new-ticket-form-user-id" name="username">
@@ -184,46 +161,7 @@ if (!defined('ABSPATH')) {
                 language: "fa",
                 minimumInputLength: 3 // the minimum of symbols to input before perform a search
             });
+
         });
     </script>
 <?php endif; ?>
-
-<script>
-    jQuery(document).ready(function ($) {
-        var selectedOrderId = <?php echo $order_id; ?>;
-        // تبدیل گزینه‌های اولیه به فرمت مورد نظر Select2
-
-        // مقداردهی اولیه Select2
-        $('.new-ticket-form-order-id').select2({
-            ajax: {
-                url: kando_data.ajaxurl,
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        action: 'kando_search_orders',
-                        q: params.term,
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data,
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 1, // اجازه نمایش گزینه‌ها بدون نیاز به جستجو
-            placeholder: '<?php _e("Search for an order", SAMYAR_TEXT_DOMAIN); ?>',
-            allowClear: true,
-        });
-
-
-        if (selectedOrderId) {
-            // انتخاب گزینه پیش‌فرض
-            $('.new-ticket-form-order-id').val(selectedOrderId).trigger('change');
-        }
-
-   });
-</script>
-
-

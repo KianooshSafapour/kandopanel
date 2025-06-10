@@ -17,8 +17,8 @@ $options = settingsController::getInstance();
 //}
 //$categories = Category::where($cate_args);
 
-$enable_average_time = kando_get_option('enable-average-time', 1);
-$sort_by = kando_get_option('select_service_order', 'price');
+$enable_average_time = $options->get_option('enable-average-time', 1);
+$sort_by = $options->get_option('select_service_order', 'price');
 
 
 //$categories = wp_cache_get('kando_service_list');
@@ -155,28 +155,31 @@ foreach ($services as $serv) {
                     <table class="shop_table shop_table_responsive">
                         <thead>
                         <tr>
+
                             <?php if (kando_user_can('edit_service')): ?>
                                 <th id="cb">
                                     <input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-1" name="cb-select-all-1">
                                     <label class="kando-cb-label" for="cb-select-all-1"></label>
                                 </th>
                             <?php endif; ?>
-                            <th><span class="nobr"><?php _e("ID", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                            <th><span class="nobr"><?php _e("Name", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                            <th><span class="nobr"><?php _e("Description", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                            <th><span class="nobr">شناسه</span></th>
+                            <th><span class="nobr">نام</span></th>
+                            <th><span class="nobr">توضیحات</span></th>
                             <?php if (kando_user_can('show_original_price')): ?>
-                                <th><span class="nobr"><?php _e("Original Price", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                                <th><span class="nobr">قیمت اصلی</span></th>
                             <?php endif; ?>
                             <?php if (kando_user_can('show_service_type')): ?>
-                                <th><span class="nobr"><?php _e("Type", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                                <th><span class="nobr">نوع</span></th>
                             <?php endif; ?>
-                            <th><span class="nobr"><?php _e("Price per 1000 Items", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                            <th><span class="nobr"><?php _e("Minimum/Maximum", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                            <th><span class="nobr">قیمت هر 1000 عدد</span></th>
+                            <th><span class="nobr">حداقل/حداکثر</span></th>
                             <?php if ($enable_average_time == 1) { ?>
-                                <th><span class="nobr"><?php _e("Approximate Order Completion Time", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                                <th><span class="nobr">زمان حدودی تکمیل سفارش</span></th>
                             <?php } ?>
-                            <th><span class="nobr"><?php _e("Status", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                            <th><span class="nobr"><?php _e("Actions", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                            <th><span class="nobr">وضعیت</span></th>
+
+                            <th><span class="nobr">عملیات ها</span></th>
+
                         </tr>
                         </thead>
 
@@ -193,7 +196,7 @@ foreach ($services as $serv) {
                 <?php
                 else:
                     ?>
-                    <span class="services-notfound"><?php _e("No services have been added yet.", SAMYAR_TEXT_DOMAIN); ?></span>
+                    <span class="services-notfound">تاکنون سرویس ای اضافه نشده است.</span>
                 <?php
                 endif;
                 ?>

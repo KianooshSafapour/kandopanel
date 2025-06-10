@@ -89,6 +89,6 @@ defined('ABSPATH') || exit('No Access!');
     <!--begin::Sign up-->
     <div class="text-gray-500 text-center fw-semibold fs-6"><?php _e('still not registered?',SAMYAR_TEXT_DOMAIN)?>
 
-        <a href="<?= add_query_arg(['action'=>'register'], home_url('/login/')) ?>" class="link-primary"><?php _e('Register',SAMYAR_TEXT_DOMAIN)?></a></div>
+        <a href="<?= add_query_arg(['action'=>'register'], home_url('/login')) ?>" class="link-primary"><?php _e('Register',SAMYAR_TEXT_DOMAIN)?></a></div>
     <!--end::Sign up-->
 </form>

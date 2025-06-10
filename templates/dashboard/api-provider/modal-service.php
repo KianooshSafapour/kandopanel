@@ -9,7 +9,7 @@ if (is_user_logged_in()):
     ?>
     <div class="kt-modal-inner kt-service-modal">
         <i class="kt-modal-close"></i>
-        <div class="kt-modal-content align-right">
+        <div class="kt-modal-content">
             <div class="register-form">
                 <form method="POST" class="samyar-form new-service-form-modal">
                     <input type="hidden" name="action" value="samyar_service_add">
@@ -20,77 +20,61 @@ if (is_user_logged_in()):
                     <div class="new-api-provider-form-errors"></div>
                     <div class="samyar-form-loading"></div>
                     <div class="clearfix">
-                        <div class="kt-col-xs-12" style="margin-top:15px">
-                            <input type="text" name="name" placeholder="<?php _e('Service Name', SAMYAR_TEXT_DOMAIN); ?>"/>
-                            <label><?php _e('Please select a category', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <select name="cate_id">
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo esc_attr($category->id) ?>"><?php echo esc_attr($category->name) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="kt-row">
-                                <div class="column kt-col-xs-12 kt-col-md-6">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text"><?php _e('Minimum Quantity', SAMYAR_TEXT_DOMAIN); ?></span>
-                                        </div>
-                                        <input type="number" class="form-control" dir="ltr" placeholder="<?php _e('Minimum Quantity', SAMYAR_TEXT_DOMAIN); ?>" id="min" name="min">
-                                    </div>
-                                </div>
-                                <div class="column kt-col-xs-12 kt-col-md-6">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text"><?php _e('Maximum Quantity', SAMYAR_TEXT_DOMAIN); ?></span>
-                                        </div>
-                                        <input type="number" class="form-control" dir="ltr" placeholder="<?php _e('Maximum Quantity', SAMYAR_TEXT_DOMAIN); ?>" id="max" name="max">
-                                    </div>
-                                </div>
+                        <input type="text" name="name" placeholder="نام خدمت"/>
+                        <label>لطفا دسته ای انتخاب نمایید</label>
+                        <select name="cate_id">
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo esc_attr($category->id) ?>"><?php echo esc_attr($category->name) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="kt-row">
+                            <div class="column kt-col-xs-12 kt-col-md-6">
+                                <label>حداقل</label>
+                                <input type="text" name="min" placeholder="حداقل تعداد"/>
                             </div>
-                            <label><?php _e('Please select the service type', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <select name="type">
-                                <?php
-                                $service_type_array = array(
-                                    'default' => __("Default", SAMYAR_TEXT_DOMAIN),
-                                    'subscriptions' => __("Subscriptions", SAMYAR_TEXT_DOMAIN),
-                                    'custom_comments' => __("Custom Comments", SAMYAR_TEXT_DOMAIN),
-                                    'custom_comments_package' => __('Custom Comments Package', SAMYAR_TEXT_DOMAIN),
-                                    'mentions_with_hashtags' => __('Mentions with Hashtags', SAMYAR_TEXT_DOMAIN),
-                                    'mentions' => __('Mentions', SAMYAR_TEXT_DOMAIN),
-                                    'mentions_custom_list' => __('Mentions Custom List', SAMYAR_TEXT_DOMAIN),
-                                    'mentions_hashtag' => __('Mentions Hashtag', SAMYAR_TEXT_DOMAIN),
-                                    'mentions_user_followers' => __('Mentions User Followers', SAMYAR_TEXT_DOMAIN),
-                                    'mentions_media_likers' => __('Mentions Media Likers', SAMYAR_TEXT_DOMAIN),
-                                    'package' => __('Package', SAMYAR_TEXT_DOMAIN),
-                                    'comment_likes' => __('Comment Likes', SAMYAR_TEXT_DOMAIN),
-                                    'poll' => __('Poll', SAMYAR_TEXT_DOMAIN),
-                                    'comment_replies' => __('Comment Replies', SAMYAR_TEXT_DOMAIN),
-                                    'invites_from_groups' => __('Invites From Groups', SAMYAR_TEXT_DOMAIN)
-                                );
+                            <div class="column kt-col-xs-12 kt-col-md-6">
+                                <label>حداکثر</label>
+                                <input type="text" name="max" placeholder="حداکثر تعداد"/>
+                            </div>
+                        </div>
+                        <label>لطفا نوع سرویس را انتخاب نمایید</label>
+                        <select name="type">
+                            <?php
+                            $service_type_array = array(
+                                'default' => "پیشفرض",
+                                'subscriptions' => "subscriptions",
+                                'custom_comments' => "custom comments",
+                                'custom_comments_package' => 'custom comments package',
+                                'mentions' => 'mentions',
+                                'mentions_with_hashtags' => 'mentions with hashtags',
+                                'mentions_custom_list' => 'mentions custom list',
+                                'mentions_hashtag' => 'mentions hashtag',
+                                'mentions_user_followers' => 'mentions user followers',
+                                'mentions_media_likers' => 'mentions media likers',
+                                'package' => 'package',
+                                'comment_likes' => 'comment likes'
+                            );
 
-                                foreach ($service_type_array as $type => $service_type) {
-                                    ?>
-                                    <option value="<?= $type ?>"><?= $service_type ?></option>
-                                <?php } ?>
-                            </select>
-                            <label><?php _e('Dripfeed', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <select name="dripfeed">
-                                <option value="0"><?php _e('Inactive', SAMYAR_TEXT_DOMAIN); ?></option>
-                                <option value="1"><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></option>
-                            </select>
-                            <label><?php _e('Refill', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <select name="refill">
-                                <option value="0"><?php _e('Inactive', SAMYAR_TEXT_DOMAIN); ?></option>
-                                <option value="1"><?php _e('Active', SAMYAR_TEXT_DOMAIN); ?></option>
-                            </select>
-                            <label><?php _e('Brand', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <input type="text" name="brand" placeholder="<?php _e('Brand', SAMYAR_TEXT_DOMAIN); ?>"/>
-                            <label><?php _e('Original Price (The price you purchase for)', SAMYAR_TEXT_DOMAIN); ?></label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text currency api_currency"><?php _e('Toman', SAMYAR_TEXT_DOMAIN); ?></span>
-                                </div>
-                                <input type="number" step="any" class="form-control" dir="ltr" placeholder="<?php _e('Original Price', SAMYAR_TEXT_DOMAIN); ?>" id="original_price" name="original_price">
-                            </div>
+                            foreach ($service_type_array as $type => $service_type) {
+                                ?>
+                                <option value="<?= $type ?>"><?= $service_type ?></option>
+                            <?php } ?>
+                        </select>
+                        <label>سرمایه گذاری قطره ای</label>
+                        <select name="dripfeed">
+                            <option value="0">غیرفعال</option>
+                            <option value="1">فعال</option>
+                        </select>
+                        <label>پر کردن مجدد</label>
+                        <select name="refill">
+                            <option value="0">غیرفعال</option>
+                            <option value="1">فعال</option>
+                        </select>
+                        <div class="kt-col-xs-12 service-rate" style="margin-top:15px">
+                            <label>قیمت اصلی(قیمتی که شما خرید می کنید)</label>
+                            <input type="number" name="original_price" step="any" style="padding: 9px 15px;float: right;width: calc(100% - 150px);margin-left: 10px;" placeholder="قیمت اصلی"/>
+                            <span id="api_currency" class="float-right" style="font-size: 20px"></span>
+
                         </div>
                         <style type="text/css">
                             .service-rate {
@@ -112,113 +96,96 @@ if (is_user_logged_in()):
                                 });
                             });
                         </script>
-                        <div class="kt-col-xs-12">
-                            <div class="alert alert-info" style="font-size: 12px;" role="alert"><?php _e('If you want the amount to be calculated according to the general settings, leave the price section blank', SAMYAR_TEXT_DOMAIN); ?></div>
-                        </div>
-
                         <div class="kt-col-xs-12 service-rate" style="margin-top:15px">
                             <input type="hidden" value="0" name="disable-representation">
                             <input type="checkbox" value="1" id="disable-representation" name="disable-representation">
-                            <label for="disable-representation"><?php _e('Disable representation prices for this service', SAMYAR_TEXT_DOMAIN); ?></label>
+                            <label for="disable-representation">قیمت های نمایندگی برای این سرویس غیر فعال شود</label>
                         </div>
-                        <div class="kt-col-xs-12 service-rate not-free"
-                             style="margin-top:15px;">
-                            <div class="kt-col-xs-2 kt-col-md-2">
-                                <?php _e('Type', SAMYAR_TEXT_DOMAIN); ?>
+                        <div class="kt-col-xs-12 service-rate" style="margin-top:15px">
+                            <div class="kt-col-xs-3 kt-col-md-3">
+                                نوع
                             </div>
-                            <div class="kt-col-xs-4 kt-col-md-4">
-                                <?php _e('Price', SAMYAR_TEXT_DOMAIN); ?> (<?php kando_get_currency_base_text(true) ?>)
+                            <div class="kt-col-xs-3 kt-col-md-3">
+                                قیمت دلخواه (<?php kando_get_currency_base_text() ?>)
                             </div>
-                            <div class="kt-col-xs-4 kt-col-md-4">
-                                <?php _e('Rate (Percentage)', SAMYAR_TEXT_DOMAIN); ?>
+                            <div class="kt-col-xs-3 kt-col-md-3">
+                                نرخ دلخواه (درصد)
                             </div>
-
+                            <div class="kt-col-xs-3 kt-col-md-3">
+                                نرخ عمومی در تنظیمات (درصد)
+                            </div>
                         </div>
-                        <div class="kt-col-xs-12 service-rate not-free">
-                            <div class="kt-col-xs-2 kt-col-md-2 pt13" style="">
-                                <?php _e('Regular User', SAMYAR_TEXT_DOMAIN); ?>
-                            </div>
-                            <div class="service-rate-padding kt-col-xs-4 kt-col-md-4">
-                                <input type="number" name="price" placeholder="<?php _e('Price', SAMYAR_TEXT_DOMAIN); ?>"
-                                       value=""/>
-                            </div>
-                            <div class="service-rate-padding kt-col-xs-4 kt-col-md-4">
-                                <input type="number" name="profit_rate" placeholder="<?php _e('Profit Rate', SAMYAR_TEXT_DOMAIN); ?>"
-                                       value=""/>
-                            </div>
-
-                        </div>
-                        <!-- شروع قیمت های نمایندگی -->
                         <?php
                         //دریافت تنظیمات عمومی
-                        $representation_active = !empty(kando_get_option('representation-active')) ? kando_get_option('representation-active') : 0;
-                        if ($representation_active) {
-
-
-                            $representation_rates = [
-                                'gold' => [
-                                    'name' => __('Golden Representation', SAMYAR_TEXT_DOMAIN),
-                                    'price' => "",
-                                    'profit_rate' => '',
-                                    'lock' => 0,
-                                ],
-                                'silver' => [
-                                    'name' => __('Silver Representation', SAMYAR_TEXT_DOMAIN),
-                                    'price' => "",
-                                    'profit_rate' => '',
-                                    'lock' => 0,
-                                ],
-                                'bronze' => [
-                                    'name' => __('Bronze Representation', SAMYAR_TEXT_DOMAIN),
-                                    'price' => "",
-                                    'profit_rate' => '',
-                                    'lock' => 0,
-                                ],
-                            ];
-
-                            ?>
-
-                            <div class="representation-rates not-free">
-                                <div class="kt-col-xs-12 service-rate not-free"
-                                     style="margin-top:15px;">
-                                    <div class="kt-col-xs-2 kt-col-md-2">
-                                        <?php _e('Type', SAMYAR_TEXT_DOMAIN); ?>
-                                    </div>
-                                    <div class="kt-col-xs-4 kt-col-md-4">
-                                        <?php _e('Price', SAMYAR_TEXT_DOMAIN); ?> (<?php kando_get_currency_base_text(true) ?>)
-                                    </div>
-                                    <div class="kt-col-xs-4 kt-col-md-4">
-                                        <?php _e('Discount', SAMYAR_TEXT_DOMAIN); ?>
-                                    </div>
-
-                                </div>
-
-                                <?php foreach ($representation_rates as $key => $rate) { ?>
-                                    <div class="kt-col-xs-12 service-rate pt13">
-                                        <div class="kt-col-xs-2 kt-col-md-2" style="">
-                                            <?= $rate['name'] ?>
-                                        </div>
-                                        <div class="service-rate-padding kt-col-xs-4 kt-col-md-4">
-                                            <input type="number" name="<?= $key ?>_price" placeholder="<?php _e('Price', SAMYAR_TEXT_DOMAIN); ?>"
-                                                   value=""/>
-                                        </div>
-                                        <div class="service-rate-padding kt-col-xs-4 kt-col-md-4">
-                                            <input type="number" name="<?= $key ?>_profit_rate"
-                                                   placeholder="<?php _e('Discount', SAMYAR_TEXT_DOMAIN); ?>"
-                                                   value=""/>
-                                        </div>
-
-
-                                    </div>
-                                <?php } ?>
+                        $options = settingsController::getInstance();
+                        $representation_level_0 = !empty($options->get_option('representation-level-0')) ? $options->get_option('representation-level-0') : 0;
+                        $representation_level_1 = !empty($options->get_option('representation-level-1')) ? $options->get_option('representation-level-1') : 0;
+                        $representation_level_2 = !empty($options->get_option('representation-level-2')) ? $options->get_option('representation-level-2') : 0;
+                        $representation_level_3 = !empty($options->get_option('representation-level-3')) ? $options->get_option('representation-level-3') : 0;
+                        ?>
+                        <div class="kt-col-xs-12 service-rate">
+                            <div class="kt-col-xs-3 kt-col-md-3" style="margin-top: 7px;">
+                                کاربر عادی
                             </div>
-
-                        <?php } ?>
-                        <!-- پایان قیمت های نمایندگی -->
-                        <div class="kt-col-xs-12 service-rate" style="margin-top:15px">
-                            <textarea class="new-api-form-text" name="description" placeholder="<?php _e('Description', SAMYAR_TEXT_DOMAIN); ?>"></textarea>
+                            <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                                <input type="number" name="price" placeholder="قیمت"/>
+                            </div>
+                            <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                                <input type="number" name="profit_rate" placeholder="نرخ سود"/>
+                            </div>
+                            <div class="kt-col-xs-3 kt-col-md-3">
+                                <input type="number" disabled placeholder="نرخ سود" value="<?= $representation_level_0 ?>"/>
+                            </div>
                         </div>
-                        <input type="submit" class="button button-green new-ticket-form-submit" value="<?php _e('Submit', SAMYAR_TEXT_DOMAIN); ?>"/>
+
+                        <!-- شروع قیمت های نمایندگی -->
+                        <span class="representation-rates">
+                <div class="kt-col-xs-12 service-rate">
+                    <div class="kt-col-xs-3 kt-col-md-3" style="margin-top: 7px;">
+                        نمایندگی برنزی
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[3][price]" placeholder="قیمت"/>
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[3][profit_rate]" placeholder="نرخ سود"/>
+                    </div>
+                    <div class="kt-col-xs-3 kt-col-md-3">
+                        <input type="number" disabled placeholder="نرخ سود" value="<?= $representation_level_3 ?>"/>
+                    </div>
+                </div>
+                <div class="kt-col-xs-12 service-rate">
+                    <div class="kt-col-xs-3 kt-col-md-3" style="margin-top: 7px;">
+                        نمایندگی نقره ای
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[2][price]" placeholder="قیمت"/>
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[2][profit_rate]" placeholder="نرخ سود"/>
+                    </div>
+                    <div class="kt-col-xs-3 kt-col-md-3">
+                        <input type="number" disabled placeholder="نرخ سود" value="<?= $representation_level_2 ?>"/>
+                    </div>
+                </div>
+                <div class="kt-col-xs-12 service-rate">
+                    <div class="kt-col-xs-3 kt-col-md-3" style="margin-top: 7px;">
+                        نمایندگی طلایی
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[1][price]" placeholder="قیمت"/>
+                    </div>
+                    <div class="service-rate-padding kt-col-xs-3 kt-col-md-3">
+                        <input type="number" name="representation-level[1][profit_rate]" placeholder="نرخ سود"/>
+                    </div>
+                    <div class="kt-col-xs-3 kt-col-md-3">
+                        <input type="number" disabled placeholder="نرخ سود" value="<?= $representation_level_1 ?>"/>
+                    </div>
+                </div>
+            </span>
+                        <!-- پایان قیمت های نمایندگی -->
+                        <textarea class="new-api-form-text" name="description" placeholder="توضیحات"></textarea>
+                        <input type="submit" class="button button-green new-ticket-form-submit" value="ارسال"/>
                     </div>
                 </form>
             </div>

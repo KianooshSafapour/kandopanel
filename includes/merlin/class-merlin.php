@@ -453,7 +453,7 @@ class Merlin {
 		wp_enqueue_script( 'merlin', trailingslashit( $this->base_url ) . $this->directory . '/assets/js/merlin' . $suffix . '.js', array( 'jquery-core' ), MERLIN_VERSION );
 
 		$texts = array(
-			'something_went_wrong' => esc_html__( 'Something went wrong. Please refresh the page and try again!', SAMYAR_TEXT_DOMAIN ),
+			'something_went_wrong' => esc_html__( 'Something went wrong. Please refresh the page and try again!', 'merlin-wp' ),
 		);
 
 		// Localize the javascript.
@@ -527,27 +527,28 @@ class Merlin {
 	/**
 	 * Output the header.
 	 */
-    protected function header() {
-        // Strings passed in from the config file.
-        $strings = $this->strings;
+	protected function header() {
 
-        // Get the current step.
-        $current_step = strtolower( $this->steps[ $this->step ]['name'] );
-        ?>
+		// Strings passed in from the config file.
+		$strings = $this->strings;
 
-        <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
-        <head>
-            <meta name="viewport" content="width=device-width"/>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-            <?php printf( '<title>%s</title>', esc_html( sprintf( $strings['title%s%s%s%s'], '', '', $this->theme->name, '' ) )); ?>
-            <?php do_action( 'admin_print_styles' ); ?>
-            <?php do_action( 'admin_print_scripts' ); ?>
-            <?php do_action( 'admin_head' ); ?>
-        </head>
-        <body class="merlin__body merlin__body--<?php echo esc_attr( $current_step ); ?>">
-        <?php
-    }
+		// Get the current step.
+		$current_step = strtolower( $this->steps[ $this->step ]['name'] );
+		?>
+
+		<!DOCTYPE html>
+		<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
+		<head>
+			<meta name="viewport" content="width=device-width"/>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<?php printf( esc_html( $strings['title%s%s%s%s'] ), '<ti', 'tle>', esc_html( $this->theme->name ), '</title>' ); ?>
+			<?php do_action( 'admin_print_styles' ); ?>
+			<?php do_action( 'admin_print_scripts' ); ?>
+			<?php do_action( 'admin_head' ); ?>
+		</head>
+		<body class="merlin__body merlin__body--<?php echo esc_attr( $current_step ); ?>">
+		<?php
+	}
 
 	/**
 	 * Output the content for the current step.
@@ -598,12 +599,12 @@ class Merlin {
 
 		// Make sure $args are an array.
 		if ( empty( $args ) ) {
-			return __( 'Please define default parameters in the form of an array.', SAMYAR_TEXT_DOMAIN );
+			return __( 'Please define default parameters in the form of an array.', 'merlin-wp' );
 		}
 
 		// Define an icon.
 		if ( false === array_key_exists( 'icon', $args ) ) {
-			return __( 'Please define an SVG icon filename.', SAMYAR_TEXT_DOMAIN );
+			return __( 'Please define an SVG icon filename.', 'merlin-wp' );
 		}
 
 		// Set defaults.
@@ -712,20 +713,20 @@ class Merlin {
 
 		$this->steps = array(
 			'welcome' => array(
-				'name'    => esc_html__( 'Welcome', SAMYAR_TEXT_DOMAIN ),
+				'name'    => esc_html__( 'Welcome', 'merlin-wp' ),
 				'view'    => array( $this, 'welcome' ),
 				'handler' => array( $this, 'welcome_handler' ),
 			),
 		);
 
 		$this->steps['child'] = array(
-			'name' => esc_html__( 'Child', SAMYAR_TEXT_DOMAIN ),
+			'name' => esc_html__( 'Child', 'merlin-wp' ),
 			'view' => array( $this, 'child' ),
 		);
 
 		if ( $this->license_step_enabled ) {
 			$this->steps['license'] = array(
-				'name' => esc_html__( 'License', SAMYAR_TEXT_DOMAIN ),
+				'name' => esc_html__( 'License', 'merlin-wp' ),
 				'view' => array( $this, 'license' ),
 			);
 		}
@@ -733,7 +734,7 @@ class Merlin {
 		// Show the plugin importer, only if TGMPA is included.
 		if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 			$this->steps['plugins'] = array(
-				'name' => esc_html__( 'Plugins', SAMYAR_TEXT_DOMAIN ),
+				'name' => esc_html__( 'Plugins', 'merlin-wp' ),
 				'view' => array( $this, 'plugins' ),
 			);
 		}
@@ -741,13 +742,13 @@ class Merlin {
 		// Show the content importer, only if there's demo content added.
 		if ( ! empty( $this->import_files ) ) {
 			$this->steps['content'] = array(
-				'name' => esc_html__( 'Content', SAMYAR_TEXT_DOMAIN ),
+				'name' => esc_html__( 'Content', 'merlin-wp' ),
 				'view' => array( $this, 'content' ),
 			);
 		}
 
 		$this->steps['ready'] = array(
-			'name' => esc_html__( 'Ready', SAMYAR_TEXT_DOMAIN ),
+			'name' => esc_html__( 'Ready', 'merlin-wp' ),
 			'view' => array( $this, 'ready' ),
 		);
 
@@ -852,7 +853,7 @@ class Merlin {
 		</footer>
 
 	<?php
-		$this->logger->debug( __( 'The welcome step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The welcome step has been displayed', 'merlin-wp' ) );
 	}
 
 	/**
@@ -946,7 +947,7 @@ class Merlin {
 			<?php wp_nonce_field( 'merlin' ); ?>
 		</footer>
 		<?php
-		$this->logger->debug( __( 'The license activation step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The license activation step has been displayed', 'merlin-wp' ) );
 	}
 
 
@@ -1016,7 +1017,7 @@ class Merlin {
 			<?php wp_nonce_field( 'merlin' ); ?>
 		</footer>
 	<?php
-		$this->logger->debug( __( 'The child theme installation step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The child theme installation step has been displayed', 'merlin-wp' ) );
 	}
 
 	/**
@@ -1103,8 +1104,8 @@ class Merlin {
 								<span><?php echo esc_html( $plugin['name'] ); ?></span>
 
 								<span class="badge">
-									<span class="hint--top" aria-label="<?php esc_html_e( 'Required', SAMYAR_TEXT_DOMAIN ); ?>">
-										<?php esc_html_e( 'req', SAMYAR_TEXT_DOMAIN ); ?>
+									<span class="hint--top" aria-label="<?php esc_html_e( 'Required', 'merlin-wp' ); ?>">
+										<?php esc_html_e( 'req', 'merlin-wp' ); ?>
 									</span>
 								</span>
 							</label>
@@ -1144,7 +1145,7 @@ class Merlin {
 		</form>
 
 	<?php
-		$this->logger->debug( __( 'The plugin installation step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The plugin installation step has been displayed', 'merlin-wp' ) );
 	}
 
 	/**
@@ -1190,7 +1191,7 @@ class Merlin {
 					</select>
 
 					<div class="merlin__select-control-help">
-						<span class="hint--top" aria-label="<?php echo esc_attr__( 'Select Demo', SAMYAR_TEXT_DOMAIN ); ?>">
+						<span class="hint--top" aria-label="<?php echo esc_attr__( 'Select Demo', 'merlin-wp' ); ?>">
 							<?php echo wp_kses( $this->svg( array( 'icon' => 'downarrow' ) ), $this->svg_allowed_html() ); ?>
 						</span>
 					</div>
@@ -1228,7 +1229,7 @@ class Merlin {
 		</form>
 
 	<?php
-		$this->logger->debug( __( 'The content import step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The content import step has been displayed', 'merlin-wp' ) );
 	}
 
 
@@ -1308,7 +1309,7 @@ class Merlin {
 		</footer>
 
 	<?php
-		$this->logger->debug( __( 'The final step has been displayed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The final step has been displayed', 'merlin-wp' ) );
 	}
 
 	/**
@@ -1386,7 +1387,7 @@ class Merlin {
 				switch_theme( $slug );
 			endif;
 
-			$this->logger->debug( __( 'The existing child theme was activated', SAMYAR_TEXT_DOMAIN ) );
+			$this->logger->debug( __( 'The existing child theme was activated', 'merlin-wp' ) );
 
 			wp_send_json(
 				array(
@@ -1403,7 +1404,7 @@ class Merlin {
 			switch_theme( $slug );
 		endif;
 
-		$this->logger->debug( __( 'The newly generated child theme was activated', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The newly generated child theme was activated', 'merlin-wp' ) );
 
 		wp_send_json(
 			array(
@@ -1424,7 +1425,7 @@ class Merlin {
 			wp_send_json(
 				array(
 					'success' => false,
-					'message' => esc_html__( 'Yikes! The theme activation failed. Please try again or contact support.', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Yikes! The theme activation failed. Please try again or contact support.', 'merlin-wp' ),
 				)
 			);
 		}
@@ -1433,7 +1434,7 @@ class Merlin {
 			wp_send_json(
 				array(
 					'success' => false,
-					'message' => esc_html__( 'Please add your license key before attempting to activate one.', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Please add your license key before attempting to activate one.', 'merlin-wp' ),
 				)
 			);
 		}
@@ -1446,7 +1447,7 @@ class Merlin {
 			$result = apply_filters( 'merlin_ajax_activate_license', $license_key );
 		}
 
-		$this->logger->debug( __( 'The license activation was performed with the following results', SAMYAR_TEXT_DOMAIN ), $result );
+		$this->logger->debug( __( 'The license activation was performed with the following results', 'merlin-wp' ), $result );
 
 		wp_send_json( array_merge( array( 'done' => 1 ), $result ) );
 	}
@@ -1492,7 +1493,7 @@ class Merlin {
 			if ( is_wp_error( $response ) ) {
 				$message = $response->get_error_message();
 			} else {
-				$message = esc_html__( 'An error occurred, please try again.', SAMYAR_TEXT_DOMAIN );
+				$message = esc_html__( 'An error occurred, please try again.', 'merlin-wp' );
 			}
 		} else {
 
@@ -1505,35 +1506,35 @@ class Merlin {
 					case 'expired':
 						$message = sprintf(
 							/* translators: Expiration date */
-							esc_html__( 'Your license key expired on %s.', SAMYAR_TEXT_DOMAIN ),
+							esc_html__( 'Your license key expired on %s.', 'merlin-wp' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 						);
 						break;
 
 					case 'revoked':
-						$message = esc_html__( 'Your license key has been disabled.', SAMYAR_TEXT_DOMAIN );
+						$message = esc_html__( 'Your license key has been disabled.', 'merlin-wp' );
 						break;
 
 					case 'missing':
-						$message = esc_html__( 'This appears to be an invalid license key. Please try again or contact support.', SAMYAR_TEXT_DOMAIN );
+						$message = esc_html__( 'This appears to be an invalid license key. Please try again or contact support.', 'merlin-wp' );
 						break;
 
 					case 'invalid':
 					case 'site_inactive':
-						$message = esc_html__( 'Your license is not active for this URL.', SAMYAR_TEXT_DOMAIN );
+						$message = esc_html__( 'Your license is not active for this URL.', 'merlin-wp' );
 						break;
 
 					case 'item_name_mismatch':
 						/* translators: EDD Item Name */
-						$message = sprintf( esc_html__( 'This appears to be an invalid license key for %s.', SAMYAR_TEXT_DOMAIN ), $this->edd_item_name );
+						$message = sprintf( esc_html__( 'This appears to be an invalid license key for %s.', 'merlin-wp' ), $this->edd_item_name );
 						break;
 
 					case 'no_activations_left':
-						$message = esc_html__( 'Your license key has reached its activation limit.', SAMYAR_TEXT_DOMAIN );
+						$message = esc_html__( 'Your license key has reached its activation limit.', 'merlin-wp' );
 						break;
 
 					default:
-						$message = esc_html__( 'An error occurred, please try again.', SAMYAR_TEXT_DOMAIN );
+						$message = esc_html__( 'An error occurred, please try again.', 'merlin-wp' );
 						break;
 				}
 			} else {
@@ -1623,7 +1624,7 @@ class Merlin {
 		// Let's remove the tabs so that it displays nicely.
 		$output = trim( preg_replace( '/\t+/', '', $output ) );
 
-		$this->logger->debug( __( 'The child theme functions.php content was generated', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The child theme functions.php content was generated', 'merlin-wp' ) );
 
 		// Filterable return.
 		return apply_filters( 'merlin_generate_child_functions_php', $output, $slug );
@@ -1654,7 +1655,7 @@ class Merlin {
 		// Let's remove the tabs so that it displays nicely.
 		$output = trim( preg_replace( '/\t+/', '', $output ) );
 
-		$this->logger->debug( __( 'The child theme style.css content was generated', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->debug( __( 'The child theme style.css content was generated', 'merlin-wp' ) );
 
 		return apply_filters( 'merlin_generate_child_style_css', $output, $slug, $parent, $version );
 	}
@@ -1688,9 +1689,9 @@ class Merlin {
 		if ( ! empty( $screenshot ) && file_exists( $screenshot ) ) {
 			$copied = copy( $screenshot, $path . '/screenshot.' . $screenshot_ext );
 
-			$this->logger->debug( __( 'The child theme screenshot was copied to the child theme, with the following result', SAMYAR_TEXT_DOMAIN ), array( 'copied' => $copied ) );
+			$this->logger->debug( __( 'The child theme screenshot was copied to the child theme, with the following result', 'merlin-wp' ), array( 'copied' => $copied ) );
 		} else {
-			$this->logger->debug( __( 'The child theme screenshot was not generated, because of these results', SAMYAR_TEXT_DOMAIN ), array( 'screenshot' => $screenshot ) );
+			$this->logger->debug( __( 'The child theme screenshot was not generated, because of these results', 'merlin-wp' ), array( 'screenshot' => $screenshot ) );
 		}
 	}
 
@@ -1719,7 +1720,7 @@ class Merlin {
 					'_wpnonce'      => wp_create_nonce( 'bulk-plugins' ),
 					'action'        => 'tgmpa-bulk-activate',
 					'action2'       => - 1,
-					'message'       => esc_html__( 'Activating', SAMYAR_TEXT_DOMAIN ),
+					'message'       => esc_html__( 'Activating', 'merlin-wp' ),
 				);
 				break;
 			}
@@ -1735,7 +1736,7 @@ class Merlin {
 					'_wpnonce'      => wp_create_nonce( 'bulk-plugins' ),
 					'action'        => 'tgmpa-bulk-update',
 					'action2'       => - 1,
-					'message'       => esc_html__( 'Updating', SAMYAR_TEXT_DOMAIN ),
+					'message'       => esc_html__( 'Updating', 'merlin-wp' ),
 				);
 				break;
 			}
@@ -1751,7 +1752,7 @@ class Merlin {
 					'_wpnonce'      => wp_create_nonce( 'bulk-plugins' ),
 					'action'        => 'tgmpa-bulk-install',
 					'action2'       => - 1,
-					'message'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
+					'message'       => esc_html__( 'Installing', 'merlin-wp' ),
 				);
 				break;
 			}
@@ -1759,7 +1760,7 @@ class Merlin {
 
 		if ( $json ) {
 			$this->logger->debug(
-				__( 'A plugin with the following data will be processed', SAMYAR_TEXT_DOMAIN ),
+				__( 'A plugin with the following data will be processed', 'merlin-wp' ),
 				array(
 					'plugin_slug' => $_POST['slug'],
 					'message'     => $json['message'],
@@ -1767,11 +1768,11 @@ class Merlin {
 			);
 
 			$json['hash']    = md5( serialize( $json ) );
-			$json['message'] = esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN );
+			$json['message'] = esc_html__( 'Installing', 'merlin-wp' );
 			wp_send_json( $json );
 		} else {
 			$this->logger->debug(
-				__( 'A plugin with the following data was processed', SAMYAR_TEXT_DOMAIN ),
+				__( 'A plugin with the following data was processed', 'merlin-wp' ),
 				array(
 					'plugin_slug' => $_POST['slug'],
 				)
@@ -1780,7 +1781,7 @@ class Merlin {
 			wp_send_json(
 				array(
 					'done'    => 1,
-					'message' => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Success', 'merlin-wp' ),
 				)
 			);
 		}
@@ -1804,12 +1805,12 @@ class Merlin {
 
 
 		if ( ! check_ajax_referer( 'merlin_nonce', 'wpnonce' ) || empty( $_POST['content'] ) && isset( $content[ $_POST['content'] ] ) ) {
-			$this->logger->error( __( 'The content importer AJAX call failed to start, because of incorrect data', SAMYAR_TEXT_DOMAIN ) );
+			$this->logger->error( __( 'The content importer AJAX call failed to start, because of incorrect data', 'merlin-wp' ) );
 
 			wp_send_json_error(
 				array(
 					'error'   => 1,
-					'message' => esc_html__( 'Invalid content!', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Invalid content!', 'merlin-wp' ),
 				)
 			);
 		}
@@ -1820,7 +1821,7 @@ class Merlin {
 		if ( isset( $_POST['proceed'] ) ) {
 			if ( is_callable( $this_content['install_callback'] ) ) {
 				$this->logger->info(
-					__( 'The content import AJAX call will be executed with this import data', SAMYAR_TEXT_DOMAIN ),
+					__( 'The content import AJAX call will be executed with this import data', 'merlin-wp' ),
 					array(
 						'title' => $this_content['title'],
 						'data'  => $this_content['data'],
@@ -1862,7 +1863,7 @@ class Merlin {
 			wp_send_json( $json );
 		} else {
 			$this->logger->error(
-				__( 'The content import AJAX call failed with this passed data', SAMYAR_TEXT_DOMAIN ),
+				__( 'The content import AJAX call failed with this passed data', 'merlin-wp' ),
 				array(
 					'selected_content_index' => $selected_import,
 					'importing_content'      => $_POST['content'],
@@ -1873,7 +1874,7 @@ class Merlin {
 			wp_send_json(
 				array(
 					'error'   => 1,
-					'message' => esc_html__( 'Error', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Error', 'merlin-wp' ),
 					'logs'    => '',
 					'errors'  => '',
 				)
@@ -1887,12 +1888,12 @@ class Merlin {
 	 */
 	public function _ajax_get_total_content_import_items() {
 		if ( ! check_ajax_referer( 'merlin_nonce', 'wpnonce' ) && empty( $_POST['selected_index'] ) ) {
-			$this->logger->error( __( 'The content importer AJAX call for retrieving total content import items failed to start, because of incorrect data.', SAMYAR_TEXT_DOMAIN ) );
+			$this->logger->error( __( 'The content importer AJAX call for retrieving total content import items failed to start, because of incorrect data.', 'merlin-wp' ) );
 
 			wp_send_json_error(
 				array(
 					'error'   => 1,
-					'message' => esc_html__( 'Invalid data!', SAMYAR_TEXT_DOMAIN ),
+					'message' => esc_html__( 'Invalid data!', 'merlin-wp' ),
 				)
 			);
 		}
@@ -1993,11 +1994,11 @@ class Merlin {
 
 		if ( ! empty( $import_files['content'] ) ) {
 			$content['content'] = array(
-				'title'            => esc_html__( 'Content', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'Demo content data.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'Content', 'merlin-wp' ),
+				'description'      => esc_html__( 'Demo content data.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'install_callback' => array( $this->importer, 'import' ),
 				'data'             => $import_files['content'],
@@ -2006,11 +2007,11 @@ class Merlin {
 
 		if ( ! empty( $import_files['widgets'] ) ) {
 			$content['widgets'] = array(
-				'title'            => esc_html__( 'Widgets', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'Sample widgets data.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'Widgets', 'merlin-wp' ),
+				'description'      => esc_html__( 'Sample widgets data.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'install_callback' => array( 'Merlin_Widget_Importer', 'import' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'data'             => $import_files['widgets'],
@@ -2020,11 +2021,11 @@ class Merlin {
         //add by morteza
         if ( ! empty( $import_files['elementor'] ) ) {
             $content['elementor'] = array(
-                'title'            => esc_html__( 'elementor', SAMYAR_TEXT_DOMAIN ),
-                'description'      => esc_html__( 'Sample elementor data.', SAMYAR_TEXT_DOMAIN ),
-                'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-                'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-                'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+                'title'            => esc_html__( 'elementor', 'merlin-wp' ),
+                'description'      => esc_html__( 'Sample elementor data.', 'merlin-wp' ),
+                'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+                'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+                'success'          => esc_html__( 'Success', 'merlin-wp' ),
                 'install_callback' => array( $this, 'import_elementor' ),
                 'checked'          => $this->is_possible_upgrade() ? 0 : 1,
                 'data'             => $import_files['elementor'],
@@ -2033,11 +2034,11 @@ class Merlin {
 
 		if ( ! empty( $import_files['sliders'] ) ) {
 			$content['sliders'] = array(
-				'title'            => esc_html__( 'Revolution Slider', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'Sample Revolution sliders data.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'Revolution Slider', 'merlin-wp' ),
+				'description'      => esc_html__( 'Sample Revolution sliders data.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'install_callback' => array( $this, 'import_revolution_sliders' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'data'             => $import_files['sliders'],
@@ -2046,11 +2047,11 @@ class Merlin {
 
 		if ( ! empty( $import_files['options'] ) ) {
 			$content['options'] = array(
-				'title'            => esc_html__( 'Options', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'Sample theme options data.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'Options', 'merlin-wp' ),
+				'description'      => esc_html__( 'Sample theme options data.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'install_callback' => array( 'Merlin_Customizer_Importer', 'import' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'data'             => $import_files['options'],
@@ -2059,11 +2060,11 @@ class Merlin {
 
 		if ( ! empty( $import_files['redux'] ) ) {
 			$content['redux'] = array(
-				'title'            => esc_html__( 'Redux Options', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'Redux framework options.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'Redux Options', 'merlin-wp' ),
+				'description'      => esc_html__( 'Redux framework options.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'install_callback' => array( 'Merlin_Redux_Importer', 'import' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'data'             => $import_files['redux'],
@@ -2072,11 +2073,11 @@ class Merlin {
 
 		if ( false !== has_action( 'merlin_after_all_import' ) ) {
 			$content['after_import'] = array(
-				'title'            => esc_html__( 'After import setup', SAMYAR_TEXT_DOMAIN ),
-				'description'      => esc_html__( 'After import setup.', SAMYAR_TEXT_DOMAIN ),
-				'pending'          => esc_html__( 'Pending', SAMYAR_TEXT_DOMAIN ),
-				'installing'       => esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN ),
-				'success'          => esc_html__( 'Success', SAMYAR_TEXT_DOMAIN ),
+				'title'            => esc_html__( 'After import setup', 'merlin-wp' ),
+				'description'      => esc_html__( 'After import setup.', 'merlin-wp' ),
+				'pending'          => esc_html__( 'Pending', 'merlin-wp' ),
+				'installing'       => esc_html__( 'Installing', 'merlin-wp' ),
+				'success'          => esc_html__( 'Success', 'merlin-wp' ),
 				'install_callback' => array( $this->hooks, 'after_all_import_action' ),
 				'checked'          => $this->is_possible_upgrade() ? 0 : 1,
 				'data'             => $selected_import_index,
@@ -2102,7 +2103,7 @@ class Merlin {
 
 		$response = $importer->importSliderFromPost( true, true, $file );
 
-		$this->logger->info( __( 'The revolution slider import was executed', SAMYAR_TEXT_DOMAIN ) );
+		$this->logger->info( __( 'The revolution slider import was executed', 'merlin-wp' ) );
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return 'true';
@@ -2127,7 +2128,7 @@ class Merlin {
 
 
 
-        $this->logger->info( __( 'The elementor import was executed', SAMYAR_TEXT_DOMAIN ) );
+        $this->logger->info( __( 'The elementor import was executed', 'merlin-wp' ) );
 
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
             return 'true';
@@ -2144,7 +2145,7 @@ class Merlin {
 	 */
 	public function pt_importer_new_ajax_request_response_data( $data ) {
 		$data['url']      = admin_url( 'admin-ajax.php' );
-		$data['message']  = esc_html__( 'Installing', SAMYAR_TEXT_DOMAIN );
+		$data['message']  = esc_html__( 'Installing', 'merlin-wp' );
 		$data['proceed']  = 'true';
 		$data['action']   = 'merlin_content';
 		$data['content']  = 'content';
@@ -2165,7 +2166,7 @@ class Merlin {
 			update_option( 'page_on_front', $homepage->ID );
 			update_option( 'show_on_front', 'page' );
 
-			$this->logger->debug( __( 'The home page was set', SAMYAR_TEXT_DOMAIN ), array( 'homepage_id' => $homepage ) );
+			$this->logger->debug( __( 'The home page was set', 'merlin-wp' ), array( 'homepage_id' => $homepage ) );
 		}
 
 		// Set static blog page.
@@ -2175,7 +2176,7 @@ class Merlin {
 			update_option( 'page_for_posts', $blogpage->ID );
 			update_option( 'show_on_front', 'page' );
 
-			$this->logger->debug( __( 'The blog page was set', SAMYAR_TEXT_DOMAIN ), array( 'blog_page_id' => $blogpage ) );
+			$this->logger->debug( __( 'The blog page was set', 'merlin-wp' ), array( 'blog_page_id' => $blogpage ) );
 		}
 	}
 
@@ -2190,7 +2191,7 @@ class Merlin {
 			$hello_world->post_status = 'draft';
 			wp_update_post( $hello_world );
 
-			$this->logger->debug( __( 'The Hello world post status was set to draft', SAMYAR_TEXT_DOMAIN ) );
+			$this->logger->debug( __( 'The Hello world post status was set to draft', 'merlin-wp' ) );
 		}
 	}
 
@@ -2214,7 +2215,7 @@ class Merlin {
 			if ( ! empty( $import_file['import_file_name'] ) ) {
 				$filtered_import_file_info[] = $import_file;
 			} else {
-				$this->logger->warning( __( 'This predefined demo import does not have the name parameter: import_file_name', SAMYAR_TEXT_DOMAIN ), $import_file );
+				$this->logger->warning( __( 'This predefined demo import does not have the name parameter: import_file_name', 'merlin-wp' ), $import_file );
 			}
 		}
 

@@ -11,7 +11,7 @@ if ( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && 'comments.php' == basename( $_SER
 }
 
 if ( post_password_required() ) { ?>
-    <p class="nocomments"><?php _e('This post is password protected. Enter the password to view comments.', SAMYAR_TEXT_DOMAIN); ?></p>
+    <p class="nocomments">This post is password protected. Enter the password to view comments.</p>
 	<?php
 	return;
 }
@@ -53,7 +53,7 @@ if ( post_password_required() ) { ?>
                                 <p class="logged-in-as"><a href="<?php echo get_option( 'siteurl' ); ?>/wp-admin/profile.php"
                                                            aria-label="<?php echo sprintf(__('Entered as %s Edit your birth certificate.', SAMYAR_TEXT_DOMAIN), get_user_option( 'user_nicename' )); ?>"
                                                            data-wpel-link="internal"><?php echo sprintf(__('You are logged in as %s', SAMYAR_TEXT_DOMAIN), get_user_option( 'user_nicename' )); ?></a>. <a
-                                            href="<?php echo kando_logout_url(get_permalink()); ?>"
+                                            href="<?php echo wp_logout_url( get_permalink() ); ?>"
                                             data-wpel-link="internal"><?php _e( "Logout?", SAMYAR_TEXT_DOMAIN ) ?></a></p>
 							<?php endif; ?>
                             <div class="clearfix">

@@ -133,13 +133,7 @@ $title =  __('your Refill orders', SAMYAR_TEXT_DOMAIN);
         <?php
         // * paginate
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;//شماره صفحه فعلی
-
-        $user_id = get_current_user_id();
-        $items_per_page = get_user_meta($user_id, 'items_per_page', true);
-        $items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
-
-        $limit = $items_per_page; //تعداد قابل نمایش
-
+        $limit = 30; //تعداد قابل نمایش
         $offset = ($limit * $paged) - $limit;
 
 
@@ -185,38 +179,22 @@ $title =  __('your Refill orders', SAMYAR_TEXT_DOMAIN);
                 endforeach; ?>
                 </tbody>
             </table>
-            <div class="table-footer-container">
-                <div class="item-right">
-                    <label>
-                        <select name="kando_select_item_per_page">
-                            <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
-                            <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
-                            <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
-                            <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="item-center">
-                    <?php
-                    if (isset($_GET['status']) && !empty($_GET['status'])) {
-                        $status = $_GET['status'];
-                    } else {
-                        $status = 'all';
-                    }
+            <?php
+            if (isset($_GET['status']) && !empty($_GET['status'])) {
+                $status = $_GET['status'];
+            } else {
+                $status = 'all';
+            }
 
-                    if (isset($_GET['user']) && !empty($_GET['user'])) {
-                        $uid = $_GET['user'];
-                    } else {
-                        $uid = "";
-                    }
+            if (isset($_GET['user']) && !empty($_GET['user'])) {
+                $uid = $_GET['user'];
+            } else {
+                $uid = "";
+            }
 
-                    $total = get_count_refill_orders($status, $uid);
-                    samyar_pagination($total, $limit, $paged)
-                    ?>
-                </div>
-            </div>
-
-
+            $total = get_count_refill_orders($status, $uid);
+            samyar_pagination($total, $limit, $paged)
+            ?>
         <?php
         else:
             ?>

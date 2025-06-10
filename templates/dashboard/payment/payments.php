@@ -4,15 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-use kandopanel\currencyController;
 use samyar\Payment;
 use samyar\Pmeta;
-use samyar\priceController;
 
-$priceSettings = [
-    'base_currency_data' => currencyController::getInstance()->getUserCurrency(get_option('base_currency', "IRT")),
-    'user_currency_data' => currencyController::getInstance()->getUserCurrency(currencyController::getInstance()->getUserCurrency()),
-];
 ?>
 <?php if (kando_user_can('show_payment_filter')): ?>
 
@@ -69,7 +63,7 @@ $priceSettings = [
 				<?php _e( 'All', SAMYAR_TEXT_DOMAIN );
 				echo '<span class="button button-light badge-error-orders">' . get_count_payments( 'all' ) . '</span>' ?></a></li>
 		<?php
-		$gateway_array = array( 'bitpay', 'zarinpal', 'zibal', 'wallet', 'card_to_card' );
+		$gateway_array = array( 'bitpay', 'idpay', 'payir', 'zarinpal', 'zibal', 'wallet', 'card_to_card' );
 		$gateway_array = apply_filters( 'kando_gateways_list', $gateway_array );
 		//		$number_error_orders = get_count_orders('error');
 		if ( ! empty( $gateway_array ) ) {
@@ -83,6 +77,14 @@ $priceSettings = [
                     case 'bitpay':
                         $text = __("Bitpay", SAMYAR_TEXT_DOMAIN);
                         $color = "button-red";
+                        break;
+                    case 'idpay':
+                        $text = __("Idpay", SAMYAR_TEXT_DOMAIN);
+                        $color = "button-blue";
+                        break;
+                    case 'payir':
+                        $text = __("Payir", SAMYAR_TEXT_DOMAIN);
+                        $color = "button-default";
                         break;
                     case 'zarinpal':
                         $text = __("Zarinpal", SAMYAR_TEXT_DOMAIN);
@@ -139,12 +141,7 @@ $priceSettings = [
 		//		$payments = Payment::all();
 		// * paginate
 		$paged  = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;//شماره صفحه فعلی
-        $user_id = get_current_user_id();
-        $items_per_page = get_user_meta($user_id, 'items_per_page', true);
-        $items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
-
-        $limit = $items_per_page; //تعداد قابل نمایش
-
+		$limit  = 30; //تعداد قابل نمایش
 		$offset = ( $limit * $paged ) - $limit;
 
 		$query = [ 'order' => 'DESC', 'order_by' => 'id', 'limit' => $limit, 'offset' => $offset ];
@@ -194,7 +191,7 @@ $priceSettings = [
                         <td data-title="<?php _e("Type", SAMYAR_TEXT_DOMAIN); ?>" class="<?php if ( $payment->status == 1 ): ?>success-payment<?php else: ?>fail-payment<?php endif; ?>">
 							<?php //if ($payment->status == 1): ?>
                             <?php if ($payment->payment_type == "add-credit"): ?>
-                                <span style="color: #00a699;font-size: 20px;" data-tooltip="<?php _e("Add funds", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-plus"></i></span>
+                                <span style="color: #00a699;font-size: 20px;" data-tooltip="<?php _e("Add credit", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-plus"></i></span>
                             <?php elseif ($payment->payment_type == "decrease-credit"): ?>
                                 <span style="color: #e60921;font-size: 20px;" data-tooltip="<?php _e("Decrease credit", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-minus"></i></span>
                             <?php elseif ($payment->payment_type == "set-credit"): ?>
@@ -217,6 +214,14 @@ $priceSettings = [
                                 case 'bitpay':
                                     $text = __("Bitpay", SAMYAR_TEXT_DOMAIN);
                                     $color = "button-red";
+                                    break;
+                                case 'idpay':
+                                    $text = __("Idpay", SAMYAR_TEXT_DOMAIN);
+                                    $color = "button-blue";
+                                    break;
+                                case 'payir':
+                                    $text = __("Payir", SAMYAR_TEXT_DOMAIN);
+                                    $color = "button-default";
                                     break;
                                 case 'zarinpal':
                                     $text = __("Zarinpal", SAMYAR_TEXT_DOMAIN);
@@ -256,7 +261,8 @@ $priceSettings = [
 
                         </td>
                         <td data-title="<?php _e("Amount", SAMYAR_TEXT_DOMAIN); ?>">
-                            <?php echo priceController::kandoFormatPrice($payment->amount)['price_for_show_formatted'] ?>
+                            <?php echo kandoConvertCurrency($payment->amount) ?>
+<!--							--><?php //echo number_format_i18n( esc_attr( (int)$payment->amount ) ) ?><!----><?php //kando_get_currency_base_text() ?>
                         </td>
                         <td data-title="<?php _e("User information", SAMYAR_TEXT_DOMAIN); ?>">
 							<?php
@@ -283,20 +289,15 @@ $priceSettings = [
 							<?php
 							$coupon_code           = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'coupon_code' ] );
 							if ( $coupon_code ):
-//								$original_price = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'original_price' ] );
-								$price_by_gift = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'price_by_gift' ] );
-								$gift_amount = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'gift_amount' ] );
-
-                                $price_by_gift_value = (is_object($price_by_gift)) ? (float)($price_by_gift->meta_value ?? 0) : 0;
-                                $gift_amount_value = (is_object($gift_amount)) ? (float)($gift_amount->meta_value ?? 0) : 0;
-
-
-                                ?>
+								$original_price = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'original_price' ] );
+								$price_by_discount = Pmeta::find_where( [ 'payment_id' => $payment->id, 'meta_key' => 'price_by_discount' ] );
+								?>
                                 <span class="button button-green badge-error-orders"
-                                      style="margin-right: 0;"><?php _e("Amount charged:", SAMYAR_TEXT_DOMAIN); ?>   <?= priceController::kandoFormatPrice($price_by_gift_value)['price_for_show_formatted'] ?></span>
+                                      style="margin-right: 0;"><?php _e("Amount charged:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$original_price->meta_value ) ?> <?php kando_get_currency_base_text() ?></span>
                                 <br>
-                                <?php _e("Gift:", SAMYAR_TEXT_DOMAIN); ?>   <?= priceController::kandoFormatPrice( $gift_amount_value )['price_for_show_formatted'] ?> <br>
-                                <?php _e("Gift code:", SAMYAR_TEXT_DOMAIN); ?>   <?= $coupon_code->meta_value ?><br>
+                                <?php _e("discount:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$original_price->meta_value - (int)$price_by_discount->meta_value ) ?><?php kando_get_currency_base_text() ?> <br>
+                                <?php _e("Amount paid:", SAMYAR_TEXT_DOMAIN); ?>   <?= number_format_i18n( (int)$price_by_discount->meta_value ) ?><?php kando_get_currency_base_text() ?> <br>
+                                <?php _e("Discount code:", SAMYAR_TEXT_DOMAIN); ?>   <?= $coupon_code->meta_value ?><br>
 
 							<?php
 							endif ?>
@@ -321,13 +322,13 @@ $priceSettings = [
 							<?php
                             switch ($payment->status) {
                                 case 0:
-                                    echo "<span style='color: #f58'>".__("Unsuccessful", SAMYAR_TEXT_DOMAIN)."</span>";
+                                    echo "<span style='color: #f58'>"._e("Unsuccessful", SAMYAR_TEXT_DOMAIN)."</span>";
                                     break;
                                 case 1:
-                                    echo "<span style='color: #7ccc77'>".__("Successful", SAMYAR_TEXT_DOMAIN)."</span>";
+                                    echo "<span style='color: #7ccc77'>"._e("Successful", SAMYAR_TEXT_DOMAIN)."</span>";
                                     break;
                                 case 2:
-                                    echo "<span style='color: #7793cc'>".__("Awaiting confirmation", SAMYAR_TEXT_DOMAIN)."</span>";
+                                    echo "<span style='color: #7793cc'>"._e("Awaiting confirmation", SAMYAR_TEXT_DOMAIN)."</span>";
                                     break;
                             }
 							?>
@@ -343,31 +344,15 @@ $priceSettings = [
 				<?php } ?>
                 </tbody>
             </table>
-            <div class="table-footer-container">
-                <div class="item-right">
-                    <label>
-                        <select name="kando_select_item_per_page">
-                            <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
-                            <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
-                            <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
-                            <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="item-center">
-                    <?php
-                    if ( isset( $_GET['gateway'] ) && ! empty( $_GET['gateway'] ) ) {
-                        $gateway = $_GET['gateway'];
-                    } else {
-                        $gateway = 'all';
-                    }
-                    $total = get_count_payments( $gateway );
-                    samyar_pagination( $total, $limit, $paged )
-                    ?>
-                </div>
-            </div>
-
-
+			<?php
+			if ( isset( $_GET['gateway'] ) && ! empty( $_GET['gateway'] ) ) {
+				$gateway = $_GET['gateway'];
+			} else {
+				$gateway = 'all';
+			}
+			$total = get_count_payments( $gateway );
+			samyar_pagination( $total, $limit, $paged )
+			?>
 		<?php
 		else:
 			?>

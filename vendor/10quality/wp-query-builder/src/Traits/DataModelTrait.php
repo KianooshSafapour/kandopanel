@@ -89,13 +89,15 @@ trait DataModelTrait
         unset( $args['order_by'] );
         $order = isset( $args['order'] ) ? $args['order'] : 'ASC';
         unset( $args['order'] );
+	    $select = isset( $args['select'] ) ? $args['select'] : '*';
+	    unset( $args['select'] );
         // Build query and retrieve
         $builder = new QueryBuilder( self::TABLE . '_where' );
         return array_map(
             function( $attributes ) {
                 return new self( $attributes );
             },
-            $builder->select( '*' )
+            $builder->select( $select )
                 ->from( self::TABLE . ' as `' . self::TABLE . '`' )
                 ->keywords( $keywords, static::$keywords, $keywords_separator )
                 ->where( $args )

@@ -22,8 +22,8 @@ class smartPanelApi
     public function __construct()
     {
         $options = settingsController::getInstance();
-        $this->api_url = kando_get_option('api-url');
-        $this->api_key = kando_get_option('api-key');
+        $this->api_url = $options->get_option('api-url');
+        $this->api_key = $options->get_option('api-key');
     }
 
 

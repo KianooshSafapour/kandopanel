@@ -119,7 +119,7 @@ class Plugin {
         \Elementor\Plugin::instance()->elements_manager->add_category(
             'kando-category',
             [
-                'title' => __('Kando Panel Elements', SAMYAR_TEXT_DOMAIN),
+                'title' => "المان های کندو پنل",
                 'icon' => 'eicon-price-table',
             ]
         );

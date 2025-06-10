@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @author 10 Quality <info@10quality.com>
  * @license MIT
  * @package wp-query-builder
- * @version 1.0.13
+ * @version 1.0.12
  */
 class AbstractModelTest extends TestCase
 {
@@ -20,7 +20,7 @@ class AbstractModelTest extends TestCase
     */
     public function testTablenameProperty()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model;
         // Assert
@@ -34,7 +34,7 @@ class AbstractModelTest extends TestCase
      */
     public function testSave()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'name'  => 'test',
@@ -54,7 +54,7 @@ class AbstractModelTest extends TestCase
      */
     public function testSaveUpdate()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'model_id'  => 888999,
@@ -75,7 +75,7 @@ class AbstractModelTest extends TestCase
      */
     public function testSaveForceInsert()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'model_id'  => 888999,
@@ -95,7 +95,7 @@ class AbstractModelTest extends TestCase
      */
     public function testDelete()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'model_id'  => 99,
@@ -114,7 +114,7 @@ class AbstractModelTest extends TestCase
      */
     public function testDeleteEmpty()
     {
-        // Prepare
+        // Preapre
         $model = new Model();
         // Exec
         $flag = $model->delete();
@@ -129,7 +129,7 @@ class AbstractModelTest extends TestCase
      */
     public function testLoad()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'model_id'  => 101,
@@ -152,7 +152,7 @@ class AbstractModelTest extends TestCase
      */
     public function testSaveTimestamps()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'name'  => 'test',
@@ -178,7 +178,7 @@ class AbstractModelTest extends TestCase
      */
     public function testUpdate()
     {
-        // Prepare
+        // Preapre
         global $wpdb;
         $model = new Model( [
             'model_id'  => 888999,

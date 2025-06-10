@@ -80,7 +80,7 @@ $search = new WP_Query( $search_query );
 			}
 
 		} else {
-            echo '<h2>' . __('No content found', SAMYAR_TEXT_DOMAIN) . '</h2>';
+			echo '<h2>مطلبی یافت نشد</h2>';
 		}
 		?>
 
