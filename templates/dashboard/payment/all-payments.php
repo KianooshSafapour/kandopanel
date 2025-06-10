@@ -6,9 +6,10 @@ if (!defined('ABSPATH')) {
 
 use samyar\Payment;
 use samyar\Pmeta;
+use samyar\priceController;
 
 ?>
-<?php if (kando_user_can('show_payment_filter')): ?>
+
 
     <div class="tickets-navigation">
         <a href="#" class="button button-blue kando-show-payment-filter" data-wpel-link="internal"><?php _e("Filter", SAMYAR_TEXT_DOMAIN); ?></a>
@@ -28,9 +29,11 @@ use samyar\Pmeta;
                         <select name="filter_type">
                             <option value="0"><?php _e("Select the filter type", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="transaction-id"><?php _e("Transaction id", SAMYAR_TEXT_DOMAIN); ?></option>
+                            <?php if (kando_user_can('show_payment_filter')): ?>
                             <option value="email"><?php _e("User email", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="mobile"><?php _e("Mobile", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="username"><?php _e("Username", SAMYAR_TEXT_DOMAIN); ?></option>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="column kt-col-xs-12 kt-col-md-2 float-right">
@@ -39,18 +42,18 @@ use samyar\Pmeta;
                     <div class="column kt-col-xs-6 kt-col-md-3 float-right">
                         <input type="hidden" name="success-status" value="0">
                         <input type="checkbox" value="1" id="success-status" name="success-status">
-                        <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="success-status">فقط موفق ها</label>
+                        <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="success-status"><?php _e("Only Successful Ones", SAMYAR_TEXT_DOMAIN); ?></label>
                     </div>
                     <div class="column kt-col-xs-6 kt-col-md-3 float-right">
                         <input type="hidden" name="success-add-credit" value="0">
                         <input type="checkbox" value="1" id="success-add-credit" name="success-add-credit">
-                        <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="success-add-credit">فقط واریزها</label>
+                        <label style="margin: 20px 0;font-size: 15px;font-weight: bold;" class="publish-notification" for="success-add-credit"><?php _e("Only Deposits", SAMYAR_TEXT_DOMAIN); ?></label>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-<?php endif; ?>
+
 <div class="page-options d-flex tabs-wrapper">
     <ul class="list-inline mb-0 order_btn_group nav">
         <li class="list-inline-item nav-select" style="margin-left: -5px;">
@@ -58,7 +61,7 @@ use samyar\Pmeta;
                 <?php _e('All', SAMYAR_TEXT_DOMAIN);
                 echo '<span class="button button-light badge-error-orders">' . get_count_payments_all('all') . '</span>' ?></a></li>
         <?php
-        $gateway_array = array('bitpay', 'idpay', 'payir', 'zarinpal', 'zibal', 'wallet', 'card_to_card');
+        $gateway_array = array('bitpay', 'zarinpal', 'zibal', 'wallet', 'card_to_card');
         $gateway_array = apply_filters('kando_gateways_list',$gateway_array);
         //		$number_error_orders = get_count_orders('error');
         if (!empty($gateway_array)) {
@@ -72,14 +75,6 @@ use samyar\Pmeta;
                     case 'bitpay':
                         $text = __("Bitpay", SAMYAR_TEXT_DOMAIN);
                         $color = "button-red";
-                        break;
-                    case 'idpay':
-                        $text = __("Idpay", SAMYAR_TEXT_DOMAIN);
-                        $color = "button-blue";
-                        break;
-                    case 'payir':
-                        $text = __("Payir", SAMYAR_TEXT_DOMAIN);
-                        $color = "button-default";
                         break;
                     case 'zarinpal':
                         $text = __("Zarinpal", SAMYAR_TEXT_DOMAIN);
@@ -136,7 +131,14 @@ use samyar\Pmeta;
         //		$payments = Payment::all();
         // * paginate
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;//شماره صفحه فعلی
-        $limit = 30; //تعداد قابل نمایش
+
+        $user_id = get_current_user_id();
+        $items_per_page = get_user_meta($user_id, 'items_per_page', true);
+        $items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
+
+        $limit = $items_per_page; //تعداد قابل نمایش
+
+
         $offset = ($limit * $paged) - $limit;
 
         $query = ['order' => 'DESC', 'order_by' => 'id', 'limit' => $limit, 'offset' => $offset];
@@ -176,7 +178,7 @@ use samyar\Pmeta;
                         <td data-title="<?php _e("Type", SAMYAR_TEXT_DOMAIN); ?>">
                             <?php if ($payment->status == 1): ?>
                                 <?php if ($payment->payment_type == "add-credit"): ?>
-                                    <span style="color: #00a699;font-size: 20px;" data-tooltip="<?php _e("Add credit", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-plus"></i></span>
+                                    <span style="color: #00a699;font-size: 20px;" data-tooltip="<?php _e("Add funds", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-plus"></i></span>
                                 <?php elseif ($payment->payment_type == "decrease-credit"): ?>
                                     <span style="color: #e60921;font-size: 20px;" data-tooltip="<?php _e("Decrease credit", SAMYAR_TEXT_DOMAIN); ?>"><i class="fal fa-minus"></i></span>
 	                            <?php elseif ($payment->payment_type == "set-credit"): ?>
@@ -199,14 +201,6 @@ use samyar\Pmeta;
                                 case 'bitpay':
                                     $text = __("Bitpay", SAMYAR_TEXT_DOMAIN);
                                     $color = "button-red";
-                                    break;
-                                case 'idpay':
-                                    $text = __("Idpay", SAMYAR_TEXT_DOMAIN);
-                                    $color = "button-blue";
-                                    break;
-                                case 'payir':
-                                    $text = __("Payir", SAMYAR_TEXT_DOMAIN);
-                                    $color = "button-default";
                                     break;
                                 case 'zarinpal':
                                     $text = __("Zarinpal", SAMYAR_TEXT_DOMAIN);
@@ -246,14 +240,18 @@ use samyar\Pmeta;
 
                         </td>
                         <td data-title="<?php _e("Amount", SAMYAR_TEXT_DOMAIN); ?>">
-                            <?php echo number_format_i18n(esc_attr((int)$payment->amount)) ?> تومان
+                            <?php echo priceController::kandoFormatPrice($payment->amount)['price_for_show_formatted'] ?>
                         </td>
                         <td data-title="<?php _e("User information", SAMYAR_TEXT_DOMAIN); ?>">
                             <?php
                             $user = get_user_by('id', $payment->uid);
-                            echo $user->display_name;
-                            echo "<br>";
-                            echo get_user_meta($user->ID, 'mobile', true);
+                            if($user){
+                                echo $user->display_name;
+                                echo "<br>";
+                                echo get_user_meta($user->ID, 'mobile', true);
+                            }
+
+
                             ?>
                         </td>
                         <td data-title="<?php _e("Date", SAMYAR_TEXT_DOMAIN); ?>">
@@ -278,7 +276,7 @@ use samyar\Pmeta;
                                 <span class="button button-green badge-error-orders" style="margin-right: 0;"> <?php _e("Amount charged:", SAMYAR_TEXT_DOMAIN); ?>  <?= number_format_i18n((int)$original_price->meta_value) ?> <?php kando_get_currency_base_text() ?></span><br>
                                 <?php _e("discount:", SAMYAR_TEXT_DOMAIN); ?> <?= number_format_i18n((int)$original_price->meta_value - (int)$price_by_discount->meta_value) ?> تومان <br>
                                 <?php _e("Amount paid:", SAMYAR_TEXT_DOMAIN); ?> <?= number_format_i18n((int)$price_by_discount->meta_value) ?> تومان <br>
-                                <?php _e("Discount code:", SAMYAR_TEXT_DOMAIN); ?> <?= $coupon_code->meta_value ?><br>
+                                <?php _e("Gift code:", SAMYAR_TEXT_DOMAIN); ?> <?= $coupon_code->meta_value ?><br>
 
                             <?php
                             endif ?>
@@ -316,15 +314,31 @@ use samyar\Pmeta;
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <?php
-            if (isset($_GET['gateway']) && !empty($_GET['gateway'])) {
-                $gateway = $_GET['gateway'];
-            } else {
-                $gateway = 'all';
-            }
-            $total = get_count_payments_all($gateway);
-            samyar_pagination($total, $limit, $paged)
-            ?>
+            <div class="table-footer-container">
+                <div class="item-right">
+                    <label>
+                        <select name="kando_select_item_per_page">
+                            <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
+                            <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
+                            <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
+                            <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="item-center">
+                    <?php
+                    if (isset($_GET['gateway']) && !empty($_GET['gateway'])) {
+                        $gateway = $_GET['gateway'];
+                    } else {
+                        $gateway = 'all';
+                    }
+                    $total = get_count_payments_all($gateway);
+                    samyar_pagination($total, $limit, $paged)
+                    ?>
+                </div>
+            </div>
+
+
         <?php
         else:
             ?>

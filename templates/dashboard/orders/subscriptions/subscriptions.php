@@ -9,6 +9,7 @@ use samyar\Provider;
 use samyar\Service;
 
 $title =  __("Subscriptions order", SAMYAR_TEXT_DOMAIN);
+$stranslates = \samyar\serviceController::getInstance()->get_translates();
 ?>
 <div class="kt-row">
 	<div class="column kt-col-xs-12">
@@ -129,7 +130,14 @@ $title =  __("Subscriptions order", SAMYAR_TEXT_DOMAIN);
 		<?php
 		// * paginate
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;//شماره صفحه فعلی
-		$limit = 30; //تعداد قابل نمایش
+
+        $user_id = get_current_user_id();
+        $items_per_page = get_user_meta($user_id, 'items_per_page', true);
+        $items_per_page = $items_per_page ?: 30; // مقدار پیش‌فرض 10
+
+        $limit = $items_per_page; //تعداد قابل نمایش
+
+
 		$offset = ($limit * $paged) - $limit;
 
 
@@ -162,12 +170,12 @@ $title =  __("Subscriptions order", SAMYAR_TEXT_DOMAIN);
 					<th><span class="nobr"><?php _e("ID", SAMYAR_TEXT_DOMAIN); ?></span></th>
 					<th><span class="nobr"><?php _e("Details", SAMYAR_TEXT_DOMAIN); ?></span></th>
                     <?php if (kando_user_can('show_order_user_info')) { ?>
-						<th><span class="nobr">اطلاعات کاربر</span></th>
+                        <th><span class="nobr"><?php _e("User Information", SAMYAR_TEXT_DOMAIN); ?></span></th>
                     <?php } ?>
                     <?php if (kando_user_can('show_order_provider_id')) { ?>
-						<th><span class="nobr">شناسه سفارش در API</span></th>
-						<th><span class="nobr">پاسخ API</span></th>
-					<?php } ?>
+                        <th><span class="nobr"><?php _e("Order ID in API", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                        <th><span class="nobr"><?php _e("API Response", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <?php } ?>
                     <th><span class="nobr"><?php _e("Creation date", SAMYAR_TEXT_DOMAIN); ?></span></th>
                     <th><span class="nobr"><?php _e("Update date", SAMYAR_TEXT_DOMAIN); ?></span></th>
 					<th><span class="nobr"><?php _e("Status", SAMYAR_TEXT_DOMAIN); ?></span></th>
@@ -187,22 +195,38 @@ $title =  __("Subscriptions order", SAMYAR_TEXT_DOMAIN);
 				endforeach; ?>
 				</tbody>
 			</table>
-			<?php
-			if (isset($_GET['status']) && !empty($_GET['status'])) {
-				$status = $_GET['status'];
-			} else {
-				$status = 'all';
-			}
+            <div class="table-footer-container">
+                <div class="item-right">
+                    <label>
+                        <select name="kando_select_item_per_page">
+                            <option value="10" <?php selected($items_per_page, 10); ?>>10</option>
+                            <option value="25" <?php selected($items_per_page, 25); ?>>25</option>
+                            <option value="50" <?php selected($items_per_page, 50); ?>>50</option>
+                            <option value="100" <?php selected($items_per_page, 100); ?>>100</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="item-center">
+                    <?php
+                    if (isset($_GET['status']) && !empty($_GET['status'])) {
+                        $status = $_GET['status'];
+                    } else {
+                        $status = 'all';
+                    }
 
-			if (isset($_GET['user']) && !empty($_GET['user'])) {
-				$uid = $_GET['user'];
-			} else {
-				$uid = "";
-			}
+                    if (isset($_GET['user']) && !empty($_GET['user'])) {
+                        $uid = $_GET['user'];
+                    } else {
+                        $uid = "";
+                    }
 
-			$total = get_count_subscriptions_orders($status, $uid);
-			samyar_pagination($total, $limit, $paged)
-			?>
+                    $total = get_count_subscriptions_orders($status, $uid);
+                    samyar_pagination($total, $limit, $paged)
+                    ?>
+                </div>
+            </div>
+
+
 		<?php
 		else:
 			?>

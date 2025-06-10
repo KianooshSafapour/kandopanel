@@ -510,5 +510,17 @@ $menus = $options->samyar_get_menus($default);
             </div>
         </div>
     </div>
-
+    <script>
+        jQuery(document).ready(function($) {
+            var $sortableElements = $('.sortable');
+            if ($sortableElements.length) {
+                $sortableElements.nestedSortable({
+                    handle: 'div',
+                    listType: "ul",
+                    items: 'li',
+                    toleranceElement: '> div'
+                });
+            }
+        });
+    </script>
 <?php //include('icon-picker-modal.php') ?>

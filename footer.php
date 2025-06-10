@@ -1,6 +1,6 @@
 <?php
 $options = settingsController::getInstance();
-$samyar_footer = $options->get_option('samyar-footer', 0);
+$samyar_footer = kando_get_option('samyar-footer', 0);
 
 ?>
 <?php
@@ -32,7 +32,7 @@ if ($samyar_footer !== "disable") {
                     </div>
                     <div class="copyright">
                         <?php
-                        echo $options->get_option('copyright', "تمامی حقوق مادی و معنوی این وبسایت متعلق به <a href=\"http://127.0.0.1/kandopanel\" data-wpel-link=\"internal\">کندو پنل</a> می باشد و هر گونه کپی برداری پیگرد قانونی دارد.");
+                        echo wp_kses_post(kando_get_option('copyright', __("All material and intellectual property rights of this website belong to <a href=\"http://127.0.0.1/kandopanel\" data-wpel-link=\"internal\">Kando Panel</a>. Any form of copying is subject to legal action.", SAMYAR_TEXT_DOMAIN)));
                         ?>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ if ($samyar_footer !== "disable") {
     <input type="submit" id="payment_submit"/>
 </form>
 <?php
-$enable_mobile_menu = $options->get_option('enable-mobile-menu', 1);
+$enable_mobile_menu = kando_get_option('enable-mobile-menu', 1);
 if ($enable_mobile_menu === "1" || $enable_mobile_menu) {
     include_once(SAMYAR_DIR_TEMPLATE . "/mobile-menu.php");
 } ?>
@@ -139,7 +139,7 @@ if ($enable_mobile_menu === "1" || $enable_mobile_menu) {
                 } else {
                     var number = $(this).inputFilter(function (value) {
                         return /^\d*$/.test(value);    // Allow digits only, using a RegExp
-                    }, "تنها عدد وارد نمایید");
+                    }, kando_data.langs.only_numbers);
 
                     if (number.val() == '') {
                         $(`.otp[tabindex='${tabIndex}']`).val(number.val());

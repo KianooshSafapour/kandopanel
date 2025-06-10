@@ -5,6 +5,7 @@ namespace kandoElementor\Widgets;
 
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
+use samyar\priceController;
 use samyar\Provider;
 use samyar\Service;
 
@@ -148,24 +149,25 @@ class kandoPack2 extends Widget_Base
                 'type' => Controls_Manager::SELECT2,
                 'options' => $servs,
                 'default' => '',
-                'description' => "سرویس را انتخاب کنید",
+                'description' => __('Select the service', SAMYAR_TEXT_DOMAIN),
             ]
         );
 
         $this->add_control(
             'pack-title',
             [
-                'label' => __('pack title', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Title', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::TEXT,
-                'description' => "مثال: سفارش ویو",
+                'description' => __('Example: View Order', SAMYAR_TEXT_DOMAIN),
             ]
         );
+
         $this->add_control(
             'pack-content',
             [
-                'label' => __('pack content', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Content', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::WYSIWYG,
-                'description' => "توضیحات بسته",
+                'description' => __('Package description', SAMYAR_TEXT_DOMAIN),
             ]
         );
         $this->add_control(
@@ -189,10 +191,10 @@ class kandoPack2 extends Widget_Base
                     ],
                     [
                         'name' => 'pack-price-by-discounted',
-                        'label' => __('pack price by Discounted', SAMYAR_TEXT_DOMAIN),
+                        'label' => __('Package Price by Discounted', SAMYAR_TEXT_DOMAIN),
                         'type' => Controls_Manager::TEXT,
                         'label_block' => true,
-                        'description' => "اگر فروش ویژه ندارید خالی بگذارید",
+                        'description' => __('Leave empty if there is no special offer', SAMYAR_TEXT_DOMAIN),
                     ],
                 ],
             ]
@@ -201,18 +203,18 @@ class kandoPack2 extends Widget_Base
         $this->add_control(
             'pack-discount-percent',
             [
-                'label' => __('pack discount percent', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Package Discount Percent', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::TEXT,
-                'description' => "این مقدار نشانگر این است که بر همه موارد این درصد تخفیف اعمال شده است(می توانید خالی بگذارید)",
+                'description' => __('This value indicates that this percentage of discount has been applied to all items (you can leave it empty)', SAMYAR_TEXT_DOMAIN),
             ]
         );
 
         $this->add_control(
             'subtext-number',
             [
-                'label' => __('subtext number', SAMYAR_TEXT_DOMAIN),
+                'label' => __('Subtext Number', SAMYAR_TEXT_DOMAIN),
                 'type' => Controls_Manager::TEXT,
-                'description' => "این حرف پشت تعداد قرار می گیرد مثلا 1000 لایک،ویو یا غیره",
+                'description' => __('This text will appear after the quantity, e.g., 1000 Likes, Views, etc.', SAMYAR_TEXT_DOMAIN),
             ]
         );
 
@@ -250,131 +252,128 @@ class kandoPack2 extends Widget_Base
      */
     protected function render()
     {
-
         $settings = $this->get_settings_for_display();
         $element_id = $this->get_id();
-        $pack_api_id = isset($settings['service-id']) && !empty($settings['service-id']) ? $settings['service-id'] : "";
-        $pack_title = isset($settings['pack-title']) && !empty($settings['pack-title']) ? $settings['pack-title'] : "";
-        $pack_discount_percent = isset($settings['pack-discount-percent']) && !empty($settings['pack-discount-percent']) ? $settings['pack-discount-percent'] : "";
-        $packs = isset($settings['packs']) && !empty($settings['packs']) ? $settings['packs'] : [];
-        $pack_content = isset($settings['pack-content']) && !empty($settings['pack-content']) ? $settings['pack-content'] : "";
-        $subtext_number = isset($settings['subtext-number']) && !empty($settings['subtext-number']) ? $settings['subtext-number'] : "";
 
-        $button_color = isset($settings['button-color']) && !empty($settings['button-color']) ? $settings['button-color'] : "#CD2653";
-        $button_title_color = isset($settings['button-title-color']) && !empty($settings['button-title-color']) ? $settings['button-title-color'] : "#FFFFFF";
+        // Extract settings
+        $pack_api_id = !empty($settings['service-id']) ? $settings['service-id'] : '';
+        $pack_title = !empty($settings['pack-title']) ? $settings['pack-title'] : '';
+        $pack_discount_percent = !empty($settings['pack-discount-percent']) ? $settings['pack-discount-percent'] : '';
+        $packs = !empty($settings['packs']) ? $settings['packs'] : [];
+        $pack_content = !empty($settings['pack-content']) ? $settings['pack-content'] : '';
+        $subtext_number = !empty($settings['subtext-number']) ? $settings['subtext-number'] : '';
 
-//        $last_price = !empty($pack_price_by_discounted) ? $pack_price_by_discounted : $pack_price;
+        $button_color = !empty($settings['button-color']) ? $settings['button-color'] : '#CD2653';
+        $button_title_color = !empty($settings['button-title-color']) ? $settings['button-title-color'] : '#FFFFFF';
 
-        $link = add_query_arg(array(), home_url('kando-send-pack'));
+        // Order link
+        $link = add_query_arg([], home_url('kando-send-pack'));
 
-        ?>
-        <div style="text-align: center">
-        <?php if (!empty($pack_discount_percent)) { ?>
+        // Calculate prices
+        $first_pack = $packs[0] ?? [];
+        $last_price = !empty($first_pack['pack-price-by-discounted']) ? $first_pack['pack-price-by-discounted'] : ($first_pack['pack_price'] ?? 0);
+        $old_price = ($first_pack['pack_price'] ?? 0) == $last_price ? 0 : ($first_pack['pack_price'] ?? 0);
 
-        <span class="kando-elementor-pack2 off">
-            <span><?php echo esc_attr($pack_discount_percent) ?><i>٪</i></span>
-        <div> تــخــفـیــف  </div>به مدت محدود </span>
-
-    <?php } ?>
-        <div class="kando-elementor-pack2 pckg" id="viewplans">
-
-            <div class="pckg-head">
-                <h2 class="pckg-title"><?php echo esc_attr($pack_title) ?></h2>
-                <div>
-            <span class="comboChooser">
-                <select name="<?php echo $element_id ?>_combo" class="fl_combo <?php echo $element_id ?>combo niceSelect">
-                    <?php foreach ($packs as $i => $pack) {
-                        $last_price1 = !empty($pack['pack-price-by-discounted']) ? $pack['pack-price-by-discounted'] : $pack['pack_price'];
-
-                        ?>
-                        <option data-price="<?php echo number_format_i18n((int)$last_price1) ?> <?=kando_get_currency_base_text()?>" value="<?php echo $pack['pack_number'] ?>"><?php echo $pack['pack_number'] ?>  <?php echo esc_attr($subtext_number) ?> </option>
-                    <?php } ?>
-                                    </select>
-            </span>
-                </div>
-            </div>
-
-            <div class="pckg-price">
-                <?php
-                $last_price = !empty($packs[0]['pack-price-by-discounted']) ? $packs[0]['pack-price-by-discounted'] : $packs[0]['pack_price'];
-                ?>
-                <?php
-                $oldPrice = $packs[0]['pack_price'] == $last_price ? 0 : $packs[0]['pack_price'];
-                ?>
-                <span class="oldPrice" id="<?php echo $element_id ?>_oldPrice" style="text-decoration: line-through;<?php if($oldPrice == 0): ?>display: none<?php endif; ?>">
-                    <?php echo number_format_i18n(esc_attr((int)$oldPrice)) ?></span>
-                <span>
-
-                    <i style="font-style: normal" id="<?php echo $element_id ?>_newPrice"><?php echo number_format_i18n(esc_attr((int)$last_price)) ?></i>
-            <sup><?=kando_get_currency_base_text()?></sup>
-        </span>
-            </div>
-
-            <div class="normal-text">
-                <?php echo $pack_content ?>
-            </div>
-
-            <form id="form_<?php echo $element_id ?>" action="#" method="get">
-                <div class="pckg_view-foot"><input class="btn btn-blue-bg kt-modal-button samyar-show-package-form" data-modal="send-package" data-price="<?php echo esc_attr($last_price) ?>" data-title="<?php echo esc_attr($pack_title) ?>" data-service="<?php echo esc_attr($pack_api_id) ?>" data-quantity="<?php echo esc_attr($packs[0]['pack_number']) ?>" style="background:<?php echo esc_attr($button_color) ?>;color:<?php echo esc_attr($button_title_color) ?>;border-radius: 3px;" type="submit" value="سفارش">
-            </form>
-
-        </div>
-         </div>
-        <?php
+        // Prepare data for JavaScript
         $v_pcks = [];
-        foreach ($packs as $i => $pack) {
+        foreach ($packs as $pack) {
             $v_pcks[$pack['pack_number']] = [
-                'count' => isset($pack['pack_number']) ? $pack['pack_number'] : "",
-                'Fprice' => isset($pack['pack-price-by-discounted']) ? $pack['pack-price-by-discounted'] : "",
-                'price' => isset($pack['pack_price']) ? $pack['pack_price'] : "",
+                'count' => $pack['pack_number'] ?? '',
+                'Fprice' => $pack['pack-price-by-discounted'] ?? '',
+                'price' => $pack['pack_price'] ?? '',
             ];
         }
-        $v_pcks = json_encode($v_pcks);
+
+        // Display HTML
         ?>
+        <div style="text-align: center">
+            <?php if (!empty($pack_discount_percent)) : ?>
+                <span class="kando-elementor-pack2 off">
+                <span><?php echo esc_attr($pack_discount_percent) ?><i>%</i></span>
+                <div><?php _e('Discount', SAMYAR_TEXT_DOMAIN) ?></div><?php _e('For a limited time', SAMYAR_TEXT_DOMAIN) ?>
+            </span>
+            <?php endif; ?>
+
+            <div class="kando-elementor-pack2 pckg" id="viewplans">
+                <div class="pckg-head">
+                    <h2 class="pckg-title"><?php echo esc_html($pack_title) ?></h2>
+                    <div>
+                    <span class="comboChooser">
+                        <select name="<?php echo esc_attr($element_id) ?>_combo" class="fl_combo <?php echo esc_attr($element_id) ?>combo niceSelect">
+                            <?php foreach ($packs as $pack) : ?>
+                                <?php
+                                $last_price1 = !empty($pack['pack-price-by-discounted']) ? $pack['pack-price-by-discounted'] : $pack['pack_price'];
+                                ?>
+                                <option data-price="<?php echo priceController::kandoFormatPrice($last_price1)['price_for_show_formatted'] ?>" value="<?php echo esc_attr($pack['pack_number']) ?>">
+                                    <?php echo esc_html($pack['pack_number']) ?> <?php echo esc_html($subtext_number) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </span>
+                    </div>
+                </div>
+
+                <div class="pckg-price">
+                <span class="oldPrice" id="<?php echo esc_attr($element_id) ?>_oldPrice" style="text-decoration: line-through;<?php echo $old_price == 0 ? 'display: none' : '' ?>">
+                    <?php echo priceController::kandoFormatPrice($old_price)['price_for_show_formatted'] ?>
+                </span>
+                    <span>
+                    <i style="font-style: normal" id="<?php echo esc_attr($element_id) ?>_newPrice"><?php echo priceController::kandoFormatPrice($last_price)['price_for_show_formatted'] ?></i>
+                </span>
+                </div>
+
+                <div class="normal-text">
+                    <?php echo wp_kses_post($pack_content) ?>
+                </div>
+
+                <form id="form_<?php echo esc_attr($element_id) ?>" action="#" method="get">
+                    <div class="pckg_view-foot">
+                        <input class="btn btn-blue-bg kt-modal-button samyar-show-package-form"
+                               data-modal="send-package"
+                               data-price="<?php echo esc_attr($last_price) ?>"
+                               data-title="<?php echo esc_attr($pack_title) ?>"
+                               data-service="<?php echo esc_attr($pack_api_id) ?>"
+                               data-quantity="<?php echo esc_attr($first_pack['pack_number'] ?? '') ?>"
+                               style="background:<?php echo esc_attr($button_color) ?>;color:<?php echo esc_attr($button_title_color) ?>;border-radius: 3px;"
+                               type="submit"
+                               value="<?php _e('Order', SAMYAR_TEXT_DOMAIN) ?>">
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script>
             jQuery(document).ready(function ($) {
-                // $('.niceSelect').niceSelect();
-                $(document).on('change', '.niceSelect', function () {
-                    $(this).niceSelect('update');
+                var pcks_<?php echo esc_attr($element_id) ?> = <?php echo wp_json_encode($v_pcks) ?>;
+
+                function formatNumber(nStr) {
+                    nStr += '';
+                    var x = nStr.split('.');
+                    var x1 = x[0];
+                    var x2 = x.length > 1 ? '.' + x[1] : '';
+                    var rgx = /(\d+)(\d{3})/;
+                    while (rgx.test(x1)) {
+                        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                    }
+                    return x1 + x2;
+                }
+
+                jQuery(document).on('change', '.<?php echo esc_attr($element_id) ?>combo', function () {
+                    var $value = jQuery(this).val();
+                    var selectedPack = pcks_<?php echo esc_attr($element_id) ?>[$value];
+
+                    if (selectedPack.Fprice !== "") {
+                        jQuery('#<?php echo esc_attr($element_id) ?>_oldPrice').text(formatNumber(selectedPack.price)).show();
+                        jQuery('#<?php echo esc_attr($element_id) ?>_newPrice').text(formatNumber(selectedPack.Fprice));
+                        jQuery('#form_<?php echo esc_attr($element_id) ?> input').attr('data-price', selectedPack.Fprice);
+                    } else {
+                        jQuery('#<?php echo esc_attr($element_id) ?>_newPrice').text(formatNumber(selectedPack.price));
+                        jQuery('#<?php echo esc_attr($element_id) ?>_oldPrice').hide();
+                        jQuery('#form_<?php echo esc_attr($element_id) ?> input').attr('data-price', selectedPack.price);
+                    }
+
+                    jQuery('#form_<?php echo esc_attr($element_id) ?> input').attr('data-quantity', selectedPack.count);
                 });
-            });
-            var pcks_<?php echo $element_id ?> = <?php echo $v_pcks;?>;
-
-            function formatNumber(nStr) {
-                nStr += '';
-                x = nStr.split('.');
-                x1 = x[0];
-                x2 = x.length> Number("1") ? '.' + x[1] : '';
-                var rgx = /(\d+)(\d{3})/;
-                while (rgx.test(x1)) {
-                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
-                }
-                return x1 + x2;
-            }
-
-            jQuery(document).on('change', '.<?php echo $element_id ?>combo', function ($) {
-                var $value = jQuery(this).val();
-
-                jQuery('.<?php echo $element_id ?>combo').val(pcks_<?php echo $element_id ?>[$value].count);
-
-                if (pcks_<?php echo $element_id ?>[$value].Fprice !== "") {//اگر فروش ویژه بود
-                    $price = pcks_<?php echo $element_id ?>[$value].Fprice
-                    jQuery('#<?php echo $element_id ?>_oldPrice').text(formatNumber(pcks_<?php echo $element_id ?>[$value].price));
-                    jQuery('#<?php echo $element_id ?>_newPrice').text(formatNumber(pcks_<?php echo $element_id ?>[$value].Fprice));
-                    jQuery('#<?php echo $element_id ?>_oldPrice').show();
-                    jQuery('#form_<?php echo $element_id ?> input').attr('data-price',pcks_<?php echo $element_id ?>[$value].Fprice);
-                } else {
-                    $price = pcks_<?php echo $element_id ?>[$value].price
-
-                    jQuery('#<?php echo $element_id ?>_newPrice').text(formatNumber(pcks_<?php echo $element_id ?>[$value].price));
-                    jQuery('#<?php echo $element_id ?>_oldPrice').text("");
-                    jQuery('#<?php echo $element_id ?>_oldPrice').hide();
-                    jQuery('#form_<?php echo $element_id ?> input').attr('data-price',pcks_<?php echo $element_id ?>[$value].price);
-                }
-
-
-                //set for form
-                jQuery('#form_<?php echo $element_id ?> input').attr('data-quantity',pcks_<?php echo $element_id ?>[$value].count);
             });
         </script>
         <?php

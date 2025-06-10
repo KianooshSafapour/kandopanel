@@ -457,6 +457,125 @@ jQuery(document).ready(function ($) {
     });
 
 
+    //forget password by email
+    $("#kt_forget_send_verify_code_email_submit").click(function (e) {
+        e.preventDefault();
+
+        // Get values from the form
+        const email = $('input[name^="email"]').val();
+
+
+        // // Validate email and password
+        // if (!validateEmail(email)) {
+        //     displayError("Invalid email format");
+        //     return;
+        // }
+
+        if (email.trim() === '') {
+            displayError(kando_data.langs.email_is_required);
+            return;
+        }
+
+        $(this).addClass('loading');
+
+
+        // Send an AJAX request to WordPress
+        $.ajax({
+            url: kando_data.ajaxurl, // ajaxurl is a global variable in WordPress that contains the URL to admin-ajax.php
+            type: "POST",
+            data: $('#kt_password_reset_by_email_form').serialize(),
+            success: function (response) {
+
+                // Handle the response from the server
+                if (response.success) {
+                    // Successful login
+                    displaySuccess(response.data.message);
+                    setTimeout(function () {
+                        window.location.replace(response.data.redirect);
+                    }, 1000);
+                } else {
+
+                    if(kando_data.google_captcha_enable==="1"){
+                        grecaptcha.reset();
+                    }
+                    // Login failed
+                    displayError(response.data);
+
+                    $('#kt_forget_send_verify_code_email_submit').removeClass('loading');
+                }
+
+
+
+            },
+            error: function () {
+                // Handle AJAX errors
+                displayError(kando_data.langs.An_error_occurred);
+
+                $('#kt_forget_send_verify_code_email_submit').removeClass('loading');
+            }
+        });
+
+    });
+
+    $("#kt_forget_verify_code_email_submit").click(function (e) {
+        e.preventDefault();
+
+        // Get values from the form
+        // const mobile = $('input[name^="log"]').val();
+
+
+        // // Validate email and password
+        // if (!validateEmail(email)) {
+        //     displayError("Invalid email format");
+        //     return;
+        // }
+
+        // if (mobile.trim() === '') {
+        //     displayError(kando_data.langs.phone_number_is_required);
+        //     return;
+        // }
+
+        $(this).addClass('loading');
+
+        // Send an AJAX request to WordPress
+        $.ajax({
+            url: kando_data.ajaxurl, // ajaxurl is a global variable in WordPress that contains the URL to admin-ajax.php
+            type: "POST",
+            data: $('#kt_password_reset_by_email2_form').serialize(),
+            success: function (response) {
+
+                // Handle the response from the server
+                if (response.success) {
+                    // Successful login
+                    displaySuccess(response.data.message);
+                    setTimeout(function () {
+                        window.location.replace(response.data.redirect);
+                    }, 1000);
+                } else {
+
+                    if(kando_data.google_captcha_enable==="1"){
+                        grecaptcha.reset();
+                    }
+                    // Login failed
+                    displayError(response.data);
+
+                    $("#kt_forget_verify_code_email_submit").removeClass('loading');
+                }
+
+
+
+            },
+            error: function () {
+                // Handle AJAX errors
+                displayError(kando_data.langs.An_error_occurred);
+
+                $("#kt_forget_verify_code_email_submit").removeClass('loading');
+            }
+        });
+
+    });
+
+
     var $resendButton = $('#kt_repeat_submit');
 
     // Disable the button and start the countdown on page load
@@ -491,6 +610,72 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'resend_otp',
                 mobile: mobile,
+                nonce: kando_data.resend_otp_nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Start the countdown
+                    var countdown = 60;
+                    var timer = setInterval(function() {
+                        if (countdown > 0) {
+                            countdown--;
+                            $button.find('.indicator-label').text(countdown + ' ثانیه تا ارسال مجدد');
+                        } else {
+                            clearInterval(timer);
+                            $button.prop('disabled', false);
+                            $button.find('.indicator-label').text('ارسال مجدد');
+                        }
+                    }, 1000);
+                    displaySuccess(response.data);
+                } else {
+                    displayError(response.data);
+                    $button.prop('disabled', false);
+                }
+            },
+            error: function() {
+                displayError('خطایی رخ داده است. لطفاً دوباره تلاش کنید.');
+                $button.prop('disabled', false);
+            }
+        });
+    });
+
+
+
+    //forget password by email
+    var $resendEmailButton = $('#kt_repeat_email_submit');
+
+    // Disable the button and start the countdown on page load
+    $resendEmailButton.prop('disabled', true);
+    var emailCountdown = 60;
+    var timer = setInterval(function() {
+        if (emailCountdown > 0) {
+            emailCountdown--;
+            $resendEmailButton.find('.indicator-label').text(emailCountdown + ' ثانیه تا ارسال مجدد');
+        } else {
+            clearInterval(timer);
+            $resendEmailButton.prop('disabled', false);
+            $resendEmailButton.find('.indicator-label').text('ارسال مجدد');
+        }
+    }, 1000);
+
+
+
+    $('#kt_repeat_email_submit').on('click', function(e) {
+        e.preventDefault();
+
+        var $button = $(this);
+        var email = $('input[name="email"]').val();
+
+        // Disable the button
+        $button.prop('disabled', true);
+
+        // Send AJAX request to resend OTP
+        $.ajax({
+            url: kando_data.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'resend_otp_email',
+                email: email,
                 nonce: kando_data.resend_otp_nonce
             },
             success: function(response) {

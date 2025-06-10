@@ -1,7 +1,7 @@
 <div class="dashboard-posts-box dashboard-tickets-box">
     <div class="dashboard-posts-title-holder">
         <i class="elegant-icon icon_bag"></i>
-        <h5 class="dashboard-posts-title">نتایج</h5>
+        <h5 class="dashboard-posts-title"><?php _e('Results', SAMYAR_TEXT_DOMAIN); ?></h5>
     </div>
     <div class="dashboard-posts-list">
         <?php
@@ -15,16 +15,16 @@
             <table class="shop_table shop_table_responsive">
                 <thead>
                 <tr>
-                    <th><span class="nobr">شناسه</span></th>
-                    <th><span class="nobr">تاریخ ثبت</span></th>
-                    <th><span class="nobr">جزییات</span></th>
-                    <th><span class="nobr">وضعیت</span></th>
+                    <th><span class="nobr"><?php _e('ID', SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e('Order Date', SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e('Details', SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e('Status', SAMYAR_TEXT_DOMAIN); ?></span></th>
                     <?php if (samyar_is_admin()): ?>
-                        <th><span class="nobr">اطلاعات کاربر</span></th>
-                        <th><span class="nobr">شناسه سفارش در API</span></th>
-                        <th><span class="nobr">پاسخ API</span></th>
+                        <th><span class="nobr"><?php _e('User Information', SAMYAR_TEXT_DOMAIN); ?></span></th>
+                        <th><span class="nobr"><?php _e('API Order ID', SAMYAR_TEXT_DOMAIN); ?></span></th>
+                        <th><span class="nobr"><?php _e('API Response', SAMYAR_TEXT_DOMAIN); ?></span></th>
                     <?php endif; ?>
-                    <th><span class="nobr">عملیات ها</span></th>
+                    <th><span class="nobr"><?php _e('Actions', SAMYAR_TEXT_DOMAIN); ?></span></th>
                 </tr>
                 </thead>
 
@@ -42,7 +42,7 @@
         <?php
         else:
             ?>
-            <span class="orders-notfound">سفارشی یافت نشد</span>
+            <span class="orders-notfound"><?php _e('No orders found.', SAMYAR_TEXT_DOMAIN); ?></span>
         <?php
         endif;
         ?>

@@ -705,6 +705,214 @@ body > pre.xdebug-var-dump {
     border-radius: 5px;
 }
 
-.backup-textarea,.import-textarea,.import-file{
+.backup-textarea, .import-textarea, .import-file {
     display: none;
+}
+
+
+.custom-switch-indicator {
+    display: inline-block;
+    height: 1.25rem;
+    width: 2.25rem;
+    background: #e9ecef;
+    border-radius: 50px;
+    position: relative;
+    vertical-align: bottom;
+    border: 1px solid rgba(0, 40, 100, 0.12);
+    transition: .3s border-color, .3s background-color;
+}
+
+.custom-switch-indicator:before {
+    content: '';
+    position: absolute;
+    height: calc(1.25rem - 4px);
+    width: calc(1.25rem - 4px);
+    top: 1px;
+    right: 1px;
+    background: #fff;
+    border-radius: 50%;
+    transition: .3s right;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.custom-switch-input:checked ~ .custom-switch-indicator {
+    background: #2dcee3;
+}
+
+.custom-switch-input:checked ~ .custom-switch-indicator:before {
+    right: calc(1rem + 1px);
+}
+
+.custom-switch-input:focus ~ .custom-switch-indicator {
+    box-shadow: 0 0 0 2px rgba(70, 127, 207, 0.25);
+    border-color: #467fcf;
+}
+
+.custom-switch-description {
+    margin-right: .5rem;
+    color: #6e7687;
+    transition: .3s color;
+}
+
+.custom-switch-input:checked ~ .custom-switch-description {
+    color: #495057;
+}
+
+
+.custom-switch input[type=checkbox], .custom-switch input[type=radio] {
+    display: none;
+}
+
+.samyar-settings .samyar-settings-content .samyar-float-button-item {
+    padding-top: 20px;
+}
+
+/*discount*/
+
+@media all {
+    .kt-notice-outer{
+        margin: 5px 15px 2px;
+    }
+    .wrapper {
+        margin: 0 auto;
+        max-width: 1250px;
+        padding: 0 25px;
+    }
+
+    .clearfix {
+        clear: both;
+        zoom: 1;
+    }
+
+    .clearfix:after, .clearfix:before {
+        clear: both;
+        content: '';
+        display: block;
+    }
+
+    .button {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .button {
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-family: "IRANSans";
+        font-size: 15px;
+        line-height: 1.6em;
+        padding: .375rem .75rem;
+        font-weight: 400;
+        width: auto;
+        -webkit-transition: background .2s ease-in-out, color .2s ease-in-out, border .2s ease-in-out;
+        transition: background .2s ease-in-out, color .2s ease-in-out, border .2s ease-in-out;
+    }
+
+    .button.button-violet {
+        background: #8c7ce5;
+    }
+
+    .button.button-violet:hover {
+        color: #fff;
+        background: #725edf;
+    }
+
+    .kt-notice-holder {
+        padding: 10px 0;
+        background-color: #f58;
+    }
+
+    .kt-notice-inner {
+        padding: 10px 20px 10px 10px;
+        background: rgba(255, 255, 255, .9);
+        border-radius: 3px;
+        position: relative;
+    }
+
+    .kt-notice-inner .button {
+        float: left;
+        color: #fff;
+        border: unset;
+    }
+
+    .kt-notice-inner .kt-notice-close {
+        position: absolute;
+        font-size: 24px;
+        height: 1em;
+        width: 1em;
+        color: #fff;
+        top: 0;
+        bottom: 0;
+        right: -1.3em;
+        line-height: 1em;
+        cursor: pointer;
+        text-align: center;
+        margin: auto 0;
+        text-decoration: auto;
+    }
+
+    .kt-notice-inner .kt-notice-text {
+        float: right;
+        font-size: 14px;
+        color: #46484d;
+        padding: 6px 0 4px;
+        font-weight: 400;
+    }
+
+    @media (max-width: 1250px) {
+        .kt-notice-inner {
+            margin-left: 15px;
+        }
+    }
+    @media (max-width: 991px) {
+        .kt-notice-inner {
+            margin-left: 20px;
+        }
+
+        .wrapper {
+            padding: 0 20px;
+        }
+    }
+    @media (max-width: 767px) {
+        .kt-notice-inner {
+            text-align: center;
+            padding: 15px;
+            margin-left: 25px;
+        }
+
+        .kt-notice-inner .button {
+            float: none !important;
+            margin-top: 2px;
+        }
+
+        .kt-notice-inner .kt-notice-text {
+            float: none;
+            font-size: 11px;
+        }
+
+        .wrapper {
+            padding: 0 15px;
+        }
+    }
+    @media (max-width: 620px) {
+        .kt-notice-inner .kt-notice-close {
+            left: -1.2em;
+        }
+    }
+    @media (max-width: 374px) {
+        .wrapper {
+            padding: 0 10px;
+        }
+    }
+    @media (max-width: 374px) {
+        .wrapper {
+            padding: 0 10px;
+        }
+    }
+}
+
+.copied-permanent {
+    background-color: #d4dded !important; /* رنگ سبز روشن */
 }

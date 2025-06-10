@@ -13,7 +13,7 @@ $service = \samyar\Service::find($service_id);
         <div class="dashboard-posts-box dashboard-tickets-box">
             <div class="dashboard-posts-title-holder">
                 <i class="fal fa-clipboard-list"></i>
-                <h5 class="dashboard-posts-title">  گزارش سرویس "<?= $service->name ?>"</h5>
+                <h5 class="dashboard-posts-title"><?php _e('Service Report "', SAMYAR_TEXT_DOMAIN); ?><?= $service->name ?>"</h5>
             </div>
             <div class="dashboard-posts-list">
                 <div class="kt-row">
@@ -207,7 +207,6 @@ $service = \samyar\Service::find($service_id);
                         <div class="kt-row dashboard-boxs">
                             <?php
                             $status_array = order_status_array();
-                            //		$number_error_orders = get_count_orders('error');
                             if (!empty($status_array)) {
                                 foreach ($status_array as $row_status) {
                                     if (kando_is_normal_user() && ($row_status === 'error' || $row_status === 'late_update_status' || $row_status === 'awaiting_action')) {
@@ -271,25 +270,23 @@ $service = \samyar\Service::find($service_id);
                                     ?>
                                     <div class="column kt-col-xs-12 kt-col-sm-6 kt-col-md-3">
                                         <div class="dashboard-box dashboard-box-orders <?php if ($row_status === "error"): ?>red_border<?php endif ?> <?php if ($row_status === "error" && get_count_orders($row_status) > 0): ?>blink_me<?php endif ?> <?php if ($row_status === "awaiting_action"): ?>yellow_border<?php endif ?> <?php if ($row_status === "awaiting_action" && get_count_orders($row_status) > 0): ?>blink_me<?php endif ?>">
-                                            <span class="dashboard-box-inner">
-                                                <div class="d-flex align-items-center">
+                    <span class="dashboard-box-inner">
+                        <div class="d-flex align-items-center">
               <span class="stamp stamp-1 stamp-md bg-danger-gradient text-white mr-3">
               <i class="<?= $icon ?>"></i>
             </span>
-                                                    <div class="d-flex order-lg-2 ml-auto">
-                                                        <div class="ml-2 d-lg-block text-right">
-                                                            <h4 class="m-0 text-right number"><?= get_count_service_orders($row_status,$service_id) ?></h4>
-                                                            <small class="text-muted "><?= samyar_order_status_title($row_status) ?></small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </span>
+                            <div class="d-flex order-lg-2 ml-left">
+                                <div class="ml-2 d-lg-block text-right">
+                                    <h4 class="m-0 text-right number"><?= get_count_service_orders($row_status, $service_id) ?></h4>
+                                    <small class="text-muted "><?php _e(samyar_order_status_title($row_status), SAMYAR_TEXT_DOMAIN); ?></small>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
                                         </div>
                                     </div>
                                 <?php }
                             } ?>
-
-
                         </div>
                         <!-- اتمام آمار سفارشات -->
                     </div>

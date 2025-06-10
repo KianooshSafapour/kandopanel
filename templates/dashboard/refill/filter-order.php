@@ -1,3 +1,6 @@
+<?php
+$stranslates = \samyar\serviceController::getInstance()->get_translates();
+?>
 <div class="dashboard-posts-box dashboard-tickets-box">
     <div class="dashboard-posts-title-holder">
         <i class="elegant-icon icon_bag"></i>

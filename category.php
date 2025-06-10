@@ -65,7 +65,7 @@ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
             }
 
         } else {
-            echo '<h2>در حال حاضر مطلبی وجود ندارد</h2>';
+            echo '<h2>' . __('Currently, there is no content available', SAMYAR_TEXT_DOMAIN) . '</h2>';
         }
         ?>
 

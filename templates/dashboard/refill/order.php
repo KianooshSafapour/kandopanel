@@ -28,7 +28,7 @@ $options = settingsController::getInstance();
         <ul class="order-details">
             <?php if ($service): ?>
                 <li><?php _e("Service:", SAMYAR_TEXT_DOMAIN); ?> <?php echo esc_attr($service->id) ?>
-                    &nbsp;-&nbsp;<?php echo esc_attr($service->name) ?></li>
+                    &nbsp;-&nbsp;<?php echo esc_attr(serviceController::getInstance()->get_title($stranslates,$service)) ?></li>
             <?php endif; ?>
 
 

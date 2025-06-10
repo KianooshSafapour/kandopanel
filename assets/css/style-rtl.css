@@ -64,6 +64,43 @@ body.rtl .kando-form-wizard .custom-select-wrapper select {
     text-align: right;
 }
 
+.kando-form-wizard .service-selection .kando-form-wizard-buttons {
+    text-align: left;
+    margin-top: -63px
+}
+
+.kando-form-wizard .kando-form-wizard-step {
+    float: right
+}
+.kando-form-wizard .kando-form-wizard-step:nth-child(3) {
+    margin: 0 94px
+}
+
+.kando-form-wizard .kando-form-wizard-step:nth-child(3) .f-w-s-arrow {
+    left: -78px
+}
+
+.kando-form-wizard .kando-form-wizard-step .user-filter {
+    left: 35px;
+}
+
+.kando-form-wizard .service-description .s-d-title {
+    text-align: right;
+}
+
+.kando-form-wizard .kando-form-wizard-step .Document-filter {
+    left: 33px;
+}
+
+.kando-form-wizard .kando-form-wizard-step .f-w-s-arrow {
+    right: 109px;
+    transform: rotate(0deg);
+}
+
+.kando-form-wizard .final-price {
+    text-align: right;
+}
+
 body.rtl table ,
 body.rtl table .kt-mega-menu-holder,
 body.rtl .icon-box3-icon-top.align-right .icon-box3-icon,
@@ -592,11 +629,11 @@ body.rtl .text_align_left {
     text-align: right !important;
 }
 
-.ticket-close-button {
-    float: left;
-    margin-right: 10px;
-    margin-left: 0;
-}
+/*.ticket-close-button {*/
+/*    float: left;*/
+/*    margin-right: 10px;*/
+/*    margin-left: 0;*/
+/*}*/
 
 .ticket-single-title-holder {
     float: right
@@ -606,11 +643,11 @@ body.rtl .text_align_left {
     float: left;
 }
 
-.ticket-delete-button {
-    float: left;
-    margin-right: 10px;
-    margin-left: 0;
-}
+/*.ticket-delete-button {*/
+/*    float: left;*/
+/*    margin-right: 10px;*/
+/*    margin-left: 0;*/
+/*}*/
 
 .ticket-single-title {
     float: right;
@@ -784,10 +821,10 @@ body.rtl #show-service-all{
     float: left;
 }
 
-[data-tooltip]:after {
-    right: -10px;
-    left: auto;
-}
+/*[data-tooltip]:after {*/
+/*    right: -10px;*/
+/*    left: auto;*/
+/*}*/
 
 [data-tooltip]:before {
     right: 6px;
@@ -866,18 +903,250 @@ html.responsive-menu-opened .responsive-menu-outer-holder {
         .kando-panel2-navigation {
             right: 0;
             left:auto;
-            -webkit-transform: translate(250px, 0);
-            -moz-transform: translate(250px, 0);
-            -ms-transform: translate(250px, 0);
-            -o-transform: translate(250px, 0);
-            transform: translate(250px, 0)
+            -webkit-transform: translate(0, 0) !important;
+            -moz-transform: translate(0, 0) !important;
+            -ms-transform: translate(0, 0) !important;
+            -o-transform: translate(0, 0) !important;
+            transform: translate(0, 0) !important;
+            visibility: visible;
+            opacity: 1;
         }
 
 }
 
 .input-group-prepend {
-    order: 2; /* مقدار order را برای قرار دادن در سمت چپ تعیین کنید */
+    margin-right: -1px; /* تغییر margin-left به margin-right */
+    margin-left: 0; /* حذف margin-left */
+}
+
+.input-group>.input-group-append:last-child>.btn:not(:last-child):not(.dropdown-toggle),
+.input-group>.input-group-append:last-child>.input-group-text:not(:last-child),
+.input-group>.input-group-append:not(:last-child)>.btn,
+.input-group>.input-group-append:not(:last-child)>.input-group-text,
+.input-group>.input-group-prepend>.btn,
+.input-group>.input-group-prepend>.input-group-text {
+    border-top-left-radius: 0; /* تغییر border-top-right-radius به border-top-left-radius */
+    border-bottom-left-radius: 0; /* تغییر border-bottom-right-radius به border-bottom-left-radius */
+}
+
+.input-group>.input-group-append>.input-group-text{
+    border-radius: 0 3px 3px 0 !important; /* تغییر border-radius */
+}
+
+.input-group>.input-group-prepend>.input-group-text{
+    border-radius: 3px 0 0 3px !important; /* تغییر border-radius */
+}
+
+.input-group>.custom-select:not(:first-child),
+.input-group>.form-control:not(:first-child) {
+    border-top-right-radius: 0; /* تغییر border-top-left-radius به border-top-right-radius */
+    border-bottom-right-radius: 0; /* تغییر border-bottom-left-radius به border-bottom-right-radius */
+}
+
+.input-group>.custom-select:not(:last-child),
+.input-group>.form-control:not(:last-child) {
+    border-top-left-radius: 0; /* تغییر border-top-right-radius به border-top-left-radius */
+    border-bottom-left-radius: 0; /* تغییر border-bottom-right-radius به border-bottom-left-radius */
+}
+
+.input-group-prepend {
+    order: 2; /* تغییر order برای قرار دادن در سمت راست */
 }
 .input-group .form-control {
-    order: 1; /* مقدار order برای input تا در سمت راست قرار بگیرد */
+    order: 1; /* تغییر order برای input تا در سمت چپ قرار بگیرد */
+}
+
+.select2-container--default[dir="rtl"] .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: 1px solid #aaa !important;
+    border-left: none !important;
+}
+
+
+/* rtl.css */
+
+/* جهت‌ها و مارجین‌ها */
+.navbar .nav-item .toggle-body a {
+    direction: rtl;
+    text-align: right;
+}
+
+.border-left{
+    border-right: 1px solid #ededed !important;
+}
+
+
+/* سبک select2 */
+.select2-selection {
+    padding-left: 40px !important;
+    padding-right: 0 !important;
+    background-position: left 1.2em center !important;
+    border-radius: 3px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;
+    padding-left: 10px;
+    padding-right: 0;
+}
+
+.select2-container--default .select2-selection--single {
+    text-align: right;
+}
+
+/****** ELEMENTS ELEMENTOR ******/
+.kando-elementor-pack .iptsCircle {
+    right: -42px;
+    left:auto !important;
+}
+
+.kando-elementor-pack .iptsTitle {
+    left: -33px;
+    right:auto !important;
+}
+
+.kando-elementor-pack .iptsIconCircle i {
+    left: -10px;
+    right: auto !important;
+}
+
+/*************************************************
+package 2
+************************************* */
+select option {
+    text-align: right !important;
+}
+
+.kando-elementor-pack2 .btn-blue-bg {
+    float: left !important;
+}
+
+.kando-elementor-pack2.pckg > div:last-child {
+    border-left: 0 !important;
+}
+
+.kando-elementor-pack2.pckg li {
+    float: right !important;
+}
+
+.kando-elementor-pack2 .pckg-price span sup {
+    margin: 0 8px 0 -6px !important;
+}
+
+.kando-elementor-pack2.pckg > div:nth-child(3) {
+    text-align: right !important;
+    padding-right: 22px !important;
+    padding-left: 0 !important;
+}
+
+.kando-elementor-pack2.pckg > div:nth-child(3):after {
+    left: -40px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .kando-elementor-pack2.pckg > div {
+        border-radius: 5px 5px 0 0 !important;
+    }
+}
+
+.kando-elementor-pack2 .comboChooser:before {
+    content: "انتخاب کنید" !important;
+    left: 13px !important;
+    right: auto !important;
+    border-right: 1px solid #e8e6e6;
+    border-left: 0;
+    /*border-radius: 3px 0 0 3px !important;*/
+    /*border-radius: 30px 0 0 30px !important;*/
+}
+
+.kando-elementor-pack2 .fl_combo {
+    text-align: right !important;
+    padding: 10px 15px 10px 100px !important;
+}
+
+.kando-elementor-pack2 .normal-text h2 {
+    text-align: right !important;
+}
+
+.kando-elementor-pack2 ::-webkit-input-placeholder {
+    text-align: right !important;
+}
+
+.kando-elementor-pack2.off {
+    text-align: right !important;
+    padding-right: 75px !important;
+    padding-left: 25px !important;
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -89px!important;
+    margin-right: 0!important;
+}
+
+.kando-elementor-pack2.off span {
+    right: 16px !important;
+    left: auto !important;
+}
+
+.kando-elementor-pack2.off span i {
+    float: left !important;
+    padding-right: 6px !important;
+    padding-left: 0 !important;
+}
+
+.kando-elementor-pack2 .nice-select {
+    text-align: right !important;
+}
+
+.kando-elementor-pack2 .nice-select .list {
+    right: -10px;
+    left: auto !important;
+}
+
+.kando-elementor-pack2 .nice-select .option {
+    text-align: right !important;
+}
+
+.kando-elementor-pack2 .option i {
+    text-align: left !important;
+}
+
+.app-engage {
+    left: 0;
+    right: auto;
+    padding-left: 12px;
+    padding-right: 0;
+}
+
+.text-align{
+    text-align: left;
+}
+
+.vc_col-xs-offset-3, .vc_media-lg .vc_col-lg-offset-3, .vc_media-md .vc_col-md-offset-3, .vc_media-sm .vc_col-sm-offset-3, .vc_media-xs .vc_col-xs-offset-3, .vc_non_responsive .vc_row .vc_col-sm-offset-3 {
+    margin-left: 25%
+}
+
+@media (min-width: 1200px) {
+    .vc_col-lg-offset-3 {
+        margin-right: 25%;
+        margin-left: 0;
+    }
+}
+
+.kando-float-buttons-list {
+    left: 0;
+    z-index: 5;
+    padding-left: 12px;
+    padding-right: 0;
+    right: auto;
+}
+
+.ml-left {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+.kando-tooltip-content {
+    text-align: right;
+    /*right: 50%;*/
+    /*left: auto;*/
+    direction: rtl;
 }

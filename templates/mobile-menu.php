@@ -10,7 +10,7 @@
         <div class="toolbar_col elm_t-goup">
             <?php if (class_exists('wpnController')):
                 $options = \wpnumbers\settingsController::getInstance();
-                $wpn_link = esc_attr($options->get_option('wpn-order-link-mobile', ""));
+                $wpn_link = esc_attr(kando_get_option('wpn-order-link-mobile', ""));
                 ?>
                 <a class="toolbar_item" href="<?= $wpn_link ?>"><i class="fal fa-phone-plus"></i></a>
             <?php endif; ?>

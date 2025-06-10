@@ -9,7 +9,7 @@ use samyar\Category;
 use samyar\Udisableservice;
 
 $options = settingsController::getInstance();
-$enable_average_time = $options->get_option( 'enable-average-time',1);
+$enable_average_time = kando_get_option( 'enable-average-time',1);
 ?>
 
 <div class="dashboard-posts-box dashboard-tickets-box">
@@ -24,7 +24,7 @@ $enable_average_time = $options->get_option( 'enable-average-time',1);
             //می یاد بررسی میکنه که مرتب سازی بر چه اساسی هست
             //بر اساس قیمت کم با بالا
             //یا بر اساس مرتب سازی دستی
-            $sort_by = $options->get_option('select_service_order', 'price');
+            $sort_by = kando_get_option('select_service_order', 'price');
 
 
             //بررسی کن ببین این سرویس آیا ارائه دهندش فعال هست یا نه

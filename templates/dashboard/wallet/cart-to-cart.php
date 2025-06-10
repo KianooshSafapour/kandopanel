@@ -4,11 +4,11 @@ if (isset($_GET['amount'])) {
 } else {
     $amount = "";
 }
-$card_bank = $options->get_option('card-bank', '');
-$card_name = $options->get_option('card-name', '');
-$card_number = $options->get_option('card-number', '');
-$card_account_number = $options->get_option('card-account-number', '');
-$card_shaba_number = $options->get_option('card-shaba-number', '');
+$card_bank = kando_get_option('card-bank', '');
+$card_name = kando_get_option('card-name', '');
+$card_number = kando_get_option('card-number', '');
+$card_account_number = kando_get_option('card-account-number', '');
+$card_shaba_number = kando_get_option('card-shaba-number', '');
 ?>
 <div class="wrapper">
     <div class="cart-inner-holder">
@@ -16,31 +16,28 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
             <div class="woocommerce cardtocard">
 
                 <p>
-                    پس از درج فیش واریزی یا کد رهگیری ، سامانه به صورت خودکار شارژ نشده و باید منتظر بمانید تا واریز شما تایید گردد ، بنابراین از درج مجدد فیش جدا خود داری نمایید.</p>
+                    <?php _e("After uploading the deposit slip or tracking code, the system will not automatically credit your account. You need to wait for your deposit to be confirmed. Therefore, avoid re-uploading the same slip.", SAMYAR_TEXT_DOMAIN); ?>
+                </p>
 
-                <h2>اطلاعات واریز</h2>
+                <h2><?php _e("Deposit Information", SAMYAR_TEXT_DOMAIN); ?></h2>
 
                 <table class="cardtocard-table shop_table shop_table_responsive" id="cardtocard-table" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>نام بانک</th>
-                        <th>نام صاحب حساب</th>
-
-                        <th>شماره حساب</th>
-
-                        <th>شماره کارت</th>
-
-                        <th>شماره شبا</th>
+                        <th><?php _e("Bank Name", SAMYAR_TEXT_DOMAIN); ?></th>
+                        <th><?php _e("Account Holder Name", SAMYAR_TEXT_DOMAIN); ?></th>
+                        <th><?php _e("Account Number", SAMYAR_TEXT_DOMAIN); ?></th>
+                        <th><?php _e("Card Number", SAMYAR_TEXT_DOMAIN); ?></th>
+                        <th><?php _e("IBAN", SAMYAR_TEXT_DOMAIN); ?></th>
                     </tr>
                     </thead>
                     <tbody class="accounts">
-
                     <tr class="account">
-                        <td data-title="نام بانک"><?= $card_bank ?></td>
-                        <td data-title="نام صاحب حساب"><?= $card_name ?></td>
-                        <td data-title="شماره حساب"><?= $card_account_number ?></td>
-                        <td data-title="شماره کارت"><?= $card_number ?></td>
-                        <td data-title="شماره شبا"><?= $card_shaba_number ?></td>
+                        <td data-title="<?php _e("Bank Name", SAMYAR_TEXT_DOMAIN); ?>"><?= $card_bank ?></td>
+                        <td data-title="<?php _e("Account Holder Name", SAMYAR_TEXT_DOMAIN); ?>"><?= $card_name ?></td>
+                        <td data-title="<?php _e("Account Number", SAMYAR_TEXT_DOMAIN); ?>"><?= $card_account_number ?></td>
+                        <td data-title="<?php _e("Card Number", SAMYAR_TEXT_DOMAIN); ?>"><?= $card_number ?></td>
+                        <td data-title="<?php _e("IBAN", SAMYAR_TEXT_DOMAIN); ?>"><?= $card_shaba_number ?></td>
                     </tr>
                     </tbody>
                 </table>
@@ -52,12 +49,11 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                       class="cardtocard-checkout-form woocommerce-checkout" id="cardtocard-checkout-form">
                     <input type="hidden" name="payment_id" value="<?= !empty($_GET['payment_id'])?$_GET['payment_id']:''?>">
 
-                    <!--نوع پرداخت-->
+                    <!-- Payment Method -->
                     <p id="cardtocard_type_select" class="form-row form-row-wide clear-both">
-
                         <label for="cardtocard_type"
                                class="cardtocard_type_select_label cardtocard_field cardtocard_label">
-                            روش پرداخت <abbr class="required" title="ضروری">*</abbr>
+                            <?php _e("Payment Method", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required" title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <label for="cardtocard_type_shetab"
@@ -65,111 +61,105 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                             <input type="radio" name="cardtocard_type" id="cardtocard_type_shetab"
                                    class="cardtocard_type"
                                    value="shetab" checked="checked">
-                            کارت به کارت </label>
+                            <?php _e("Card to Card", SAMYAR_TEXT_DOMAIN); ?>
+                        </label>
 
                         <label for="cardtocard_type_hesab"
                                class="cardtocard_type_label cardtocard_type_hesab_label">
                             <input type="radio" name="cardtocard_type" id="cardtocard_type_hesab"
                                    class="cardtocard_type"
                                    value="hesab">
-                            واریز به حساب </label>
+                            <?php _e("Bank Transfer", SAMYAR_TEXT_DOMAIN); ?>
+                        </label>
 
                         <label for="cardtocard_type_paya"
                                class="cardtocard_type_label cardtocard_type_paya_label">
                             <input type="radio" name="cardtocard_type" id="cardtocard_type_paya"
                                    class="cardtocard_type"
                                    value="paya">
-                            واریز پایا </label>
+                            <?php _e("Paya Deposit", SAMYAR_TEXT_DOMAIN); ?>
+                        </label>
                     </p>
 
-                    <!--واریز به حساب-->
+                    <!-- Bank Transfer -->
 
                     <p id="cardtocard_to_hesab_select" class="form-row form-row-wide clear-both">
-
                         <label for="cardtocard_to_hesab"
                                class="cardtocard_to_hesab_label cardtocard_field cardtocard_label">
-                            واریز شده به حساب <abbr class="required"
-                                                    title="ضروری">*</abbr>
+                            <?php _e("Deposited to Account", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                           title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <select id="cardtocard_to_hesab" name="cardtocard_to_hesab"
                                 class="state_select cardtocard_to_hesab cardtocard_to_hesab_select cardtocard_field">
-                            <option value="">شماره حساب</option>
+                            <option value=""><?php _e("Account Number", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="<?= $card_account_number ?> (<?= $card_name ?>)"><?= $card_account_number ?> (<?= $card_name ?>)</option>
                         </select>
-
                     </p>
 
                     <p id="cardtocard_from_hesab" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_from_hesab"
                                class="cardtocard_from_hesab_label cardtocard_field cardtocard_label">
-                            شماره حساب شما <abbr class="required"
-                                                 title="ضروری">*</abbr>
+                            <?php _e("Your Account Number", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                          title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
                         <input type="text" name="cardtocard_from_hesab[]" id="cardtocard_from_hesab"
                                class="input-text cardtocard_from_hesab cardtocard_from_hesab_focus cardtocard_field"
                                style="float:left;max-width:350px;text-align:center !important;margin:5px;"
                                value="">
-
                     </p>
 
-                    <!--واریز به پایا-->
+                    <!-- Paya Deposit -->
 
+                    <!-- Paya Deposit -->
                     <p id="cardtocard_to_paya_select" class="form-row form-row-wide clear-both">
-
                         <label for="cardtocard_to_paya"
                                class="cardtocard_to_paya_label cardtocard_field cardtocard_label">
-                            واریز شده به شبا <abbr class="required"
-                                                   title="ضروری">*</abbr>
+                            <?php _e("Deposited to IBAN", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                        title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <select id="cardtocard_to_paya" name="cardtocard_to_paya"
                                 class="state_select cardtocard_to_paya cardtocard_to_paya_select cardtocard_field">
-                            <option value="">شماره شبا</option>
+                            <option value=""><?php _e("IBAN Number", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="<?= $card_shaba_number ?> (<?= $card_name ?>)"><?= $card_shaba_number ?> (<?= $card_name ?>)</option>
                         </select>
                     </p>
 
-
                     <p id="cardtocard_from_paya" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_from_paya"
                                class="cardtocard_from_paya_label cardtocard_field cardtocard_label">
-                            شماره شبای شما <abbr class="required"
-                                                 title="ضروری">*</abbr>
+                            <?php _e("Your IBAN Number", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                       title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
                         <input type="text" name="cardtocard_from_paya[]" id="cardtocard_from_paya"
                                class="input-text cardtocard_from_paya cardtocard_from_paya_focus cardtocard_field"
                                style="float:left;max-width:350px;text-align:center !important;margin:5px;"
                                value="">
-
                     </p>
 
-                    <!--واریز به کارت-->
-
+                    <!-- Card to Card Deposit -->
                     <p id="cardtocard_to_shetab_select" class="form-row form-row-wide clear-both">
-
                         <label for="cardtocard_to_shetab"
                                class="cardtocard_to_shetab_label cardtocard_field cardtocard_label">
-                            واریز شده به کارت <abbr class="required"
-                                                    title="ضروری">*</abbr>
+                            <?php _e("Deposited to Card", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                        title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <select id="cardtocard_to_shetab" name="cardtocard_to_shetab"
                                 class="state_select cardtocard_to_shetab cardtocard_to_shetab_select cardtocard_field">
-                            <option value="">شماره کارت</option>
+                            <option value=""><?php _e("Card Number", SAMYAR_TEXT_DOMAIN); ?></option>
                             <option value="<?= $card_number ?> (<?= $card_name ?>)"><?= $card_number ?> (<?= $card_name ?>)</option>
                         </select>
                     </p>
 
-                    <!--شماره کارت-->
+                    <!-- Card Number -->
                     <p id="cardtocard_from_shetab" class="form-row form-row-wide clear-both">
-
                         <label for="cardtocard_from_shetab"
                                class="cardtocard_from_shetab_label cardtocard_field cardtocard_label">
-                            4 رقم پایانی شماره کارت شما <abbr class="required"
-                                                              title="ضروری">*</abbr>
+                            <?php _e("Last 4 digits of your card number", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required"
+                                                                                                        title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
-
 
                         <input type="text" name="cardtocard_from_shetab[]" id="cardtocard_from_shetab"
                                class="input-text cardtocard_from_shetab cardtocard_from_shetab_focus cardtocard_field"
@@ -177,14 +167,13 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                                value="" maxlength="4">
                     </p>
 
-
                     <!--بانک واریز کننده-->
 
-                    <!--شماره پیگیری-->
+                    <!-- Tracking Number -->
                     <p id="cardtocard_trans" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_trans_id"
                                class="cardtocard_trans_id_label cardtocard_field cardtocard_label">
-                            شناسه پیگیری <abbr class="required" title="ضروری">*</abbr>
+                            <?php _e("Tracking ID", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required" title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <input type="text" name="cardtocard_trans_id" id="cardtocard_trans_id"
@@ -193,11 +182,11 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                                value="" placeholder="">
                     </p>
 
-                    <!--مبلغ-->
+                    <!-- Amount -->
                     <p id="cardtocard_price" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_price_amount"
                                class="cardtocard_price_amount_label cardtocard_field cardtocard_label">
-                            مبلغ به <?php kando_get_currency_base_text(true) ?> <abbr class="required" title="ضروری">*</abbr>
+                            <?php _e("Amount in", SAMYAR_TEXT_DOMAIN); ?> <?php kando_get_currency_base_text(true); ?> <abbr class="required" title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <input type="text" name="cardtocard_price_amount" id="cardtocard_price_amount"
@@ -206,36 +195,36 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                                value="<?= $amount ?>" placeholder="">
                     </p>
 
-                    <!--تاریخ-->
+                    <!-- Date -->
                     <div id="cardtocard_date" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_day"
                                class="cardtocard_date_label cardtocard_field cardtocard_label">
-                            تاریخ <abbr class="required" title="ضروری">*</abbr>
+                            <?php _e("Date", SAMYAR_TEXT_DOMAIN); ?> <abbr class="required" title="<?php _e("Required", SAMYAR_TEXT_DOMAIN); ?>">*</abbr>
                         </label>
 
                         <input type="text" name="cardtocard_year" id="cardtocard_year"
                                class="input-text cardtocard_year cardtocard_field"
                                style="float:left;width:110px;text-align:center !important;"
-                               maxlength="4" value="" placeholder="سال">
+                               maxlength="4" value="" placeholder="<?php _e("Year", SAMYAR_TEXT_DOMAIN); ?>">
 
                         <div class="cardtocard_month_wrap"
                              style="display:inline-table;width:110px;float: left;">
                             <select id="cardtocard_month" name="cardtocard_month"
                                     class="state_select cardtocard_month cardtocard_date_select cardtocard_field"
                                     title="">
-                                <option value="">ماه</option>
-                                <option value="فروردین">فروردین</option>
-                                <option value="اردیبهشت">اردیبهشت</option>
-                                <option value="خرداد">خرداد</option>
-                                <option value="تیر">تیر</option>
-                                <option value="مرداد">مرداد</option>
-                                <option value="شهریور">شهریور</option>
-                                <option value="مهر">مهر</option>
-                                <option value="آبان">آبان</option>
-                                <option value="آذر">آذر</option>
-                                <option value="دی">دی</option>
-                                <option value="بهمن">بهمن</option>
-                                <option value="اسفند">اسفند</option>
+                                <option value=""><?php _e("Month", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="فروردین"><?php _e("Farvardin", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="اردیبهشت"><?php _e("Ordibehesht", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="خرداد"><?php _e("Khordad", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="تیر"><?php _e("Tir", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="مرداد"><?php _e("Mordad", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="شهریور"><?php _e("Shahrivar", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="مهر"><?php _e("Mehr", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="آبان"><?php _e("Aban", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="آذر"><?php _e("Azar", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="دی"><?php _e("Day", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="بهمن"><?php _e("Bahman", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <option value="اسفند"><?php _e("Esfand", SAMYAR_TEXT_DOMAIN); ?></option>
                             </select>
                         </div>
 
@@ -244,64 +233,39 @@ $card_shaba_number = $options->get_option('card-shaba-number', '');
                              style="display:inline-table;width:110px;float: left;">
                             <select id="cardtocard_day" name="cardtocard_day"
                                     class="state_select cardtocard_day cardtocard_date_select cardtocard_field">
-                                <option value="">روز</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                                <option value="23">23</option>
-                                <option value="24">24</option>
-                                <option value="25">25</option>
-                                <option value="26">26</option>
-                                <option value="27">27</option>
-                                <option value="28">28</option>
-                                <option value="29">29</option>
-                                <option value="30">30</option>
-                                <option value="31">31</option>
+                                <option value=""><?php _e("Day", SAMYAR_TEXT_DOMAIN); ?></option>
+                                <?php for ($i = 1; $i <= 31; $i++): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
                             </select>
                         </div>
                     </div>
 
 
-                    <!--ساعت-->
+                    <!-- Time -->
 
 
-                    <!--توضیحات اضافی-->
+                    <!-- Additional Description -->
                     <p id="cardtocard_note" class="form-row form-row-wide clear-both">
                         <label for="cardtocard_note_text"
                                class="cardtocard_note_text_label cardtocard_field cardtocard_label">
-                            توضیحات </label>
+                            <?php _e("Description", SAMYAR_TEXT_DOMAIN); ?> </label>
 
                         <textarea name="cardtocard_note_text" id="cardtocard_note_text"
                                   class="input-text cardtocard_note_text cardtocard_field"
                                   style="float:left;max-width:350px;margin:5px;"
-                                  placeholder="توضیحات اضافی"></textarea>
+                                  placeholder="<?php _e("Additional details", SAMYAR_TEXT_DOMAIN); ?>"></textarea>
                     </p>
 
                     <br/>
                     <p class="form-row form-row-wide clear-both">
                         <button type="submit" name="cardtocard_submit" class="button button-green kt-ajax-button alt"
-                                id="cardtocard_payment_button"/>
-                        ثبت</button>
-                        <a class="cancel btn wc-forward button" href="<?= home_url('dashboard/?action=add-credit') ?>" data-wpel-link="internal">بازگشت</a>
+                                id="cardtocard_payment_button">
+                            <?php _e("Submit", SAMYAR_TEXT_DOMAIN); ?>
+                        </button>
+                        <a class="cancel btn wc-forward button" href="<?= home_url('dashboard/?action=add-credit') ?>" data-wpel-link="internal">
+                            <?php _e("Back", SAMYAR_TEXT_DOMAIN); ?>
+                        </a>
                     </p>
                 </form>
 

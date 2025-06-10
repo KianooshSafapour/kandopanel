@@ -11,7 +11,7 @@ use samyar\walletController;
 $package = new \kandopanel\packageController();
 
 $options = settingsController::getInstance();
-$representation_active = $options->get_option('representation-active', 0)
+$representation_active = kando_get_option('representation-active', 0);
 ?>
 <?php if ($representation_active || $representation_active === "1"): ?>
     <div class="kt-row">
@@ -20,14 +20,14 @@ $representation_active = $options->get_option('representation-active', 0)
             <div class="dashboard-posts-box dashboard-tickets-box">
                 <div class="dashboard-posts-title-holder">
                     <i class="fal fa-user-crown"></i>
-                    <h5 class="dashboard-posts-title">خرید بسته نمایندگی</h5>
+                    <h5 class="dashboard-posts-title"><?php _e("Buy Representation Package", SAMYAR_TEXT_DOMAIN); ?></h5>
                 </div>
                 <div class="dashboard-posts-list">
                     <div class="kt-row">
                         <div class="column kt-col-md-12">
-                            <?php if ($package->kandy_calculation_representation(get_current_user_id())) { ?>
+                            <?php if ($package->kando_user_has_package(get_current_user_id())) { ?>
                                 <div class="alert alert-info" role="alert">
-                                    در حال حاضر شما بسته فعالی دارید و امکان خرید بسته نمایندگی جدید برای شما وجود ندارد
+                                    <?php _e("You currently have an active package, and you cannot purchase a new representation package.", SAMYAR_TEXT_DOMAIN); ?>
                                 </div>
                             <?php } ?>
                             <?php echo do_shortcode('[kando_package]'); ?>
@@ -68,7 +68,7 @@ $representation_active = $options->get_option('representation-active', 0)
 <div class="dashboard-posts-box dashboard-tickets-box">
     <div class="dashboard-posts-title-holder">
         <i class="elegant-icon icon_creditcard"></i>
-        <h5 class="dashboard-posts-title">تراکنش های خرید بسته نمایندگی</h5>
+        <h5 class="dashboard-posts-title"><?php _e("Representation Package Purchase Transactions", SAMYAR_TEXT_DOMAIN); ?></h5>
     </div>
     <div class="dashboard-posts-list">
         <?php
@@ -93,14 +93,14 @@ $representation_active = $options->get_option('representation-active', 0)
             <table class="shop_table shop_table_responsive">
                 <thead>
                 <tr>
-                    <th><span class="nobr">شناسه</span></th>
-                    <th><span class="nobr">بسته</span></th>
-                    <th><span class="nobr">مبلغ پرداختی</span></th>
-                    <th><span class="nobr">اطلاعات کاربر</span></th>
-                    <th><span class="nobr">تاریخ شروع</span></th>
-                    <th><span class="nobr">تاریخ پایان</span></th>
-                    <th><span class="nobr">وضعیت</span></th>
-                    <th><span class="nobr">عملیات ها</span></th>
+                    <th><span class="nobr"><?php _e("ID", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("Package", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("Payment Amount", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("User Information", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("Start Date", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("End Date", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("Status", SAMYAR_TEXT_DOMAIN); ?></span></th>
+                    <th><span class="nobr"><?php _e("Actions", SAMYAR_TEXT_DOMAIN); ?></span></th>
                 </tr>
                 </thead>
 
@@ -108,7 +108,7 @@ $representation_active = $options->get_option('representation-active', 0)
                 <?php
                 foreach ($packages as $package):
                     include('package.php');
-                 endforeach; ?>
+                endforeach; ?>
                 </tbody>
             </table>
             <?php
@@ -118,12 +118,12 @@ $representation_active = $options->get_option('representation-active', 0)
             }
             $count_data['order_type'] = 'package';
             $total = Payment::count($count_data);
-            samyar_pagination($total, $limit, $paged)
+            samyar_pagination($total, $limit, $paged);
             ?>
         <?php
         else:
             ?>
-            <span class="payments-notfound">تاکنون تراکنشی انجام نشده است.</span>
+            <span class="payments-notfound"><?php _e("No transactions have been made so far.", SAMYAR_TEXT_DOMAIN); ?></span>
         <?php
         endif;
         ?>

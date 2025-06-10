@@ -4,7 +4,7 @@
 
         <?php
         $options = settingsController::getInstance();
-        $representations_attr = $options->get_option('representations');
+        $representations_attr = kando_get_option('representations');
         $representations_attr = is_array($representations_attr) ? $representations_attr : [];
 
         $representations = [
@@ -36,13 +36,13 @@
                 <?php
                 switch ($key) {
                     case 1:
-                        $title = "نمایندگی طلایی";
+                        $title = __("Golden Representation", SAMYAR_TEXT_DOMAIN);
                         break;
                     case 2:
-                        $title = "نمایندگی نقره ای";
+                        $title = __("Silver Representation", SAMYAR_TEXT_DOMAIN);
                         break;
                     case 3:
-                        $title = "نمایندگی برنزی";
+                        $title = __("Bronze Representation", SAMYAR_TEXT_DOMAIN);
                         break;
                 }
                 $amount = $item['amount'] ?? null;
@@ -59,24 +59,24 @@
                             <div class="google-adwords-item-outer">
                                 <div class="google-adwords-item-inner">
                                     <div class="google-adwords-item-inner-holder">
-                                        <h4 class="google-adwords-item-title"> <?= number_format_i18n((int)$amount) ?> <span>تومان</span>
+                                        <h4 class="google-adwords-item-title"> <?= number_format_i18n((int)$amount) ?> <span><?php _e("Toman", SAMYAR_TEXT_DOMAIN); ?></span>
                                         </h4>
                                         <?php if (!empty($period)):
                                             switch ($period) {
                                                 case 1:
-                                                    $period_title = "1 ماهه";
+                                                    $period_title = __("1 Month", SAMYAR_TEXT_DOMAIN);
                                                     break;
                                                 case 2:
-                                                    $period_title = "2 ماهه";
+                                                    $period_title = __("2 Months", SAMYAR_TEXT_DOMAIN);
                                                     break;
                                                 case 3:
-                                                    $period_title = "3 ماهه";
+                                                    $period_title = __("3 Months", SAMYAR_TEXT_DOMAIN);
                                                     break;
                                                 case 6:
-                                                    $period_title = "6 ماهه";
+                                                    $period_title = __("6 Months", SAMYAR_TEXT_DOMAIN);
                                                     break;
                                                 case 12:
-                                                    $period_title = "12 ماهه";
+                                                    $period_title = __("12 Months", SAMYAR_TEXT_DOMAIN);
                                                     break;
                                             }
                                             ?>
@@ -89,12 +89,12 @@
 
                                 <div class="google-adwords-item-bottom">
                                     <?php $package = new \kandopanel\packageController();
-                                    //اگر در حال حاضر نمایندگی براش فعال باشه دکمه ها رو نشون نده
-                                    if (!$package->kandy_calculation_representation(get_current_user_id())) {
+                                    // If the user already has an active representation, don't show buttons
+                                    if (!$package->kando_user_has_package(get_current_user_id())) {
                                         ?>
                                         <a href="#" target="_blank" class="google-adwords-item-button kt-ajax-button kt-modal-button kando-show-packages-form" data-modal="send-package"
                                            data-package="<?php echo esc_attr($key) ?>"
-                                           data-type="fast-order" data-wpel-link="internal">سفارش دهید</a>
+                                           data-type="fast-order" data-wpel-link="internal"><?php _e("Order Now", SAMYAR_TEXT_DOMAIN); ?></a>
                                     <?php } ?>
                                 </div>
 
@@ -108,6 +108,3 @@
     </div>
 
 </div>
-
-
-

@@ -1,15 +1,15 @@
 <?php
 
-$site_logo = $options->get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
+$site_logo = kando_get_option('site-logo', SAMYAR_DIR_IMG . '/logo128.png');
 if (isset($site_logo) && !empty($site_logo) && is_numeric($site_logo)) {
-    $site_logo = $options->get_option('site-logo');
+    $site_logo = kando_get_option('site-logo');
     $site_logo = wp_get_attachment_url($site_logo);
 }
-$website_title = $options->get_option('website-title', get_option('blogname'));
-$support_phone = $options->get_option('support-phone');
-$support_email = $options->get_option('support-email');
-$start_working_hours = $options->get_option('start-working-hours');
-$end_working_hours = $options->get_option('end-working-hours');
+$website_title = kando_get_option('website-title', get_option('blogname'));
+$support_phone = kando_get_option('support-phone');
+$support_email = kando_get_option('support-email');
+$start_working_hours = kando_get_option('start-working-hours');
+$end_working_hours = kando_get_option('end-working-hours');
 $now_hour = date_i18n('H');
 ?>
 <div class="kt-modal-inner kt-contact-modal">

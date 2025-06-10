@@ -8,6 +8,7 @@ use samyar\Provider;
 use samyar\Service;
 
 $title = __("Subscription orders", SAMYAR_TEXT_DOMAIN);
+$stranslates = \samyar\serviceController::getInstance()->get_translates();
 ?>
 
 
@@ -62,7 +63,7 @@ $title = __("Subscription orders", SAMYAR_TEXT_DOMAIN);
 
                             <ul class="order-details">
 								<?php if ($service): ?>
-                                    <li><?php _e("Service:", SAMYAR_TEXT_DOMAIN); ?> <?php echo esc_attr($service->id) ?>&nbsp;-&nbsp;<?php echo esc_attr($service->name) ?></li>
+                                    <li><?php _e("Service:", SAMYAR_TEXT_DOMAIN); ?> <?php echo esc_attr($service->id) ?>&nbsp;-&nbsp;<?php echo esc_attr(serviceController::getInstance()->get_title($stranslates,$service)) ?></li>
 								<?php endif; ?>
 
                                 <li><?php _e("Username:", SAMYAR_TEXT_DOMAIN); ?> <?php echo esc_attr( $order->username ) ?></li>

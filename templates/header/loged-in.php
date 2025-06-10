@@ -3,7 +3,7 @@
 use samyar\walletController;
 
 $options = settingsController::getInstance();
-$redirect_logout = $options->get_option('redirect-logout', home_url('login'));
+$redirect_logout = kando_get_option('redirect-logout', home_url('login'));
 ?>
 <div class="header-user-area-btns">
 
@@ -40,15 +40,13 @@ $redirect_logout = $options->get_option('redirect-logout', home_url('login'));
                 <div class="user-name">
                     <?php
                     $user = get_user_by('ID', get_current_user_id());
-                    $wallet = walletController::getInstance();
-                    $user_credit = $wallet->getUserCredit(get_current_user_id());
                     ?>
                     <?php echo $user->display_name ?>
                     <br>
                     <a href="<?php echo esc_attr(home_url('dashboard/?action=add-credit')) ?>"
                        class="panel-header-wallet" data-wpel-link="internal">
                         <i class="elegant-icon icon_wallet"></i>
-                        <span><?= walletController::getInstance()->getUserCreditByCurrency(get_current_user_id()) ?></span>
+                        <span><?= walletController::getInstance()->getUserCredit(get_current_user_id())['price_for_show_formatted'] ?></span>
                     </a>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <div class="wrap kando">
     <div id="elementor-template-library-tabs-wrapper" class="nav-tab-wrapper">
-        <a class="nav-tab nav-tab-active" href="<?= admin_url('admin.php?page=kando-reports') ?>">سفارشات</a>
-        <a class="nav-tab" href="<?= admin_url('admin.php?page=kando-users-reports') ?>">شارژ کاربران</a>
+        <a class="nav-tab nav-tab-active" href="<?= admin_url('admin.php?page=kando-reports') ?>"><?php _e('Orders', SAMYAR_TEXT_DOMAIN); ?></a>
+        <a class="nav-tab" href="<?= admin_url('admin.php?page=kando-users-reports') ?>"><?php _e('User Charges', SAMYAR_TEXT_DOMAIN); ?></a>
     </div>
     <div id="poststuff" class="kando-reports-wide">
         <div class="postbox">
@@ -30,7 +30,7 @@
                     ?>
                     <!--
                     <li class="custom <?php echo ('custom' === $current_range) ? 'active' : ''; ?>">
-                        دلخواه:
+                        <?php _e('Custom:', SAMYAR_TEXT_DOMAIN); ?>
                         <form method="GET">
                             <div>
                                 <?php
@@ -58,8 +58,8 @@
             </div>
             <div class="inside chart-with-sidebar">
 
-                <div class="main" style="float: right;margin: auto 5px;">
-                    <div id="chart"></div>
+                <div class="main">
+                    <div id="chart" style="width: 100%;"></div>
                     <?php $this->get_orders_table(); ?>
                 </div>
             </div>

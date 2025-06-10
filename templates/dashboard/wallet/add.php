@@ -6,74 +6,18 @@ if (!defined('ABSPATH')) {
 use samyar\walletController;
 
 $wallet = walletController::getInstance();
-$user_credit = $wallet->getUserCredit(get_current_user_id());
+$user_credit = $wallet->getUserCredit(get_current_user_id())['price'];
 
-$min_charge_credit = $options->get_option('min-charge-credit', 1000);
-$max_charge_credit = $options->get_option('max-charge-credit', 1000000);
+$min_charge_credit = kando_get_option('min-charge-credit', 1000);
+$max_charge_credit = kando_get_option('max-charge-credit', 1000000);
 
-$usd_min_charge_credit = $options->get_option('usd-min-charge-credit', 1);
-$usd_max_charge_credit = $options->get_option('usd-max-charge-credit', 1000);
+$usd_min_charge_credit = kando_get_option('usd-min-charge-credit', 1);
+$usd_max_charge_credit = kando_get_option('usd-max-charge-credit', 1000);
 
 
-$default_gateway = $options->get_option('default-gateway', "zarinpal");
+//$default_gateway = kando_get_option('default-gateway', "zarinpal");
 ?>
-<script>
-    /*
-    jQuery(document).ready(function ($) {
-        if ($('input:radio[name=payment_method]').length > 0) {
-            if ($('input:radio[value=<?=$default_gateway?>]').length > 0) {
-                $("input:radio[value=<?=$default_gateway?>]").attr('checked', true);
-            } else {
-                $("input:radio[name=payment_method]:first").attr('checked', true);
-            }
-        }
-    })
-    */
 
-    jQuery(document).ready(function($) {
-        // گرفتن اولین آیتم و استخراج مقدار data-currency آن
-
-        // بررسی انتخاب شده بودن گزینه
-        var selectedOption = $('#payment_method option:selected');
-
-// اگر چیزی انتخاب نشده بود، اولین گزینه را انتخاب کن
-        if (!selectedOption.length || !selectedOption.data('currency')) {
-            $('#payment_method option:first').prop('selected', true);
-            selectedOption = $('#payment_method option:first');
-        }
-
-
-        var firstCurrency = selectedOption.data('currency');
-
-        // قرار دادن مقدار استخراج شده در داخل span
-        if (firstCurrency === 'USD') {
-            $('#min-max-usd').show();
-            $('#min-max-irt').hide();
-            $('.input-group-text.currency').text('USD');
-        } else {
-            $('#min-max-irt').show();
-            $('#min-max-usd').hide();
-            $('.input-group-text.currency').text('تومان');
-        }
-
-        // تغییر مقدار span در صورت تغییر گزینه انتخابی
-        $('#payment_method').on('change', function() {
-            var selectedCurrency = $(this).find('option:selected').data('currency');
-
-            if (selectedCurrency === 'USD') {
-                $('#min-max-usd').show();
-                $('#min-max-irt').hide();
-                $('.input-group-text.currency').text('USD');
-            } else {
-                $('#min-max-irt').show();
-                $('#min-max-usd').hide();
-                $('.input-group-text.currency').text('تومان');
-            }
-        });
-    });
-
-
-</script>
 <div class="kt-row">
     <div class="column kt-col-xs-12 kt-col-md-12">
         <?php kando_show_alerts('credit'); ?>
@@ -87,7 +31,7 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
                     <div class="column kt-col-xs-12 kt-col-md-3"></div>
                     <div class="column kt-col-xs-12 kt-col-md-6 woocommerce-MyAccount-account-funds">
                         <p>
-                            <?php printf(__('You already have <strong><span class="%s">%s</span></strong> in your account balance.', SAMYAR_TEXT_DOMAIN), 'woocommerce-Price-amount amount', walletController::getInstance()->getUserCreditByCurrency(get_current_user_id())) ?>
+                            <?php printf(__('You already have <strong><span class="%s">%s</span></strong> in your account balance.', SAMYAR_TEXT_DOMAIN), 'woocommerce-Price-amount amount', walletController::getInstance()->getUserCredit(get_current_user_id())['price_for_show_formatted']) ?>
                         </p>
                         <div id="min-max-irt" style="display: none">
                             <span class="kando-min-payment"><?php _e("minimum payment:", SAMYAR_TEXT_DOMAIN) ?> <b><?= $min_charge_credit ?></b> تومان</span><br>
@@ -101,30 +45,16 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
 
                         <span class="kando-rate-payment"></span>
                         <form method="post" class="clearfix samyar-add-credit">
+                            <?php wp_nonce_field('add_credit_nonce', 'add_credit_nonce_field'); ?>
                             <input type="hidden" name="action" value="samyar_add_credit">
                             <div class="samyar-form-loading"></div>
                             <!--                            <h3><label for="topup_amount">-->
-                            <?php //_e( "add credit", SAMYAR_TEXT_DOMAIN ) ?><!--</label></h3>-->
+                            <?php //_e( "Add funds", SAMYAR_TEXT_DOMAIN ) ?><!--</label></h3>-->
+
+                            <?php include (SAMYAR_DIR_TEMPLATE.'/gateways-list/gateways-list.php') ?>
 
 
-                            <?php
-                            $gateways = kandopanel_gateways_list();
-                            usort($gateways, function($a, $b) {
-                                return $a['order'] <=> $b['order'];
-                            });
-                            ?>
-                            <select class="form-control mb-3 mt-3" id="payment_method" name="payment_method">
-
-                                <?php foreach ($gateways as $gateway) {
-                                    if ($gateway['enable']) {
-                                        ?>
-                                        <option data-currency="<?= $gateway['currency'] ?>" value="<?= $gateway['gateway'] ?>"><?= $gateway['title'] ?></option>
-                                    <?php }
-                                } ?>
-
-                            </select>
-
-
+                            <h4 class="mt-3"><label for="topup_amount"><?php _e( "Amount:", SAMYAR_TEXT_DOMAIN ) ?></label></h4>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text currency">تومان</span>
@@ -140,9 +70,9 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
 
 
                             <div class="kt-col-xs-12">
-                                <div class="kt-wc-coupon-box"><?php _e("Do you have a discount coupon?", SAMYAR_TEXT_DOMAIN) ?>
+                                <div class="kt-wc-coupon-box"><?php _e("Do you have a gift code?", SAMYAR_TEXT_DOMAIN) ?>
                                     <a href="#"
-                                       class="showcoupon"><?php _e("for insert discount code click here", SAMYAR_TEXT_DOMAIN) ?></a>
+                                       class="showcoupon"><?php _e("for insert gift code click here", SAMYAR_TEXT_DOMAIN) ?></a>
                                 </div>
 
                                 <!--                                <div class="kt-wc-coupon-box">کوپن تخفیف دارید؟ <a href="#" class="showcoupon">برای نوشتن کد اینجا کلیک کنید</a></div>-->
@@ -150,12 +80,12 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
 
                                     <p class="form-row form-row-first">
                                         <input type="text" name="coupon_code" class="input-text"
-                                               placeholder="<?php _e("discount code", SAMYAR_TEXT_DOMAIN) ?>"
+                                               placeholder="<?php _e("Gift code", SAMYAR_TEXT_DOMAIN) ?>"
                                                id="coupon_code" value=""/>
                                     </p>
 
                                     <p class="form-row form-row-last">
-                                        <button class="button button-red apply_coupon kt-ajax-button alt"><?php _e("Checking discount code", SAMYAR_TEXT_DOMAIN) ?></button>
+                                        <button class="button button-red apply_coupon kt-ajax-button alt"><?php _e("Checking Gift code", SAMYAR_TEXT_DOMAIN) ?></button>
                                     </p>
                                     <div class="alert alert-success apply_coupon_result"
                                          style="display:none;margin-top:10px"></div>
@@ -163,16 +93,20 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
                                 </div>
 
                                 <?php
-                                $options = settingsController::getInstance();
-                                $enable_agree_order = $options->get_option('enable-agree-order', "1");
-                                $agree_order_text = $options->get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+                                $enable_agree_order = kando_get_option('enable-agree-order', "1");
+                                $agree_order_text = kando_get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+                                $link = kando_get_option('samyar-agree-order-link', "");
 
-                                $link = $options->get_option('samyar-agree-order-link', "");
-                                if (empty($link)) {
-                                    $url = __("Rules and regulations", SAMYAR_TEXT_DOMAIN);
-                                } else {
-                                    $url = '<a class="terms-tag" href="' . $link . '" target="_blank">' . __("Rules and regulations", SAMYAR_TEXT_DOMAIN) . '</a>';
-                                }
+                                // تعیین URL بر اساس وجود یا عدم وجود لینک
+                                $url = empty($link)
+                                    ? __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                    : sprintf(
+                                        '<a class="terms-tag" href="%s" target="_blank">%s</a>',
+                                        esc_url($link),
+                                        __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                    );
+
+                                // جایگزینی [term] با URL
                                 $text = str_replace('[term]', $url, $agree_order_text);
 
                                 if ($enable_agree_order === "1"):
@@ -187,14 +121,7 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
 
                             </div>
 
-                            <!--
-                            <div id="payment" class="woocommerce-checkout-payment">
-                                <ul class="wc_payment_methods payment_methods methods">
-                                    <?php do_action('samyar_order_payments'); ?>
 
-                                </ul>
-                            </div>
-                            -->
 
 
                             <div class="form-row place-order" style="clear: both;text-align: center;margin-top: 20px">
@@ -212,3 +139,67 @@ $default_gateway = $options->get_option('default-gateway', "zarinpal");
         </div>
     </div>
 </div>
+    <script>
+        jQuery(function($) {
+            var $form = $j('.samyar-add-credit');
+            if (!$form.length) return;
+
+            kandoSetDefaultGateway($form);
+            kandoToggleCardSelect($form);
+            // روش صحیح: تابع را مستقیماً پاس دهید، نه نتیجه آن را
+            $(document).on("change", '.samyar-add-credit #payment_method', function() {
+                kandoToggleCardSelect($form);
+            });
+
+            $(document).on("change", '.samyar-add-credit input[name="payment_method"]', function() {
+                kandoToggleCardSelect($form);
+            });
+
+
+
+            // تابع برای بررسی و تغییر ارز
+            function updateCurrency() {
+                var selectedCurrency;
+
+                // بررسی اینکه کدام استایل استفاده شده است
+                if ($('#payment_method').length > 0) { // استایل select
+                    var selectedOption = $('#payment_method option:selected');
+                    if (!selectedOption.length || !selectedOption.data('currency')) {
+                        $('#payment_method option:first').prop('selected', true);
+                        selectedOption = $('#payment_method option:first');
+                    }
+                    selectedCurrency = selectedOption.data('currency');
+                } else { // استایل radio buttons
+                    var selectedRadio = $('input[name="payment_method"]:checked');
+                    if (!selectedRadio.length || !selectedRadio.data('currency')) {
+                        $('input[name="payment_method"]').first().prop('checked', true);
+                        selectedRadio = $('input[name="payment_method"]:checked');
+                    }
+                    selectedCurrency = selectedRadio.data('currency');
+                }
+
+                // تغییر نمایش بر اساس ارز انتخاب شده
+                if (selectedCurrency === 'USD') {
+                    $('#min-max-usd').show();
+                    $('#min-max-irt').hide();
+                    $('.input-group-text.currency').text('USD');
+                } else {
+                    $('#min-max-irt').show();
+                    $('#min-max-usd').hide();
+                    $('.input-group-text.currency').text('تومان');
+                }
+            }
+
+            // اجرای اولیه
+            updateCurrency();
+
+            // رویداد تغییر برای استایل select
+            $('#payment_method').on('change', updateCurrency);
+
+            // رویداد تغییر برای استایل radio buttons
+            $('input[name="payment_method"]').on('change', updateCurrency);
+
+
+        });
+    </script>
+<?php include(SAMYAR_DIR_TEMPLATE.'/dashboard/payment/payments.php') ?>

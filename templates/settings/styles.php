@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || exit('No Access!');
-$style = $options->get_option('style');
-$font = $options->get_option('font', $options->samyar_default('font'));
+$style = kando_get_option('style');
+$font = kando_get_option('font', $options->samyar_default('font'));
 ?>
 <div class="samyar-settings-area samyar-settings-styles">
     <h3 class="samyar-settings-title">

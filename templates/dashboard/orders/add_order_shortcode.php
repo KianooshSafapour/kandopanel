@@ -1,134 +1,130 @@
 <?php
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
-}
 
-use samyar\Category;
-use samyar\Provider;
+use kandopanel\currencyController;
+use kandopanel\packageController;
+use samyar\categoryController;
+use samyar\Order;
+use samyar\priceController;
 use samyar\Service;
-use samyar\Smeta;
 use samyar\Social;
+use samyar\socialController;
 use samyar\walletController;
 
 $options = settingsController::getInstance();
-$enable_average_time = $options->get_option('enable-average-time', 1);
+$enable_average_time = kando_get_option('enable-average-time', 1);
 $categories = kando_get_category_by_enable_service();
+$ctranslates = categoryController::getInstance()->get_translates();
+$order = null;
+$service = null;
+$order_id = sanitize_text_field($_GET['order_id'] ?? '');
+$fast_order = (sanitize_text_field($_GET['type'] ?? '') === "fast-order") ? 1 : 0;
+$cat_id = sanitize_text_field($_GET['cat_id'] ?? $categories[0]->id);
+$service_id = sanitize_text_field($_GET['service_id'] ?? '');
+global $wpdb;
+if (!empty($order_id)) {
+    // پارامترهای جستجو
+    $user_id = get_current_user_id(); // شناسه کاربر جاری
 
+// کوئری SQL
+    $query = $wpdb->prepare(
+        "SELECT 
+        o.id, 
+        o.link, 
+        o.quantity, 
+        o.charge,
+        o.username,
+        s.cate_id,
+        s.name AS service_name,
+        s.id AS service_id,
+        s.type AS service_type
+    FROM 
+        {$wpdb->prefix}samyar_orders AS o
+    JOIN 
+        {$wpdb->prefix}samyar_services AS s 
+    ON 
+        o.service_id = s.id
+    WHERE 
+        o.id = %d 
+        AND o.uid = %d;",
+        $order_id,
+        $user_id
+    );
 
-if (isset($_GET['order_id']) && !empty($_GET['order_id'])) {
-    $order_id = $_GET['order_id'];
-    $order = \samyar\Order::find_where(['id'=>$order_id,'uid'=>get_current_user_id()]);
-    if($order){
-        $service = Service::find($order->service_id);
+// اجرای کوئری و دریافت نتیجه
+    $order = $wpdb->get_row($query);
+    if ($order) {
+        $cat_id = $order->cate_id ?: $cat_id;
+        $service_id = $order->service_id ?: $service_id;
+        $service_name = $order->service_name;
     }
-
-} else {
-    $order_id = "";
+} else if (!empty($service_id)) {
+    $service_info = Service::find($service_id);
+    if ($service_info) {
+        $cat_id = $service_info->cate_id ?: $cat_id;
+    }
 }
+
 
 $socials = Social::where(['order' => 'ASC', 'order_by' => 'sort', 'status' => 1]);
-if (isset($_GET['type']) && !empty($_GET['type']) && $_GET['type'] === "fast-order") {
-    $fast_order = 1;
-} else {
-    $fast_order = 0;
-}
+$titles = socialController::getInstance()->get_titles();
 
-if (isset($_GET['cat_id']) && !empty($_GET['cat_id'])) {
-    $cat_id = $_GET['cat_id'];
-} elseif (!empty($order_id) && $order) {
-    $cat_id = $service->cate_id;
-} else {
-    $cat_id = "";
-}
+$enable_send_order_mass = kando_get_option('enable-send-order-mass', 1);
+?>
 
-if (isset($_GET['service_id']) && !empty($_GET['service_id'])) {
-    $service_id = $_GET['service_id'];
-} elseif (!empty($order_id) && $order) {
-    $service_id = $service->id;
-} else {
-    $service_id = "";
-}
+<?php if (kando_get_option('enable-only-logo-brand', 0) == 1) { ?>
+    <style>
+        .brand-company .media-body {
+            display: none;
+        }
 
-$enable_send_order_mass = $options->get_option('enable-send-order-mass', 1);
-if (isset($service_id) && !empty($service_id)): ?>
-    <script type="text/javascript">
-        jQuery(window).on('load', function () {
+        .brand-company .kt-col-md-3 {
+            display: flex;
+            width: auto;
+        }
 
-            <?php if(isset($service_id) && !empty($service_id)){ ?>
-            jQuery("#select-order-service select")
-                .val("<?=$service_id?>")
-                .trigger('change');
-            <?php } ?>
-
-            <?php if(isset($_GET['quantity']) && !empty($_GET['quantity'])){ ?>
-            jQuery(".ajaxQuantity").val(<?=$_GET['quantity']?>).trigger('input');
-            <?php } ?>
-
-            jQuery("#select-order-service select").change(function () {
-                samyarShowServiceInfo();
-            });
-
-        });
-
-
-        jQuery(function () {
-
-
-            jQuery("#select-order-service select")
-                .val("<?=$service_id?>")
-                .trigger('change');
-
-            jQuery("#select-order-service select").change(function () {
-                samyarShowServiceInfo();
-            });
-
-
-        });
-
-
-    </script>
-<?php endif; ?>
-
-<?php if(kando_get_option( 'enable-only-logo-brand',0)==1){ ?>
-<style>
-    .brand-company .media-body{
-        display: none;
-    }
-
-    .brand-company .kt-col-md-3{
-        display: flex;
-        width: auto;
-    }
-
-    .brand-company .media .icon {
-        margin-right: 0;
-    }
-</style>
+        .brand-company .media .icon {
+            margin-right: 0;
+        }
+    </style>
 <?php } ?>
 <div class="kt-row kando-sendo-order-box">
-    <?php $enable_show_brands = $options->get_option('enable-show-brands', 1); ?>
-    <?php if (!$fast_order && $enable_show_brands == 1 && $socials) { ?>
+    <?php $enable_show_brands = kando_get_option('enable-show-brands', 1); ?>
+    <?php if (!$fast_order && $enable_show_brands == 1 && $socials) {
+
+        ?>
         <div class="column kt-col-xs-12 kt-col-md-12 brand-company">
 
             <div class="dashboard-posts-box">
                 <div class="dashboard-posts-list" style="padding: 10px 25px;">
                     <div class="kt-row">
-                        <?php foreach ($socials as $social): ?>
+                        <?php foreach ($socials as $social):
+                            if (!empty($titles) && isset($titles[$social->id])) {
+                                $brand_title = $titles[$social->id];
+                            } else {
+                                $brand_title = $social->name;
+                            }
+
+                            ?>
                             <div class="kt-col-xs-6 kt-col-md-3">
-                                <a href="#" class="media brand-category" data-tooltip="<?= $social->name ?>" data-id="<?= $social->id ?>">
+                                <a href="#" class="media brand-category" data-tooltip="<?= $brand_title ?>"
+                                   data-id="<?= $social->id ?>">
                                     <div class="icon"><i class="<?= $social->icon ?>" aria-hidden="true"></i></div>
-                                    <span class="media-body"><?= $social->name ?></span>
+                                    <span class="media-body">
+                                        <?= $brand_title ?>
+                                    </span>
                                 </a>
                             </div>
                         <?php endforeach; ?>
                         <div class="kt-col-xs-6 kt-col-md-3">
-                            <a href="#" class="media brand-category" data-id="others" data-tooltip="<?php _e("Other", SAMYAR_TEXT_DOMAIN); ?>">
+                            <a href="#" class="media brand-category" data-id="others"
+                               data-tooltip="<?php _e("Other", SAMYAR_TEXT_DOMAIN); ?>">
                                 <div class="icon"><i class="fas fa-asterisk" aria-hidden="true"></i></div>
                                 <span class="media-body"><?php _e("Other", SAMYAR_TEXT_DOMAIN); ?></span>
                             </a>
                         </div>
                         <div class="kt-col-xs-6 kt-col-md-3">
-                            <a href="#" class="media brand-category" data-id="all" data-tooltip="<?php _e("All items", SAMYAR_TEXT_DOMAIN); ?>">
+                            <a href="#" class="media brand-category" data-id="all"
+                               data-tooltip="<?php _e("All items", SAMYAR_TEXT_DOMAIN); ?>">
                                 <div class="icon"><i class="fab fa-audible" aria-hidden="true"></i></div>
                                 <span class="media-body"><?php _e("All items", SAMYAR_TEXT_DOMAIN); ?></span>
                             </a>
@@ -157,23 +153,48 @@ if (isset($service_id) && !empty($service_id)): ?>
                     <?php
 
                     if (!empty($order_id) && $order):
-                        $wallet = walletController::getInstance();
-                        $user_credit = $wallet->getUserCredit(get_current_user_id());
-//                            print_r($order);
+
+                        //تعداد هدیه
+                        $quantity_gift = \samyar\Ometa::find_where(['order_id' => $order->id, 'meta_key' => 'quantity_gift']);
+                        $quantity_gift = $quantity_gift->meta_value ?? NULL;
+
                         ?>
                         <div class="column kt-col-xs-12">
                             <div class="alert alert-success" role="alert">
                                 <ul>
-                                    <li><h3><?php _e("Your order has been successfully received", SAMYAR_TEXT_DOMAIN); ?></h3></li>
+                                    <li>
+                                        <h3><?php _e("Your order has been successfully received", SAMYAR_TEXT_DOMAIN); ?></h3>
+                                    </li>
                                     <li><?php _e('ID:', SAMYAR_TEXT_DOMAIN); ?> <strong><?= $order->id ?></strong></li>
-                                    <li><?php _e('Service:', SAMYAR_TEXT_DOMAIN); ?> <strong><?= $service->name ?></strong></li>
-                                    <li><?php _e('Link:', SAMYAR_TEXT_DOMAIN); ?> <strong><?= $order->link ?></strong></li>
-                                    <li><?php _e('Quantity:', SAMYAR_TEXT_DOMAIN); ?> <strong><?= $order->quantity ?></strong></li>
+                                    <?php if (!empty($service_name)) { ?>
+                                        <li><?php _e('Service:', SAMYAR_TEXT_DOMAIN); ?>
+                                            <strong><?= $service_name ?></strong></li>
+                                    <?php } ?>
+
+                                    <?php if ($order->service_type == "subscriptions") { ?>
+                                        <li><?php _e('Link:', SAMYAR_TEXT_DOMAIN); ?>
+                                            <strong><?= $order->username ?></strong></li>
+                                        <li><?php _e('Quantity:', SAMYAR_TEXT_DOMAIN); ?>
+                                            <strong><?= $order->quantity ?></strong>
+                                            <?php if ($quantity_gift !== NULL) { ?>
+                                                <span style="color:#f58">(<?php _e("Quantity gift", SAMYAR_TEXT_DOMAIN); ?>:<?php echo $quantity_gift ?>)</span>
+                                            <?php } ?>
+                                        </li>
+                                    <?php } else { ?>
+                                        <li><?php _e('Link:', SAMYAR_TEXT_DOMAIN); ?>
+                                            <strong><?= $order->link ?></strong></li>
+                                        <li><?php _e('Quantity:', SAMYAR_TEXT_DOMAIN); ?>
+                                            <strong><?= $order->quantity ?></strong>
+                                            <?php if ($quantity_gift !== NULL) { ?>
+                                                <span style="color:#f58">(<?php _e("Quantity gift", SAMYAR_TEXT_DOMAIN); ?>:<?php echo $quantity_gift ?>)</span>
+                                            <?php } ?>
+                                        </li>
+                                    <?php } ?>
                                     <li><?php _e('Charge:', SAMYAR_TEXT_DOMAIN); ?>
-                                        <strong><?= kando_number_format_currency($order->charge, true) ?></strong>
+                                        <strong><?= priceController::kandoFormatPrice($order->charge)['price_for_show_formatted'] ?></strong>
                                     </li>
                                     <li><?php _e('Balance:', SAMYAR_TEXT_DOMAIN); ?>
-                                        <strong><?= kando_number_format_currency($user_credit, true) ?></strong>
+                                        <strong><?= walletController::getInstance()->getUserCredit(get_current_user_id())['price_for_show_formatted'] ?></strong>
                                     </li>
                                 </ul>
                             </div>
@@ -181,27 +202,19 @@ if (isset($service_id) && !empty($service_id)): ?>
                         </div>
                     <?php
                     endif; ?>
-                    <form method="POST" class="samyar-form new-order-form">
+                    <form method="POST" class="samyar-form new-order-form single-order-form">
                         <?php wp_nonce_field('new_order_nonce', 'new_order_nonce'); ?>
                         <!--        <h4 style="text-align: center;margin-bottom: 40px" class="new-ticket-title">افزودن سفارش جدید</h4>-->
                         <input type="hidden" name="action" value="samyar_order_add">
 
-                        <?php if (!$fast_order): //اگر سفارش سریع بود نشون نده ?>
-                            <div class="column kt-col-xs-12 kt-col-md-5 float-left kt-hidden-xs kt-hidden-sm">
-                                <div class="new-ticket-help">
-                                    <!--                <img src="-->
-                                    <?php //echo SAMYAR_DIR_IMG ?><!--/new-ticket-help.png"/>-->
-                                    <h3 style="text-align: center"><?php _e("Service description", SAMYAR_TEXT_DOMAIN); ?></h3>
-                                    <ul>
-                                        <li><?php _e("The description of each service will be placed in this section", SAMYAR_TEXT_DOMAIN); ?></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+
+                        <input type="hidden" id="kando_selected_service" value="<?= $service_id ?>">
+
+
                         <?php
                         $col = $fast_order ? 12 : 7;
                         ?>
-                        <div class="column kt-col-xs-12 kt-col-md-<?= $col ?> float-left">
+                        <div class="column kt-col-xs-12 kt-col-md-<?= $col ?>">
 
                             <div class="new-api-form-outer">
 
@@ -211,60 +224,54 @@ if (isset($service_id) && !empty($service_id)): ?>
                                 <div class="new-api-provider-form-errors"></div>
                                 <div class="samyar-form-loading"></div>
                                 <div class="clearfix">
-                                    <!--                    <label>لطفا دسته مورد نظر خود را انتخاب نمایید</label>-->
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="button button-default search-service-btn kt-ajax-button"
+                                                    type="button">
+                                                <span class="fas fa-search"></span>
+                                            </button>
+                                        </div>
+                                        <input id="input_service" dir="ltr" class="form-control" type="number"
+                                               placeholder="<?php _e("Search by Service ID", SAMYAR_TEXT_DOMAIN); ?>"
+                                               autocomplete="off">
+
+                                    </div>
+                                </div>
+
+                                <div class="clearfix">
+                                    <label><?php _e("Category:", SAMYAR_TEXT_DOMAIN); ?></label>
                                     <select name="cate_id" id="samyar_select_category">
-                                        <option value="0"><?php _e("Please select your desired category", SAMYAR_TEXT_DOMAIN); ?></option>
-                                        <?php foreach ($categories as $category): ?>
+
+                                        <!--                                        <option value="0">-->
+                                        <?php //_e("Please select your desired category", SAMYAR_TEXT_DOMAIN); ?><!--</option>-->
+                                        <?php foreach ($categories as $category):
+
+                                            ?>
                                             <option value="<?php echo esc_attr($category->id) ?>"
                                                     data-brand="<?php if ($category->social_id): echo $category->social_id; endif; ?>"
-                                                    <?php if ($category->id === $cat_id): ?>selected<?php endif; ?>><?php echo esc_attr($category->name) ?></option>
+                                                    data-icon="<?php echo $category->icon ?>"
+                                                    <?php if ($category->id === $cat_id): ?>selected<?php endif; ?>><?php echo esc_attr(categoryController::getInstance()->get_title($ctranslates, $category)) ?></option>
                                         <?php endforeach; ?>
                                     </select>
 
                                     <div id="select-order-service"
-                                         style="<?php if (!isset($cat_id) || empty($cat_id)): ?>display: none<?php endif; ?>">
-                                        <label><?php _e("Please select the service you want", SAMYAR_TEXT_DOMAIN); ?></label>
-                                        <select name="service">
-                                            <?php if (isset($cat_id) && !empty($cat_id)):
-                                                $serviceController = new \samyar\serviceController();
-                                                $category_id = esc_attr($cat_id);
-                                                $services = $serviceController->enable_services($category_id);
-
-                                                echo "<option value='0'>".__("Please select the service you want", SAMYAR_TEXT_DOMAIN)."</option>";
-                                                foreach ($services as $service): ?>
-                                                    <option value="<?= $service->id ?>"
-                                                            data-avaerage="<?php echo get_average_time($service->id) ?>"
-                                                            data-min="<?= $service->min ?>"
-                                                            data-max="<?= $service->max ?>"
-                                                            data-type="<?= $service->type ?>"
-                                                            data-dripfeed="<?= $service->dripfeed ?>"
-                                                            data-price="<?= esc_attr(calculate_service_price($service->id)) ?>"
-                                                            data-name="<?php echo $service->name ?>"
-                                                            data-description=""><?php echo $service->name ?>
-                                                        (<?php echo number_format_i18n(esc_attr(calculate_service_price($service->id))) ?><?php kando_get_currency_base_text(true) ?>
-                                                        )
-                                                    </option>
-                                                <?php endforeach;
-                                            endif; ?>
+                                         style="display: none">
+                                        <label><?php _e("Service:", SAMYAR_TEXT_DOMAIN); ?></label>
+                                        <select name="service" id="samyar_select_service">
                                         </select>
                                     </div>
                                     <?php
-                                    $hidden_desc = $fast_order ? "" : "kt-hidden-md kt-hidden-lg";
+                                    $hidden_desc = $fast_order ? "" : "";
                                     ?>
-                                    <div class="new-ticket-help <?= $hidden_desc ?>"
-                                         style="padding: 6px 30px;margin-bottom: 11px;">
-                                        <ul style="margin-top: 0px;">
-                                            <li><?php _e("The description of each service will be placed in this section", SAMYAR_TEXT_DOMAIN); ?></li>
-                                        </ul>
-                                    </div>
                                     <div id="insert-order-data" style="display: none">
                                         <div class="order-default-link">
                                             <label><?php _e("Link", SAMYAR_TEXT_DOMAIN); ?></label>
-                                            <input type="text" name="link" dir="ltr" placeholder="<?php _e("Enter the link", SAMYAR_TEXT_DOMAIN); ?>"
+                                            <input type="text" name="link" dir="ltr"
+                                                   placeholder="<?php _e("Enter the link", SAMYAR_TEXT_DOMAIN); ?>"
                                                    <?php if (isset($_GET['link']) && !empty($_GET['link'])): ?>value="<?= esc_attr($_GET['link']) ?>"<?php endif; ?>/>
 
                                             <?php
-                                            //                                            $enable_process_link = $options->get_option('enable-process-link', "1");
+                                            //                                            $enable_process_link = kando_get_option('enable-process-link', "1");
                                             $enable_process_link = 0;//فعلا غیر فعال میشه
                                             ?>
                                             <?php if ($enable_process_link == 1 || $enable_process_link === "1"): ?>
@@ -275,10 +282,12 @@ if (isset($service_id) && !empty($service_id)): ?>
 
                                         <div class="order-default-quantity">
                                             <label><?php _e('Quantity', SAMYAR_TEXT_DOMAIN); ?></label>
-                                            <input type="number" step="1" min="0" autocomplete="off" name="quantity"
+                                            <input type="number" step="1" min="0" style="margin-bottom: 0"
+                                                   autocomplete="off" name="quantity"
                                                    class="ajaxQuantity" dir="ltr"
                                                    value="<?php echo(isset($_GET['quantity']) && !empty($_GET['quantity']) ? esc_attr($_GET['quantity']) : ""); ?>"
                                                    placeholder="<?php _e('desired quantity', SAMYAR_TEXT_DOMAIN); ?>"/>
+                                            <small class="help-block min-max"></small>
                                         </div>
                                         <?php if ($enable_average_time == 1) { ?>
                                             <div class="order-average-time d-none">
@@ -498,7 +507,7 @@ if (isset($service_id) && !empty($service_id)): ?>
 							    <?php _e("Service name", SAMYAR_TEXT_DOMAIN); ?>&nbsp;<strong class="product-quantity">&times; <?php _e('Quantity', SAMYAR_TEXT_DOMAIN); ?> </strong></span>
                                             </td>
                                             <td class="product-total">
-                                                0 <?php kando_get_currency_base_text(true) ?>
+                                                0
                                             </td>
                                         </tr>
                                         </tbody>
@@ -507,7 +516,7 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         <tr class="cart-subtotal" style="display: none">
                                             <th> <?php _e('Total price', SAMYAR_TEXT_DOMAIN); ?></th>
                                             <td><span class=" amount">0&nbsp;<span
-                                                            class=""><?php kando_get_currency_base_text(true) ?></span></span>
+                                                            class=""></span></span>
                                             </td>
                                         </tr>
 
@@ -515,7 +524,8 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         <tr class="cart-discount" style="display: none">
                                             <th>تخفیف سبد خرید</th>
                                             <td class="align-left" data-title="تخفیف سبد خرید">
-                                                0 <?php kando_get_currency_base_text(true) ?></td>
+                                                0
+                                            </td>
                                         </tr>
                                         <tr class="order-total">
                                             <th><?php _e("Amount payable", SAMYAR_TEXT_DOMAIN); ?></th>
@@ -532,7 +542,7 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         <?php
 
                                         //اگر مدیر در تنظیمات گفته که نیازی به تایید موبایل نیست
-                                        $enable_otp_order = $options->get_option('enable-otp-order', 1);
+                                        $enable_otp_order = kando_get_option('enable-otp-order', 1);
                                         ?>
                                         <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
                                             <p style="margin-top:20px;color:#AF0000"><?php _e("Note: If you don't need to confirm the mobile number for each order, just register on the site and log in to your account.", SAMYAR_TEXT_DOMAIN); ?></p>
@@ -541,7 +551,8 @@ if (isset($service_id) && !empty($service_id)): ?>
 
                                             <p class="form-row form-row-first">
                                                 <input type="text" name="mobile" dir="ltr" class="input-text"
-                                                       placeholder="<?php _e("Mobile", SAMYAR_TEXT_DOMAIN); ?>" id="mobile-number" value=""/>
+                                                       placeholder="<?php _e("Mobile", SAMYAR_TEXT_DOMAIN); ?>"
+                                                       id="mobile-number" value=""/>
                                             </p>
                                             <?php if ($enable_otp_order === "1" || $enable_otp_order) {// اگر تایید شماره همراه فعال هست ?>
                                                 <p class="form-row form-row-last">
@@ -553,14 +564,15 @@ if (isset($service_id) && !empty($service_id)): ?>
                                                 <div class="clear"></div>
                                                 <p class="form-row form-row-first">
                                                     <input type="text" name="verify-code" class="input-text"
-                                                           placeholder="<?php _e("Confirmation code received", SAMYAR_TEXT_DOMAIN); ?>" id="verify-code" value=""/>
+                                                           placeholder="<?php _e("Confirmation code received", SAMYAR_TEXT_DOMAIN); ?>"
+                                                           id="verify-code" value=""/>
                                                 </p>
                                             <?php } ?>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php
-                                    $enable_note_for_admin = $options->get_option('enable-note-for-admin', 1);
+                                    $enable_note_for_admin = kando_get_option('enable-note-for-admin', 1);
 
                                     if ($enable_note_for_admin == "1"):
                                         ?>
@@ -571,17 +583,22 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         </div>
                                     <?php endif ?>
                                     <?php
-                                    $options = settingsController::getInstance();
-                                    $enable_agree_order = $options->get_option('enable-agree-order', "1");
-                                    $agree_order_text = $options->get_option('samyar-agree-order-text', __( "I have read and agree to [term].", SAMYAR_TEXT_DOMAIN ));
+                                    $enable_agree_order = kando_get_option('enable-agree-order', "1");
+                                    $agree_order_text = kando_get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+                                    $link = kando_get_option('samyar-agree-order-link', "");
 
-                                    $link = $options->get_option('samyar-agree-order-link', "");
-                                    if (empty($link)) {
-                                        $url = __( "Rules and regulations", SAMYAR_TEXT_DOMAIN );
-                                    } else {
-                                        $url = '<a class="terms-tag" href="' . $link . '" target="_blank">'.__("Rules and regulations", SAMYAR_TEXT_DOMAIN).'</a>';
-                                    }
+                                    // تعیین URL بر اساس وجود یا عدم وجود لینک
+                                    $url = empty($link)
+                                        ? __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                        : sprintf(
+                                            '<a class="terms-tag" href="%s" target="_blank">%s</a>',
+                                            esc_url($link),
+                                            __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                        );
+
+                                    // جایگزینی [term] با URL
                                     $text = str_replace('[term]', $url, $agree_order_text);
+
 
                                     if ($enable_agree_order === "1"):
                                         ?>
@@ -591,64 +608,99 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         <label style="margin: 20px 0;font-size: 15px;font-weight: bold;"
                                                class="publish-notification" for="agree-order"><?= $text ?></label>
                                     <?php endif; ?>
-                                    <?php
-                                    $default_gateway = $options->get_option('default-gateway', "zarinpal");
-                                    ?>
-                                    <script>
-                                        jQuery(document).ready(function ($) {
-                                            if ($('input:radio[name=payment_method]').length > 0) {
-                                                if ($('input:radio[value=<?=$default_gateway?>]').length > 0) {
-                                                    $("input:radio[value=<?=$default_gateway?>]").attr('checked', true);
-                                                } else {
-                                                    $("input:radio[name=payment_method]:first").attr('checked', true);
-                                                }
-                                            }
-                                        })
-                                    </script>
-                                    <div id="payment" class="woocommerce-checkout-payment">
-                                        <?php
-                                        //اگر اعتبار قبل از ارسال سفارش فعال بود
-                                        //بهش بگو که باید قبل از ارسال سفارش کیف پول خودشون رو شارژ کنن
-                                        $enable_agree_order = $options->get_option('enable-wallet-charge', "0");
 
-                                        if ($enable_agree_order !== "1") {
-                                            ?>
-                                            <ul class="wc_payment_methods payment_methods methods">
-                                                <?php do_action('samyar_order_payments'); ?>
-                                            </ul>
-                                        <?php } ?>
-                                        <div class="form-row place-order">
-                                            <button class="button button-green kt-ajax-button alt" id="place_order"><?php _e("Add order", SAMYAR_TEXT_DOMAIN); ?></button>
-                                        </div>
+                                   <?php include (SAMYAR_DIR_TEMPLATE.'/gateways-list/gateways-list.php') ?>
+                                    <div class="form-row place-order">
+                                        <button class="button button-green kt-ajax-button alt"
+                                                id="place_order"><?php _e("Add order", SAMYAR_TEXT_DOMAIN); ?></button>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
+                        <?php if (!$fast_order): //اگر سفارش سریع بود نشون نده ?>
+                            <div class="column kt-col-xs-12 kt-col-md-5 service-info-box">
+                                <div class="dashboard-posts-box dashboard-tickets-box">
+                                    <div class="dashboard-posts-title-holder">
+                                        <h6 class="dashboard-posts-title"></h6>
+                                    </div>
+                                    <div class="dashboard-posts-list">
+                                        <div class="kt-row service-info-container">
+                                            <?php
 
+                                            $services = array(
+                                                array(
+                                                    'label' => __('Quality', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_star',
+                                                    'text' => '<span data-id="serviceQuality">-</span>',
+                                                ),
+                                                array(
+                                                    'label' => __('Speed', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_shield',
+                                                    'text' => '<span data-id="serviceSpeed">-</span>',
+                                                ),
+                                                array(
+                                                    'label' => __('Guarantee', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_check',
+                                                    'text' => '<span data-id="serviceRefill">-</span>',
+                                                ),
+                                                array(
+                                                    'label' => __('Link', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_link_alt',
+                                                    'text' => '<span data-id="serviceLink">-</span>',
+                                                ),
+                                                array(
+                                                    'label' => __('Cancel Button', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_stop_alt',
+                                                    'text' => '<span id="cancel_text">-</span>',
+                                                ),
+                                                array(
+                                                    'label' => __('Refill Button', SAMYAR_TEXT_DOMAIN),
+                                                    'icon' => 'elegant-icon icon_refresh',
+                                                    'text' => '<span id="refill_text">-</span>',
+                                                ),
+                                            );
+
+                                            foreach ($services as $service) {
+                                                echo '<div class="kt-col-md-6 kt-col-xs-6 mb-4 px-10">
+            <div class="form-label">' . $service['label'] . '</div>
+            <div class="desc-list">
+                <div class="icon">
+                    <i class="' . $service['icon'] . '"></i>
+                </div>
+                <div class="text">' . $service['text'] . '</div>
+            </div>
+          </div>';
+                                            }
+
+                                            ?>
+                                        </div>
+                                        <div class="kt-row">
+                                            <div class="kt-col-md-12 kt-col-xs-12 mb-4 px-10">
+                                                <div class="desc-list description" id="srv-desc" data-id="serviceDesc"
+                                                     style="height: auto; padding: 10px; font-size: 13px;line-height: 24px;display: none"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="new-ticket-help">
+                                    <h3 style="text-align: center"><?php _e("Service description", SAMYAR_TEXT_DOMAIN); ?></h3>
+                                    <ul>
+                                        <li><?php _e("The description of each service will be placed in this section", SAMYAR_TEXT_DOMAIN); ?></li>
+                                    </ul>
+                                </div>
+                                -->
+                            </div>
+                        <?php endif; ?>
                     </form>
                     <form method="POST" class="samyar-form mass-order-form" style="display:none">
                         <?php wp_nonce_field('new_order_mass_nonce', 'new_order_mass_nonce'); ?>
                         <input type="hidden" name="action" value="samyar_order_mass">
-
-                        <?php if (!$fast_order && $enable_send_order_mass == 1): //اگر سفارش سریع بود نشون نده ?>
-                            <div class="column kt-col-xs-12 kt-col-md-5 float-left kt-hidden-xs kt-hidden-sm">
-                                <div class="new-ticket-help">
-                                    <!--                <img src="-->
-                                    <?php //echo SAMYAR_DIR_IMG ?><!--/new-ticket-help.png"/>-->
-                                    <h3 style="text-align: center"><?php _e("Service description", SAMYAR_TEXT_DOMAIN); ?></h3>
-                                    <ul>
-                                        <li><?php _e("Description Here you can place your orders easily! Please be sure to check all prices and delivery times before ordering! Once an order has been submitted, it cannot be cancelled.", SAMYAR_TEXT_DOMAIN); ?></li>
-                                        <li><?php _e("To send a bulk order, you must first log in to your account.", SAMYAR_TEXT_DOMAIN); ?></li>
-                                        <li><?php _e("To send a bulk order, you must charge your wallet first.", SAMYAR_TEXT_DOMAIN); ?></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                         <?php
                         $col = $fast_order ? 12 : 7;
                         ?>
-                        <div class="column kt-col-xs-12 kt-col-md-<?= $col ?> float-left">
+                        <div class="column kt-col-xs-12 kt-col-md-<?= $col ?>">
 
                             <div class="new-api-form-outer">
                                 <div class="new-api-provider-form-errors"></div>
@@ -691,17 +743,22 @@ if (isset($service_id) && !empty($service_id)): ?>
                                         </div>
                                     <?php endif ?>
                                     <?php
-                                    $options = settingsController::getInstance();
-                                    $enable_agree_order = $options->get_option('enable-agree-order', "1");
-                                    $agree_order_text = $options->get_option('samyar-agree-order-text', "من [term] را خوانده و با آن موافقم.");
+                                    $enable_agree_order = kando_get_option('enable-agree-order', "1");
+                                    $agree_order_text = kando_get_option('samyar-agree-order-text', __("I have read and agree to [term].", SAMYAR_TEXT_DOMAIN));
+                                    $link = kando_get_option('samyar-agree-order-link', "");
 
-                                    $link = $options->get_option('samyar-agree-order-link', "");
-                                    if (empty($link)) {
-                                        $url = "قوانین و مقررات";
-                                    } else {
-                                        $url = '<a class="terms-tag" href="' . $link . '" target="_blank">'._e("Rules and regulations", SAMYAR_TEXT_DOMAIN).'</a>';
-                                    }
+                                    // تعیین URL بر اساس وجود یا عدم وجود لینک
+                                    $url = empty($link)
+                                        ? __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                        : sprintf(
+                                            '<a class="terms-tag" href="%s" target="_blank">%s</a>',
+                                            esc_url($link),
+                                            __("Rules and regulations", SAMYAR_TEXT_DOMAIN)
+                                        );
+
+                                    // جایگزینی [term] با URL
                                     $text = str_replace('[term]', $url, $agree_order_text);
+
 
                                     if ($enable_agree_order === "1"):
                                         ?>
@@ -713,7 +770,8 @@ if (isset($service_id) && !empty($service_id)): ?>
                                     <?php endif; ?>
                                     <div id="payment" class="woocommerce-checkout-payment">
                                         <div class="form-row place-order">
-                                            <button class="button button-green kt-ajax-button alt" id="place_order"><?php _e("Add order", SAMYAR_TEXT_DOMAIN); ?></button>
+                                            <button class="button button-green kt-ajax-button alt"
+                                                    id="place_order"><?php _e("Add order", SAMYAR_TEXT_DOMAIN); ?></button>
                                         </div>
                                     </div>
                                     <div id="kando-mass-errors" style="margin-top: 12px;"></div>
@@ -722,9 +780,48 @@ if (isset($service_id) && !empty($service_id)): ?>
 
                         </div>
 
+                        <?php if (!$fast_order && $enable_send_order_mass == 1): //اگر سفارش سریع بود نشون نده ?>
+                            <div class="column kt-col-xs-12 kt-col-md-5 kt-hidden-xs kt-hidden-sm">
+                                <div class="new-ticket-help">
+                                    <!--                <img src="-->
+                                    <?php //echo SAMYAR_DIR_IMG ?><!--/new-ticket-help.png"/>-->
+                                    <h3 style="text-align: center"><?php _e("Service description", SAMYAR_TEXT_DOMAIN); ?></h3>
+                                    <ul>
+                                        <li><?php _e("Description Here you can place your orders easily! Please be sure to check all prices and delivery times before ordering! Once an order has been submitted, it cannot be cancelled.", SAMYAR_TEXT_DOMAIN); ?></li>
+                                        <li><?php _e("To send a bulk order, you must first log in to your account.", SAMYAR_TEXT_DOMAIN); ?></li>
+                                        <li><?php _e("To send a bulk order, you must charge your wallet first.", SAMYAR_TEXT_DOMAIN); ?></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var catId = "<?= isset($cat_id) ? $cat_id : '' ?>";
+    var GetQuantity = "<?= isset($_GET['quantity']) ? $_GET['quantity'] : '' ?>";
+</script>
+
+
+<script>
+    jQuery(function($) {
+        var $form = $('.single-order-form');
+        if (!$form.length) return;
+
+        kandoSetDefaultGateway($form);
+        kandoToggleCardSelect($form);
+        // روش صحیح: تابع را مستقیماً پاس دهید، نه نتیجه آن را
+        $(document).on("change", '.single-order-form #payment_method', function() {
+            kandoToggleCardSelect($form);
+        });
+
+        $(document).on("change", '.single-order-form input[name="payment_method"]', function() {
+            kandoToggleCardSelect($form);
+        });
+    });
+</script>

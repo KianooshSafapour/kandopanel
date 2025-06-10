@@ -3,13 +3,13 @@ jQuery(document).ready(function ($) {
     function kando_base_rate_text($base_rate) {
         switch ($base_rate) {
             case "IRT":
-                return "تومان";
+                return kando_data.langs.currency_toman;
                 break;
             case "USD":
-                return "دلار";
+                return kando_data.langs.currency_dollar;
                 break;
             case "AFN":
-                return "افغانی";
+                return kando_data.langs.currency_afghani;
                 break;
             default:
                 return "";
@@ -22,7 +22,6 @@ jQuery(document).ready(function ($) {
         var currentHash = window.location.hash,
             thisToggle,
             $toggle;
-
 
 
         if (currentHash) {
@@ -207,18 +206,25 @@ jQuery(document).ready(function ($) {
                 formData: $this.serialize()
             },
             success: function (response) {
-                if (response.result === true) {
+                if (response.success === true) {
                     UIkit.notification({
-                        message: "با موفقیت ذخیره شد",
+                        message: response.data.message,
                         status: 'success',
+                        pos: 'bottom-center',
+                        timeout: 5000
+                    });
+                } else {
+                    UIkit.notification({
+                        message: response.data.message,
+                        status: 'danger',
                         pos: 'bottom-center',
                         timeout: 5000
                     });
                 }
             },
-            error: function () {
+            error: function (response) {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: response.data.message,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -301,7 +307,7 @@ jQuery(document).ready(function ($) {
             },
             error: function () {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: kando_data.langs.an_error_occurred,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -340,13 +346,13 @@ jQuery(document).ready(function ($) {
                         pos: 'bottom-center',
                         timeout: 5000
                     });
-                    $('#user_sync_stat').append('تعداد کاربران ثبت شده(موفقیت آمیز): ' + response.data.count);
+                    $('#user_sync_stat').append(kando_data.langs.registered_users_count + response.data.count);
                     $('#user_sync_stat').append('<br>');
-                    $('#user_sync_stat').append('تعداد کاربران ثبت نشده(دارای خطا): ' + response.data.error_count);
+                    $('#user_sync_stat').append(kando_data.langs.unregistered_users_count + response.data.error_count);
                     $('#user_sync_stat').append('<br>');
                     $('#user_sync_stat').show();
 
-                    $('#user_sync_errors').append(' خطاها: ' + '<br>');
+                    $('#user_sync_errors').append(kando_data.langs.errors_label + '<br>');
                     // $('#user_sync_stat').append('<br>');
                     $('#user_sync_errors').append(response.data.messages);
                     $('#user_sync_errors').show();
@@ -395,11 +401,11 @@ jQuery(document).ready(function ($) {
                         pos: 'bottom-center',
                         timeout: 5000
                     });
-                    $('#user_sync_stat').append('تعداد ارائه دهندگان ثبت شده(موفقیت آمیز): ' + response.data.count_api_provider);
+                    $('#user_sync_stat').append(kando_data.langs.registered_providers_count + response.data.count_api_provider);
                     $('#user_sync_stat').append('<br>');
-                    $('#user_sync_stat').append('تعداد دسته های ثبت شده(موفقیت آمیز): ' + response.data.count_category);
+                    $('#user_sync_stat').append(kando_data.langs.registered_categories_count + response.data.count_category);
                     $('#user_sync_stat').append('<br>');
-                    $('#user_sync_stat').append('تعداد سرویس های ثبت شده(موفقیت آمیز): ' + response.data.count_category);
+                    $('#user_sync_stat').append(kando_data.langs.registered_services_count + response.data.count_category);
                     $('#user_sync_stat').show();
 
                     // $('#user_sync_errors').append(' خطاها: '+'<br>');
@@ -519,6 +525,9 @@ jQuery(document).ready(function ($) {
                     $('#kando-subscriptions-cronjob').val(response.data.subscriptions_link);
                     $('#kando-subscriptions-cronjob').parent().find('a').attr('href', response.data.subscriptions_link);
 
+                    $('#kando-cancel-cronjob').val(response.data.cancel_link);
+                    $('#kando-cancel-cronjob').parent().find('a').attr('href', response.data.cancel_link);
+
                     $('.cronjob-link').show();
 
                     UIkit.notification({
@@ -557,7 +566,12 @@ jQuery(document).ready(function ($) {
 
         var type = $this.data('type');
 
-        UIkit.modal.confirm('آیا از حذف این اطلاعات مطمئن هستید؟ در صورت حذف، قابل بازگشت نخواهد بود.', {labels: {ok: 'بله پاک کن', cancel: 'منصرف شدم'}}).then(function () {
+        UIkit.modal.confirm(kando_data.langs.confirm_deletion_message, {
+            labels: {
+                ok: kando_data.langs.confirm_deletion_ok_button,
+                cancel: kando_data.langs.cancel
+            }
+        }).then(function () {
             $.ajax({
                 url: ajaxurl,
                 type: 'post',
@@ -608,11 +622,11 @@ jQuery(document).ready(function ($) {
         var $this = $(this);
 
         var type = $this.data('type');
-        var remains = $('#samyar-'+type+'-remains-day').val();
+        var remains = $('#samyar-' + type + '-remains-day').val();
 
-        if(remains===""){
+        if (remains === "") {
             UIkit.notification({
-                message: "لطفا مقدار روز برای باقی مانده رو وارد نمایید",
+                message: kando_data.langs.please_enter_remaining_days,
                 status: 'danger',
                 pos: 'bottom-center',
                 timeout: 5000
@@ -620,8 +634,13 @@ jQuery(document).ready(function ($) {
             return false;
         }
 
-
-        UIkit.modal.confirm('آیا از حذف اطلاعات '+remains+' روز اخیر مطمئن هستید؟ در صورت حذف، قابل بازگشت نخواهد بود.', {labels: {ok: 'بله پاک کن', cancel: 'منصرف شدم'}}).then(function () {
+        const message = kando_data.langs.confirm_delete_recent_data.replace('%s', remains);
+        UIkit.modal.confirm(message, {
+            labels: {
+                ok: kando_data.langs.confirm_deletion_ok_button,
+                cancel: kando_data.langs.cancel
+            }
+        }).then(function () {
 
             $.ajax({
                 url: ajaxurl,
@@ -629,6 +648,7 @@ jQuery(document).ready(function ($) {
                 data: {
                     action: 'kando_remove_minor_data',
                     type: type,
+                    nonce: nonce,
                     remains: remains,
                 },
                 beforeSend: function () {
@@ -637,7 +657,7 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     if (response.success) {
                         UIkit.notification({
-                            message: response.data,
+                            message: response.data.message,
                             status: 'success',
                             pos: 'bottom-center',
                             timeout: 5000
@@ -645,7 +665,7 @@ jQuery(document).ready(function ($) {
 
                     } else {
                         UIkit.notification({
-                            message: response.data,
+                            message: response.data.message,
                             status: 'danger',
                             pos: 'bottom-center',
                             timeout: 5000
@@ -655,7 +675,7 @@ jQuery(document).ready(function ($) {
                 },
                 error: function () {
                     UIkit.notification({
-                        message: response.data,
+                        message: response.data.message,
                         status: 'danger',
                         pos: 'bottom-center',
                         timeout: 5000
@@ -671,6 +691,9 @@ jQuery(document).ready(function ($) {
     });
 
     //کپی پیوند
+//کپی پیوند
+//کپی پیوند
+//کپی پیوند
     $(document).on('click', '.CopyToClipBoard', function (event) {
         event.preventDefault();
 
@@ -680,8 +703,15 @@ jQuery(document).ready(function ($) {
         document.execCommand("copy");
         $temp.remove();
 
+        // حذف کلاس از تمام inputها
+        $('.samyar-upload-file-wrapper input').removeClass('copied-permanent');
+
+        // اضافه کردن کلاس فقط به input فعلی
+        var $input = $(this).closest('.samyar-upload-file-wrapper').find('input');
+        $input.addClass('copied-permanent');
+
         UIkit.notification({
-            message: 'لینک با موفقیت کپی شد',
+            message: kando_data.langs.link_copied_successfully,
             status: 'success',
             pos: 'bottom-center',
             timeout: 5000
@@ -694,48 +724,34 @@ jQuery(document).ready(function ($) {
         $(this).parentsUntil('.samyar-itemm').remove();
     });
 
-    $(document).on('click', '.samyar-new-wheel-item', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $key = Math.floor((Math.random() * 1000000000));
 
-        var $html = '<div class="uk-card uk-card-default uk-card-hover uk-card-body" style="margin: 15px 0;"><div class="samyar-social-network-item samyar-item uk-margin">';
-        $html += '<div class="samyar-actions"><span class="remove" uk-icon="close" uk-tooltip="title: حذف"></span></div>';
-        $html += '<div class="uk-margin-small"><label class="uk-form-label">عنوان نمایشی</label><input type="text" class="uk-input" name="kando-wheel[' + $key + '][title]" value="" placeholder="عنوان نمایشی"></div>';
-        $html += '<div class="uk-margin-small"><label class="uk-form-label">پیام برنده شدن</label><input type="text" class="uk-input" name="kando-wheel[' + $key + '][message]" value="" placeholder="پیام برنده شدن"></div>';
-        $html += '<div class="uk-margin-small"><label class="uk-form-label">مقدار</label><input type="text" class="uk-input" name="kando-wheel[' + $key + '][amount]" value="" placeholder="مقدار"></div>';
-        $html += '<div class="uk-margin-small"><label class="uk-form-label">نوع هدیه</label><div uk-form-custom="target: > * > span:first-child"><select name="kando-wheel[' + $key + '][type]"><option value="IRT">'+kando_base_rate_text(kando_data.base_rate)+'</option><option value="CHANCE">شانس</option></select> <button class="uk-button uk-button-default" type="button" tabindex="-1"> <span></span><span uk-icon="icon: chevron-down"></span></button></div></div>';
-        $html += '<div class="uk-margin-small"><label class="uk-form-label">رنگ</label><div uk-form-custom="target: > * > span:first-child"><select name="kando-wheel[' + $key + '][color]" class="kando-wheel-color"><option value="3579AE">3579AE</option><option value="835AC4">835AC4</option><option value="B35B9F">B35B9F</option><option value="D94A83">D94A83</option> <option value="F4796D">F4796D</option> <option value="F3974C">F3974C</option> <option value="FFBA4F">FFBA4F</option> <option value="F3DA35">F3DA35</option> <option value="AAD066">AAD066</option> <option value="3BAD61">3BAD61</option> <option value="57C4A4">57C4A4</option> <option value="43B9D1">43B9D1</option></select> <button class="uk-button uk-button-default" type="button" tabindex="-1"> <span></span><span uk-icon="icon: chevron-down"></span></button></div></div>';
-        $html += '</div></div>';
-        $this.before($html);
-    });
-
-    $("select.base_rate").change(function () {
-        var $this = $(this);
-        var $name = $this.val();
-        console.log($name);
-        switch ($name) {
-            case'IRT':
-                $('.irt-rate').slideDown();
-                $('.afn-rate').slideUp();
-                $('.usd-rate').slideUp();
-                break;
-            case'USD':
-                $('.irt-rate').slideDown();
-                $('.usd-rate').slideDown();
-                $('.afn-rate').slideUp();
-                break;
-            case'AFN':
-                $('.irt-rate').slideUp();
-                $('.usd-rate').slideUp();
-                $('.afn-rate').slideDown();
-                break;
-        }
-    });
-
+    /*
+        $("select.base_rate").change(function () {
+            var $this = $(this);
+            var $name = $this.val();
+            console.log($name);
+            switch ($name) {
+                case'IRT':
+                    $('.irt-rate').slideDown();
+                    $('.afn-rate').slideUp();
+                    $('.usd-rate').slideUp();
+                    break;
+                case'USD':
+                    $('.irt-rate').slideDown();
+                    $('.usd-rate').slideDown();
+                    $('.afn-rate').slideUp();
+                    break;
+                case'AFN':
+                    $('.irt-rate').slideUp();
+                    $('.usd-rate').slideUp();
+                    $('.afn-rate').slideDown();
+                    break;
+            }
+        });
+    */
 
     $('.post-type-kando_coupon').find('input#title').after(
-        '<a href="#" class="button generate-coupon-code">ساخت کد تخفیف</a>'
+        '<a href="#" class="button generate-coupon-code">' + kando_data.langs.generate_coupon_code_button + '</a>'
     );
 
     $(document).on('click', '.post-type-kando_coupon .button.generate-coupon-code', function (e) {
@@ -787,30 +803,78 @@ jQuery(document).ready(function ($) {
 
                 $(".kando-select2").on("change", function (e) {
 
-                    if(type == "show-user-price"){//اگر برای نرخ دلخواه بود
+                    if (type == "show-user-price") {//اگر برای نرخ دلخواه بود
 
                         // var data = $(".kando-select2").find(':selected').data('custom-attribute');
-                        var selectedOption = $($(this).select2("data").element[0]);
+                        var select2Data = $(this).select2("data");
+                        var selectedOption = select2Data.length > 0 && select2Data[0].element ? $(select2Data[0].element) : null;
+
+                        // var selectedOption = $($(this).select2("data").element[0]);
                         var current_price = selectedOption.data("current-price");
-                        current_price = Intl.NumberFormat('fa-IR', {}).format(current_price);
+                        current_price = Intl.NumberFormat('en-US', {}).format(current_price);
 
                         var user_price = selectedOption.data("user-price");
-                        user_price = Intl.NumberFormat('fa-IR', {}).format(user_price);
+                        user_price = Intl.NumberFormat('en-US', {}).format(user_price);
+
+
+                        var price_currency = selectedOption.data("price-currency");
 
                         var service_id = selectedOption.val();
                         var service_name = selectedOption.text();
 
-                        const user_price_html = ({url, img, title}) => `<tr class="service-${service_id}"><td title="شناسه">${service_id}</td><td title="عنوان">${service_name}</td><td title="قیمت فعلی">${current_price} ${kando_base_rate_text(kando_data.base_rate)}</td><td title="قیمت برای این کاربر"><div class="uk-inline"> <span class="uk-form-icon uk-form-icon-flip">${kando_base_rate_text(kando_data.base_rate)}</span><input style="border-radius: 5px !important;" class="uk-input uk-form-width-small" type="text" name="user-price[${service_id}]" placeholder="مبلغ سرویس" value="${user_price}"></div></td><td title="حذف"><button class="uk-button uk-button-default user-price-delete" data-service="${service_id}" style="padding: 8px 8px 0px 8px;line-height: 28px;"><span uk-icon="trash"></span></button></td></tr>`;
+                        const user_price_html = () => `
+    <tr class="service-${service_id}">
+        <td title="${kando_data.langs.id_title}">${service_id}</td>
+        <td title="${kando_data.langs.title_title}">${service_name}</td>
+        <td title="${kando_data.langs.current_price_title}">${current_price} ${price_currency}</td>
+        <td title="${kando_data.langs.price_type_title}">
+            <label>
+                <select name="price_type[${service_id}]">
+                    <option value="fixed">${kando_data.langs.fixed_option}</option>
+                    <option value="discount">${kando_data.langs.discount_option}</option>
+                    <option value="add">${kando_data.langs.add_option}</option>
+                </select>
+            </label>
+        </td>
+        <td title="${kando_data.langs.user_discount_title}">
+            <div class="uk-inline uk-hidden">
+                <span class="uk-form-icon uk-form-icon-flip">%</span>
+                <input style="border-radius: 5px !important;" dir="ltr"
+                       class="uk-input uk-form-width-small"
+                       name="user-discount[${service_id}]"
+                       type="text"
+                       placeholder="${kando_data.langs.user_discount_title}"
+                       value="${user_price}">
+            </div>
+                        <div class="uk-inline">
+                <span class="uk-form-icon uk-form-icon-flip">${kando_data.site_currency}</span>
+                <input style="border-radius: 5px !important;" dir="ltr"
+                       class="uk-input uk-form-width-small"
+                       name="user-service-price[${service_id}]"
+                       type="text"
+                       placeholder="${kando_data.langs.user_service_price}"
+                       value="${user_price}">
+            </div>
+        </td>
 
-                        if ($('#kando-user-price-modal .uk-modal-body table.user-price').find('tr.service-' + service_id).length===0) {//بهش گفتم که اگر در جدول پیدا نشد اضافه کن
+        <td title="${kando_data.langs.delete_title}">
+            <button class="uk-button uk-button-default user-price-delete"
+                    data-service="${service_id}"
+                    style="padding: 8px 8px 0px 8px;line-height: 28px;">
+                <span uk-icon="trash"></span>
+            </button>
+        </td>
+    </tr>
+`;
+                        if ($('#kando-user-price-modal .uk-modal-body table.user-price').find('tr.service-' + service_id).length === 0) {//بهش گفتم که اگر در جدول پیدا نشد اضافه کن
 
                             $('#kando-user-price-modal .uk-modal-body table.user-price tbody ').append([
                                 {url: '/foo', img: 'foo.png', title: 'Foo item'},
                             ].map(user_price_html).join(''));
 
-                        }else{
+                        } else {
                             UIkit.notification({
-                                message: 'این سرویس را قبلا اضافه کرده اید',
+                                message: kando_data.langs.service_already_added_message,
                                 status: 'warning',
                                 pos: 'bottom-center',
                                 timeout: 5000
@@ -818,25 +882,44 @@ jQuery(document).ready(function ($) {
 
                         }
 
-                    }else{//اگر برای غیر فعالسازی سرویس برای کاربر خاص بود
+                    } else {//اگر برای غیر فعالسازی سرویس برای کاربر خاص بود
 
                         // var data = $(".kando-select2").find(':selected').data('custom-attribute');
-                        var selectedOption = $($(this).select2("data").element[0]);
+                        var select2Data = $(this).select2("data");
+                        var selectedOption = select2Data.length > 0 && select2Data[0].element ? $(select2Data[0].element) : null;
+
+
+                        // var selectedOption = $($(this).select2("data").element[0]);
 
                         var service_id = selectedOption.val();
                         var service_name = selectedOption.text();
 
-                        const user_price_html = ({url, img, title}) => `<tr class="service-${service_id}"><td title="شناسه">${service_id}</td><td title="عنوان">${service_name}</td><td title="حذف"><button class="uk-button uk-button-default user-disable-service-delete" data-service="${service_id}" style="padding: 8px 8px 0px 8px;line-height: 28px;"><span uk-icon="trash"></span></button></td><input type="hidden" name="disable-services[${service_id}]"></tr>`;
+                        const user_price_html = ({
+                                                     url,
+                                                     img,
+                                                     title
+                                                 }) => `<tr class="service-${service_id}">
+    <td title="${kando_data.langs.id_title}">${service_id}</td>
+    <td title="${kando_data.langs.title_title}">${service_name}</td>
+    <td title="${kando_data.langs.delete_title}">
+        <button class="uk-button uk-button-default user-disable-service-delete" 
+                data-service="${service_id}" 
+                style="padding: 8px 8px 0px 8px;line-height: 28px;">
+            <span uk-icon="trash"></span>
+        </button>
+    </td>
+    <input type="hidden" name="disable-services[${service_id}]">
+</tr>`;
 
-                        if ($('#kando-user-price-modal .uk-modal-body table.user-disable-service').find('tr.service-' + service_id).length===0) {//بهش گفتم که اگر در جدول پیدا نشد اضافه کن
+                        if ($('#kando-user-price-modal .uk-modal-body table.user-disable-service').find('tr.service-' + service_id).length === 0) {//بهش گفتم که اگر در جدول پیدا نشد اضافه کن
 
                             $('#kando-user-price-modal .uk-modal-body table.user-disable-service tbody ').append([
                                 {url: '/foo', img: 'foo.png', title: 'Foo item'},
                             ].map(user_price_html).join(''));
 
-                        }else{
+                        } else {
                             UIkit.notification({
-                                message: 'این سرویس را قبلا اضافه کرده اید',
+                                message: kando_data.langs.service_already_added_message,
                                 status: 'warning',
                                 pos: 'bottom-center',
                                 timeout: 5000
@@ -875,45 +958,44 @@ jQuery(document).ready(function ($) {
         var $form = $(this);
         var $btn = $(this).find('.kando-save');
 
-            // $this.find('.samyar-form-loading').fadeIn(200);
-            $.ajax({
-                url: ajaxurl,
-                type: 'post',
-                data: $form.serialize(),
-                beforeSend: function () {
-                    $btn.attr('disabled', 'disabled');
-                },
-                success: function (response) {
+        // $this.find('.samyar-form-loading').fadeIn(200);
+        $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: $form.serialize(),
+            beforeSend: function () {
+                $btn.attr('disabled', 'disabled');
+            },
+            success: function (response) {
 
-                    //اگر مرحله شروع پرداخت موفقیت آمیز بود به درگاه پرداخت برو
-                    if (response.success) {
-                        setTimeout(function () {
-                            UIkit.notification({
-                                message: response.data.message,
-                                status: 'success',
-                                pos: 'bottom-center',
-                                timeout: 5000
-                            });
-                        }, 1000);
-                    } else {
-                        setTimeout(function () {
-                            UIkit.notification({
-                                message: response.data.message,
-                                status: 'danger',
-                                pos: 'bottom-center',
-                                timeout: 5000
-                            });
-                        }, 200);
+                //اگر مرحله شروع پرداخت موفقیت آمیز بود به درگاه پرداخت برو
+                if (response.success) {
+                    setTimeout(function () {
+                        UIkit.notification({
+                            message: response.data.message,
+                            status: 'success',
+                            pos: 'bottom-center',
+                            timeout: 5000
+                        });
+                    }, 1000);
+                } else {
+                    setTimeout(function () {
+                        UIkit.notification({
+                            message: response.data.message,
+                            status: 'danger',
+                            pos: 'bottom-center',
+                            timeout: 5000
+                        });
+                    }, 200);
 
-                    }
-
-                    $btn.removeAttr('disabled');
-                },
-                error: function () {
-                    $btn.removeAttr('disabled');
                 }
-            });
 
+                $btn.removeAttr('disabled');
+            },
+            error: function () {
+                $btn.removeAttr('disabled');
+            }
+        });
 
 
         return false;
@@ -964,7 +1046,6 @@ jQuery(document).ready(function ($) {
         });
 
 
-
         return false;
     });
 
@@ -973,18 +1054,10 @@ jQuery(document).ready(function ($) {
     // var mySortable = $(".sortable").nestedSortable({
     //     attribute: 'data-item'
     // });
-    var issortable = document.getElementsByClassName('sortable');
-    if (issortable.length > 0) {
-        $('.sortable').nestedSortable({
-            handle: 'div',
-            listType: "ul",
-            items: 'li',
-            toleranceElement: '> div'
-        });
-    }
+
 
     //add icon popup
-    $(document).click(function() {
+    $(document).click(function () {
         $('.iconpicker-popover').each(function (index, value) {
             $(this).addClass('uk-hidden');
         })
@@ -1013,7 +1086,7 @@ jQuery(document).ready(function ($) {
             $(this).find('.img-holder').append('<i class="' + event.iconpickerValue + '"></i>');
             $(this).find('input').val(event.iconpickerValue);
 
-            $('li.'+$action+" input.icon-text").val(event.iconpickerValue);
+            $('li.' + $action + " input.icon-text").val(event.iconpickerValue);
 
             /* event.iconpickerValue */
         });
@@ -1025,10 +1098,10 @@ jQuery(document).ready(function ($) {
         var $endpoint = $(this).parent().data('endpoint');
         var $status = $(this).is(':checked');
 
-        if($status==false){
-            $('li.'+$endpoint).addClass('opacity6');
-        }else{
-            $('li.'+$endpoint).removeClass('opacity6');
+        if ($status == false) {
+            $('li.' + $endpoint).addClass('opacity6');
+        } else {
+            $('li.' + $endpoint).removeClass('opacity6');
         }
     });
 
@@ -1072,14 +1145,14 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     UIkit.notification({
-                        message: "با موفقیت ذخیره شد",
+                        message: kando_data.langs.successfully_saved,
                         status: 'success',
                         pos: 'bottom-center',
                         timeout: 5000
                     });
                 } else {
                     UIkit.notification({
-                        message: "خطایی رخ داده است",
+                        message: kando_data.langs.an_error_occurred,
                         status: 'danger',
                         pos: 'bottom-center',
                         timeout: 5000
@@ -1088,7 +1161,7 @@ jQuery(document).ready(function ($) {
             },
             error: function () {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: kando_data.langs.an_error_occurred,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -1109,7 +1182,14 @@ jQuery(document).ready(function ($) {
         button.prop('disabled', true);
         loader.show();
 
-        UIkit.modal.confirm('آیا از بازگردانی به حالت اولیه مطمئن هستید؟', {labels: {ok: 'بله', cancel: 'منصرف شدم'}}).then(function () {
+        UIkit.modal.confirm(
+            kando_data.langs.reset_confirmation_message, {
+                labels: {
+                    ok: kando_data.langs.yes,
+                    cancel: kando_data.langs.cancel
+                }
+            }
+        ).then(function () {
 
 
             $.ajax({
@@ -1124,7 +1204,7 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     if (response.success === true) {
                         UIkit.notification({
-                            message: "با موفقیت بازگردانی شد",
+                            message: kando_data.langs.successfully_restored,
                             status: 'success',
                             pos: 'bottom-center',
                             timeout: 5000
@@ -1134,7 +1214,7 @@ jQuery(document).ready(function ($) {
                 },
                 error: function () {
                     UIkit.notification({
-                        message: "خطایی رخ داده است",
+                        message: kando_data.langs.an_error_occurred,
                         status: 'danger',
                         pos: 'bottom-center',
                         timeout: 5000
@@ -1164,7 +1244,14 @@ jQuery(document).ready(function ($) {
 
         var $key = $(this).data('key');
 
-        UIkit.modal.confirm('آیا از باز کردن قفل کرون جاب مطمئن هستید؟(اگر باز شد کرون جاب می تواند یک بار دیگر اجرا شود)', {labels: {ok: 'بله', cancel: 'منصرف شدم'}}).then(function () {
+        UIkit.modal.confirm(
+            kando_data.langs.unlock_cron_job_confirmation, {
+                labels: {
+                    ok: kando_data.langs.yes,
+                    cancel: kando_data.langs.cancel
+                }
+            }
+        ).then(function () {
 
 
             $.ajax({
@@ -1180,15 +1267,15 @@ jQuery(document).ready(function ($) {
                 success: function (response) {
                     if (response.success === true) {
                         UIkit.notification({
-                            message: "با موفقیت باز شد",
+                            message: kando_data.langs.successfully_opened,
                             status: 'success',
                             pos: 'bottom-center',
                             timeout: 5000
                         });
                         location.reload();
-                    }else{
+                    } else {
                         UIkit.notification({
-                            message: "خطایی رخ داده است",
+                            message: kando_data.langs.an_error_occurred,
                             status: 'danger',
                             pos: 'bottom-center',
                             timeout: 5000
@@ -1197,7 +1284,7 @@ jQuery(document).ready(function ($) {
                 },
                 error: function () {
                     UIkit.notification({
-                        message: "خطایی رخ داده است",
+                        message: kando_data.langs.an_error_occurred,
                         status: 'danger',
                         pos: 'bottom-center',
                         timeout: 5000
@@ -1242,7 +1329,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 if (response.success === true) {
-                    $('#backup-data-text').val(JSON.stringify( response.data ) ).focus().select();
+                    $('#backup-data-text').val(JSON.stringify(response.data)).focus().select();
                     $('.backup-textarea').slideToggle();
                 }
 
@@ -1250,7 +1337,7 @@ jQuery(document).ready(function ($) {
             },
             error: function () {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: kando_data.langs.an_error_occurred,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -1272,16 +1359,15 @@ jQuery(document).ready(function ($) {
     });
 
 
-
     $(document).on('click', '#kando_import_btn', function (e) {
 
         e.preventDefault();
         var button = $(this);
         var jsonData = $("#import-data-text").val();
 
-        if(jsonData==""){
+        if (jsonData == "") {
             UIkit.notification({
-                message: "لطفا اطلاعات بک آپ را در مکان مربوطه وارد کنید",
+                message: kando_data.langs.please_enter_backup_info,
                 status: 'danger',
                 pos: 'bottom-center',
                 timeout: 5000
@@ -1295,7 +1381,7 @@ jQuery(document).ready(function ($) {
             console.log(jsonObject);
         } catch (error) {
             UIkit.notification({
-                message: "رشته JSON نامعتبر است.",
+                message: kando_data.langs.invalid_json_message,
                 status: 'danger',
                 pos: 'bottom-center',
                 timeout: 5000
@@ -1327,7 +1413,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 if (response.success === true) {
-                    $('#backup-data-text').val(JSON.stringify( response.data ) ).focus().select();
+                    $('#backup-data-text').val(JSON.stringify(response.data)).focus().select();
                     UIkit.notification({
                         message: response.data.message,
                         status: 'success',
@@ -1341,7 +1427,7 @@ jQuery(document).ready(function ($) {
             },
             error: function () {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: kando_data.langs.an_error_occurred,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -1360,6 +1446,50 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '.show-import-file', function (e) {
         $('.import-file').slideToggle();
+    });
+
+
+    $(document).on('change', '.ajax-switch', function () {
+        var $this = $(this);
+        var item_id = $this.attr('data-id');
+        var type = $this.attr('data-type');
+        var status = $this.is(':checked');
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: type,
+                item_id: item_id,
+                // type: type,
+                status: status,
+            },
+            success: function (response) {
+                if (response.success === true) {
+                    UIkit.notification({
+                        message: response.data,
+                        status: 'success',
+                        pos: 'bottom-center',
+                        timeout: 5000
+                    });
+                } else {
+                    UIkit.notification({
+                        message: response.data,
+                        status: 'danger',
+                        pos: 'bottom-center',
+                        timeout: 5000
+                    });
+                }
+            },
+            error: function () {
+
+            }
+        });
+        // if(this.checked) {
+        //     var returnVal = confirm("Are you sure?");
+        //     $(this).prop("checked", returnVal);
+        // }
+        // $('.ajax-switch').val(this.checked);
     });
 
 
@@ -1384,7 +1514,6 @@ jQuery(document).ready(function ($) {
         // loader.show();
 
 
-
         $.ajax({
             url: ajaxurl,
             type: 'post',
@@ -1397,7 +1526,7 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
                 if (response.success === true) {
-                    $('#backup-data-text').val(JSON.stringify( response.data ) ).focus().select();
+                    $('#backup-data-text').val(JSON.stringify(response.data)).focus().select();
                     $('.backup-textarea').slideToggle();
                 }
 
@@ -1405,7 +1534,7 @@ jQuery(document).ready(function ($) {
             },
             error: function () {
                 UIkit.notification({
-                    message: "خطایی رخ داده است",
+                    message: kando_data.langs.an_error_occurred,
                     status: 'danger',
                     pos: 'bottom-center',
                     timeout: 5000
@@ -1420,5 +1549,230 @@ jQuery(document).ready(function ($) {
 
 
     });
+
+
+    $(document).on('click', '.select_price_type', function (e) {
+        console.log(e);
+    })
+
+    // تابع برای به روزرسانی نمایش فیلدها
+    function updatePriceFields(selectElement) {
+        var $select = $(selectElement);
+        var $row = $select.closest('tr');
+        var selectedValue = $select.val();
+        console.log(selectedValue);
+        // پیدا کردن divهای مربوطه با دقت بیشتر
+        var $percentDiv = $row.find('div.uk-inline').first(); // div درصد
+        var $currencyDiv = $row.find('div.uk-inline').last(); // div قیمت
+
+        if (selectedValue === 'discount' || selectedValue === 'add') {
+            $percentDiv.removeClass('uk-hidden');
+            $currencyDiv.addClass('uk-hidden');
+        } else { // fixed
+            $percentDiv.addClass('uk-hidden');
+            $currencyDiv.removeClass('uk-hidden');
+        }
+    }
+
+    // ثبت رویداد change برای تمام selectها
+    $(document).on('change', 'select[name^="price_type"]', function () {
+        updatePriceFields(this);
+    });
+
+    // اعمال اولیه برای تمام selectها
+    $('select[name^="price_type"]').each(function () {
+        updatePriceFields(this);
+    });
+
+    // برای اطمینان از اجرا بعد از بارگذاری کامل DOM
+    $(window).on('load', function () {
+        $('select[name^="price_type"]').each(function () {
+            updatePriceFields(this);
+        });
+    });
+
+
+    $(document).on('click', '#enable_tfa_button, #disable_tfa_button', function (e) {
+
+        var button = $(this);
+        var spinner = button.find('.spinner');
+        var action = button.attr('id') === 'enable_tfa_button' ? 'enable' : 'disable';
+
+        // نمایش اسپینر و غیرفعال کردن دکمه
+        spinner.show();
+        button.prop('disabled', true);
+
+        // نمایش بخش تنظیمات
+        $('#tfa_settings_row').show();
+        $('#tfa_action').val(action);
+
+        // ارسال درخواست AJAX برای ارسال کد تأیید
+        $.post(ajaxurl, {
+            action: 'send_tfa_verification',
+            user_id: $('[name="user_id"]').val(),
+            method: $('#tfa_verification_method').val(),
+            tfa_action: action
+        }, function (response) {
+            // مخفی کردن اسپینر و فعال کردن دکمه
+            spinner.hide();
+            button.prop('disabled', false);
+
+            if (response.success) {
+                $('#tfa_settings_container').find('.notice').remove();
+                $('#tfa_settings_container').prepend(
+                    '<div class="notice notice-success"><p>کد تأیید با موفقیت ارسال شد.</p></div>'
+                );
+                $('.tfa_verify_code_tr').show()
+            } else {
+                $('#tfa_settings_container').find('.notice').remove();
+                $('#tfa_settings_container').prepend(
+                    '<div class="notice notice-error"><p>خطا در ارسال کد تأیید: ' + response.data.message + '</p></div>'
+                );
+            }
+        }).fail(function () {
+            // مخفی کردن اسپینر و فعال کردن دکمه
+            spinner.hide();
+            button.prop('disabled', false);
+
+            $('#tfa_settings_container').find('.notice').remove();
+            $('#tfa_settings_container').prepend(
+                '<div class="notice notice-error"><p>خطا در ارتباط با سرور</p></div>'
+            );
+        });
+    });
+
+
+    //database manager
+    // Master checkbox functionality
+    $('#samyar-master-checkbox').change(function() {
+        $('.table-checkbox').prop('checked', $(this).prop('checked'));
+    });
+
+    // Truncate button click handler
+    $('#samyar-truncate-btn').click(function() {
+        const selectedTables = $('.table-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (selectedTables.length === 0) {
+            showMessage('لطفاً حداقل یک جدول را انتخاب کنید', 'warning');
+            return;
+        }
+
+        UIkit.modal('#samyar-auth-modal').show();
+    });
+
+    // Confirm truncate button handler
+    $('#samyar-confirm-truncate').click(function() {
+        const $btn = $(this);
+        const password = $('#samyar-admin-password').val();
+        const userId = kando_data.current_user_id;
+        const selectedTables = $('.table-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (!password) {
+            showMessage('لطفاً رمز عبور را وارد کنید', 'warning');
+            return;
+        }
+
+        // Show loading state
+        $btn.prop('disabled', true);
+        $btn.find('.btn-text').text('در حال بررسی...');
+        $btn.find('.btn-spinner').show();
+
+        // Verify admin password
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'samyar_verify_wp_admin',
+                password: password,
+                user_id: userId,
+                nonce: kando_data.db_manager_nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    showMessage(
+                        response.data,
+                        'success'
+                    );
+
+                    truncateTables(selectedTables, $btn);
+                } else {
+                    showMessage(response.data, 'danger');
+                    $('#samyar-admin-password').val('').focus();
+                }
+            },
+            error: function() {
+                showMessage('خطا در ارتباط با سرور', 'danger');
+            },
+            complete: function() {
+                $btn.prop('disabled', false);
+                $btn.find('.btn-text').text('تایید و پاکسازی');
+                $btn.find('.btn-spinner').hide();
+            }
+        });
+    });
+
+    // Function to truncate tables
+    function truncateTables(tables, $btn) {
+        $btn.prop('disabled', true);
+        $btn.find('.btn-text').text('در حال پاکسازی...');
+        $btn.find('.btn-spinner').show();
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'samyar_truncate_tables',
+                tables: tables,
+                nonce: kando_data.db_manager_nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    showMessage(
+                        'پاکسازی با موفقیت انجام شد. ' +
+                        Object.keys(response.data.results).length + ' جدول پردازش شدند.',
+                        'success'
+                    );
+
+                    // Refresh table counts
+                    tables.forEach(table => {
+                        $(`.table-checkbox[value="${table}"]`).closest('tr')
+                            .find('td:last').text('0');
+                    });
+
+                    UIkit.modal('#samyar-auth-modal').hide();
+                    $('#samyar-admin-password').val('');
+                } else {
+                    showMessage(response.data, 'danger');
+                }
+            },
+            error: function() {
+                showMessage('خطا در انجام عملیات', 'danger');
+            },
+            complete: function() {
+                $btn.prop('disabled', false);
+                $btn.find('.btn-text').text('تایید و پاکسازی');
+                $btn.find('.btn-spinner').hide();
+            }
+        });
+    }
+
+    // Function to show messages
+    function showMessage(message, type) {
+
+        UIkit.notification({
+            message: message,
+            status: type,
+            pos: 'bottom-center',
+            timeout: 3000
+        });
+
+    }
+
 });
 

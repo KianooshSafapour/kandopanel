@@ -27,4 +27,12 @@ include( 'ureportController.php' );
 include( 'updateController.php' );
 include( 'authController.php' );
 include( 'currencyController.php' );
+include( 'priceController.php' );
+include( 'queueController.php' );
+include( 'cancelController.php' );
+include( 'maintenanceController.php' );
+include( 'tagController.php' );
+include( 'widgetController.php' );
+include( 'tfaController.php' );
+include( 'databaseManager.php' );
 

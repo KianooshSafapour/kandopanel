@@ -3,7 +3,7 @@
 get_header();
 include_once('templates/parts/blog-header.php');
 $options      = settingsController::getInstance();
-$website_title = $options->get_option( 'website-title',get_option( 'blogname' ));
+$website_title = kando_get_option( 'website-title',get_option( 'blogname' ));
 the_post();
 ?>
 
@@ -139,10 +139,10 @@ the_post();
             </div>
 	        <?php
 
-	        $telegram_url  = $options->get_option( 'telegram-url', "" );
-	        $twitter_url   = $options->get_option( 'twitter-url', "" );
-	        $instagram_url = $options->get_option( 'instagram-url', "" );
-	        $linkedin_url  = $options->get_option( 'linkedin-url', "" );
+	        $telegram_url  = kando_get_option( 'telegram-url', "" );
+	        $twitter_url   = kando_get_option( 'twitter-url', "" );
+	        $instagram_url = kando_get_option( 'instagram-url', "" );
+	        $linkedin_url  = kando_get_option( 'linkedin-url', "" );
 	        ?>
 
             <div class="kt-row blog-single-social-boxes">

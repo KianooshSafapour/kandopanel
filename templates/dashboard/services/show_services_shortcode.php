@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 use samyar\Category;
+use samyar\categoryController;
 use samyar\Provider;
 use samyar\Service;
 use samyar\Udisableservice;
@@ -15,172 +16,145 @@ if (kando_is_normal_user()) {
     $cate_args['status'] = 1;
 }
 
+//get translate
+$ctranslates = categoryController::getInstance()->get_translates();
+$stranslates = \samyar\serviceController::getInstance()->get_translates();
 if (isset($atts['cat'])) {
 
-    $category_id = esc_attr($atts['cat']);
-    $enable_average_time = $options->get_option('enable-average-time', 1);
-    $sort_by = $options->get_option('select_service_order', 'price');
+    $categoryModel = new Category();
+    $serviceModel = new Service();
+    $category_id = isset($atts['cat'])?$atts['cat']:"";
+    $service_style = isset($atts['style'])?$atts['style']:"";
 
 
-    $query = QueryBuilder::create();
-    $query->select('category.id as `category_id`');
-    $query->select('category.name as `category_name`');
-    $query->select('category.icon as `category_icon`');
-    $query->select('category.status as `category_status`');
-    $query->select('service.*');
-//->select( 'provider.status as `provider_status`' );
-//->select( 'provider.id as `provider_id`');
-    $query->from('samyar_categories as `category`');
-    $query->join('samyar_services as `service`', [
-        [
-            'raw' => 'service.cate_id = category.id',
-        ],
-    ]);
-    $query->order_by('category.sort');
-    if (kando_is_normal_user()) {
-        $query->where(['service.status' => 1]);
-        $query->where(['category.status' => 1]);
-    }
-    $query->where(['category.id' => $category_id]);
-    $services = $query->get();
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    $is_admin = current_user_can('administrator');
+    $user_id = get_current_user_id();
+
+    // Get categories
+    $selected_categories = $categoryModel->get_category($category_id);
 
 
-//اینجا می یایم و سرویسی که برای این کاربر غیر فعال شده رو حذف می کنیم
-//این ویژگی در ورژن 12 اضافه شده
-    $disable_user_service = [];
-    if (is_user_logged_in()) {
-        $disable_services = Udisableservice::where(['uid' => get_current_user_id()]);
-        foreach ($disable_services as $disable_service) {
-            $disable_user_service[] = $disable_service->service_id;
-        }
+    // Get services for each category
+    $category_ids = array_column($selected_categories, 'id');
+    $services = $serviceModel->get_services_by_category_ids($category_ids, $is_admin, $user_id);
+
+    // Get service metas for each service
+    $service_ids = array_column($services, 'id');
+    $all_service_metas = $serviceModel->get_service_metas_bulk($service_ids);
+
+
+
+    $service_metas_by_service_id = [];
+    foreach ($all_service_metas as $service_id => $metas) {
+        $service_metas_by_service_id[$service_id][] = $metas;
     }
 
 
-//لیست ارائه دهنده ها رو بگیر
-    $providers_list = [];
-//$providers = Provider::all();
-    $providers = Provider::builder()
-        ->select('id')
-        ->select('name')
-        ->select('status')
-        ->select('base_currency')
-        ->get();
-    foreach ($providers as $provider) {
-        $providers_list[$provider->id] = $provider;
+    // دریافت علاقه‌مندی‌های کاربر (اگر وارد سیستم شده باشد)
+    $user_favorites = [];
+    if ($user_id) {
+        $user_favorites = $serviceModel->getUserServiceFavorites($user_id);
     }
 
-    $categories = [];
-    foreach ($services as $serv) {
-        $categories[$serv->category_id]['category_name'] = $serv->category_name;
-        $categories[$serv->category_id]['category_icon'] = $serv->category_icon;
-        $categories[$serv->category_id]['category_status'] = $serv->category_status;
-        if (!in_array($serv->id, $disable_user_service, true)) {
-            $categories[$serv->category_id]['services'][$serv->id] = $serv;
-            if ($serv->api_provider_id !== "0") {
-                $categories[$serv->category_id]['services'][$serv->id]->provider_status = (int)$providers_list[$serv->api_provider_id]->status;
-                $categories[$serv->category_id]['services'][$serv->id]->provider = $providers_list[$serv->api_provider_id];
-            } else {
-                $categories[$serv->category_id]['services'][$serv->id]->provider_status = 1;//اگر سرویس دستی هست
-            }
-                $categories[$serv->category_id]['services'][$serv->id]->service_price = calculate_service_price($serv->id);
 
-            $categories[$serv->category_id]['services'][$serv->id]->ordering = $serv->sort;
-        }
+    // Format data for view
+    $categories = array_reduce($selected_categories, function ($carry, $category) use ($ctranslates){
+        $carry[$category->id] = [
+            'category_id' => $category->id,
+            'category_name' => categoryController::getInstance()->get_title($ctranslates,$category),
+            'category_description' => categoryController::getInstance()->get_description($ctranslates,$category),
+            'category_icon' => $category->icon,
+            'category_image' => $category->image,
+            'category_status' => $category->status,
+            'category_platform' => $category->social_id,
+            'services' => [],
+        ];
+        return $carry;
+    }, []);
 
+
+    foreach ($services as $service) {
+        $service_metas = $service_metas_by_service_id[$service->id] ?? [];
+
+        // بررسی آیا سرویس مورد علاقه کاربر است
+        $is_favorite = in_array($service->id, $user_favorites);
+
+        $categories[$service->cate_id]['services'][] = (object)[
+            'id' => $service->id,
+            'name' => serviceController::getInstance()->get_title($stranslates,$service),
+            'description' => serviceController::getInstance()->get_description($stranslates,$service),
+            'min' => $service->min,
+            'max' => $service->max,
+            'status' => $service->status,
+            'price' => $service->price,
+            'profit_rate' => $service->profit_rate,
+            'currency' => $service->manual_currency,
+            'original_price' => $service->original_price,
+            'disable_representation' => $service->disable_representation,
+            'gold_price' => $service->gold_price,
+            'silver_price' => $service->silver_price,
+            'bronze_price' => $service->bronze_price,
+//                'provider_id' => $service->api_provider_id,
+            'provider_name' => $service->provider_name,
+            'provider_currency' => $service->provider_currency,
+            'provider_custom_rate' => $service->provider_custom_rate,
+            'api_service_id' => $service->api_service_id,
+            'api_provider_id' => $service->api_provider_id,
+            'cancel' => $service->cancel,
+            'refill' => $service->refill,
+            'add_type' => $service->add_type,
+            'manual_currency' => $service->manual_currency,
+            'created_at' => $service->created_at,
+//                'metas' => $service_metas,
+            "is_favorite" => $is_favorite, // اضافه کردن وضعیت علاقه‌مندی
+        ];
     }
+
+    $settings = [
+        'enable_average_time' => kando_get_option('enable-average-time', 1),
+        'sort_by' => kando_get_option('select_service_order', 'price'),
+        'enable_order_btn_notloginuser' => kando_get_option('enable-order-btn-notloginuser', 1),
+        'representation_active' => kando_get_option('representation-active', 0),
+        'show_price_representation' => kando_get_option('show-price-representation', 0),
+        'show_price_representation_type' => kando_get_option('show-price-representation-type', 1),
+    ];
+
+    if ($service_style) {
+        $selected_style = $service_style;
+    } else {
+        $selected_style = (int)kando_get_option('service-style', 2);
+    }
+
 
 
     if (count($categories) > 0):
-        foreach ($categories as $key => $cat) {
-            ?>
-            <div class="dashboard-posts-box dashboard-tickets-box" style="margin-top: 10px">
-                <div class="dashboard-posts-title-holder">
-                    <h5 class="dashboard-posts-title">
-                        <?php
-                        if($cat['category_icon']):
-                            echo '<i class="'.$cat['category_icon'].'"></i>&nbsp;';
-                        endif;
-                        ?>
-                        <?php echo $cat['category_name'] ?>
-                    </h5>
-                </div>
-                <div class="dashboard-posts-list">
-                    <?php
-                    if ($sort_by === "price") {
-                        usort($cat['services'], "kando_com_price");
-                    } else {
-                        usort($cat['services'], "kando_com_order");
-                    }
 
+        if ($selected_style == 1) {
+            include(SAMYAR_DIR_VIEW . '/services/service/style1.php');
+        } else {
+            include(SAMYAR_DIR_VIEW . '/services/service/style2.php');
+        }
+        ?>
 
-                    if (count($cat['services']) > 0):
-                        ?>
-                        <table class="shop_table shop_table_responsive">
-                            <thead>
-                            <tr>
-                                <?php if(kando_user_can('edit_service')): ?>
-                                    <th id="cb">
-                                        <input type="checkbox" value="1" class="kando-cb-checkbox" id="cb-select-all-1" name="cb-select-all-1">
-                                        <label class="kando-cb-label" for="cb-select-all-1"></label>
-                                    </th>
-                                <?php endif; ?>
-                                <th><span class="nobr"><?php _e("ID", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <th><span class="nobr"><?php _e("Name", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <th><span class="nobr"><?php _e("Description", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <?php if (kando_user_can('show_original_price')): ?>
-                                    <th><span class="nobr">قیمت اصلی</span></th>
-                                <?php endif; ?>
-                                <?php if (kando_user_can('show_service_type')): ?>
-                                    <th><span class="nobr">نوع</span></th>
-                                <?php endif; ?>
-                                <th><span class="nobr"><?php _e("Price per 1000 pcs", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <th><span class="nobr"><?php _e("Min/Max", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <?php if ($enable_average_time == 1) { ?>
-                                    <th><span class="nobr"><?php _e("Estimated time to complete the order", SAMYAR_TEXT_DOMAIN); ?></span></th>
-                                <?php } ?>
-                                <th><span class="nobr"><?php _e("Status", SAMYAR_TEXT_DOMAIN); ?></span></th>
-
-                                <th><span class="nobr"><?php _e("Operations", SAMYAR_TEXT_DOMAIN); ?></span></th>
-
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <?php
-                            foreach ($cat['services'] as $id => $service):
-                                if ($service->provider_status === 1) {
-                                    include('service.php');
-                                }
-                            endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php
-                    else:
-                        ?>
-                        <span class="services-notfound"><?php _e("No service has been added yet.", SAMYAR_TEXT_DOMAIN); ?></span>
-                    <?php
-                    endif;
-                    ?>
-                </div>
-            </div>
-            <script>
-                jQuery(document).ready(function ($) {
-                    $(document).on("mouseover", ".custom-popup", function () {
-                        $(this).find('.popuptext').css("visibility", "visible");
-                        $(this).find('.popuptext').css("-webkit-animation", "fadeIn 1s");
-                        $(this).find('.popuptext').css("animation", "fadeIn 1s");
-                    });
-
-                    $(".custom-popup").mouseout(function () {
-                        $(this).find('.popuptext').css("visibility", "hidden");
-                        $(this).find('.popuptext').css("-webkit-animation", "fadeOut 1s");
-                        $(this).find('.popuptext').css("animation", "fadeOut 1s");
-                    });
+        <script>
+            jQuery(document).ready(function ($) {
+                $(document).on("mouseover", ".custom-popup", function () {
+                    $(this).find('.popuptext').css("visibility", "visible");
+                    $(this).find('.popuptext').css("-webkit-animation", "fadeIn 1s");
+                    $(this).find('.popuptext').css("animation", "fadeIn 1s");
                 });
 
-            </script>
-            <?php
-        }
+                $(".custom-popup").mouseout(function () {
+                    $(this).find('.popuptext').css("visibility", "hidden");
+                    $(this).find('.popuptext').css("-webkit-animation", "fadeOut 1s");
+                    $(this).find('.popuptext').css("animation", "fadeOut 1s");
+                });
+            });
+
+        </script>
+    <?php
+
     else:
         ?>
         <span class="services-notfound"><?php _e("There is no service for this category", SAMYAR_TEXT_DOMAIN); ?></span>
@@ -210,10 +184,11 @@ if (isset($atts['cat'])) {
                         <select name="cate_id">
                             <option value="0"><?php _e("Please select your desired category", SAMYAR_TEXT_DOMAIN); ?></option>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?php echo esc_attr($category->id) ?>"><?php echo esc_attr($category->name) ?> <?php if ($category->status === "0"): ?><?php _e("(inactive category)", SAMYAR_TEXT_DOMAIN); ?><?php endif; ?></option>
+                                <option value="<?php echo esc_attr($category->id) ?>"><?php echo esc_attr(categoryController::getInstance()->get_title($ctranslates,$category)) ?><?php if ($category->status === "0"): ?><?php _e("(inactive category)", SAMYAR_TEXT_DOMAIN); ?><?php endif; ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <input type="submit" class="button button-green new-ticket-form-submit" value="<?php _e("Get services", SAMYAR_TEXT_DOMAIN); ?>"/>
+                        <input type="submit" class="button button-green new-ticket-form-submit"
+                               value="<?php _e("Get services", SAMYAR_TEXT_DOMAIN); ?>"/>
                     </div>
                 </form>
             </div>

@@ -5,17 +5,17 @@ function kando_header_post_type(){
     $kandoheader_item_slug = "kandoheader-item";
 
     $labels = array(
-        'name' 					=> __('هدر ها',SAMYAR_TEXT_DOMAIN),
-        'singular_name' 		=> __('هدر آیتم',SAMYAR_TEXT_DOMAIN),
-        'add_new' 				=> __('ایجاد هدر جدید',SAMYAR_TEXT_DOMAIN),
-        'add_new_item' 			=> __('ایجاد هدر جدید',SAMYAR_TEXT_DOMAIN),
-        'edit_item' 			=> __('ویرایش هدر',SAMYAR_TEXT_DOMAIN),
-        'new_item' 				=> __('هدر جدید',SAMYAR_TEXT_DOMAIN),
-        'view_item' 			=> __('مشاهده هدر',SAMYAR_TEXT_DOMAIN),
-        'search_items' 			=> __('جستجو بین هدر ها',SAMYAR_TEXT_DOMAIN),
-        'not_found' 			=> __('آیتمی یافت نشد',SAMYAR_TEXT_DOMAIN),
-        'not_found_in_trash' 	=> __('آیتمی یافت نشد',SAMYAR_TEXT_DOMAIN),
-        'parent_item_colon' 	=> ''
+        'name'               => __('Headers', SAMYAR_TEXT_DOMAIN),
+        'singular_name'      => __('Header Item', SAMYAR_TEXT_DOMAIN),
+        'add_new'            => __('Create New Header', SAMYAR_TEXT_DOMAIN),
+        'add_new_item'       => __('Create New Header', SAMYAR_TEXT_DOMAIN),
+        'edit_item'          => __('Edit Header', SAMYAR_TEXT_DOMAIN),
+        'new_item'           => __('New Header', SAMYAR_TEXT_DOMAIN),
+        'view_item'          => __('View Header', SAMYAR_TEXT_DOMAIN),
+        'search_items'       => __('Search Headers', SAMYAR_TEXT_DOMAIN),
+        'not_found'          => __('No items found', SAMYAR_TEXT_DOMAIN),
+        'not_found_in_trash' => __('No items found in trash', SAMYAR_TEXT_DOMAIN),
+        'parent_item_colon'  => ''
     );
 
     $args = array(

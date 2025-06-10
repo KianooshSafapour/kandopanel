@@ -33,6 +33,7 @@ class Samyar_Wallet_Transaction_Details extends WP_List_Table {
 			'details'        => __( 'Details', SAMYAR_TEXT_DOMAIN ),
 //            'created_by' => __('Created By', SAMYAR_TEXT_DOMAIN),
 			'date'           => __( 'Date', SAMYAR_TEXT_DOMAIN ),
+			'status'           => __( 'Status', SAMYAR_TEXT_DOMAIN ),
 			'transaction_id' => __( 'ID', SAMYAR_TEXT_DOMAIN )
 		) );
 	}
@@ -108,14 +109,22 @@ class Samyar_Wallet_Transaction_Details extends WP_List_Table {
 
 			foreach ( $transactions as $transaction ) {
 
+                $payment_type = match ($transaction->payment_type) {
+                    'add-credit', 'refund' => __('Credit', SAMYAR_TEXT_DOMAIN),
+                    'decrease-credit' => __('Debit', SAMYAR_TEXT_DOMAIN),
+                    'set-credit' => __('Set Credit', SAMYAR_TEXT_DOMAIN),
+                    default => "",
+                };
+
 				$data[] = array(
 					'transaction_id' => $transaction->id,
 					'name'           => get_user_by( 'ID', $transaction->uid )->display_name,
-					'type'           => ( 'add-credit' === $transaction->payment_type ) || ( 'refund' === $transaction->payment_type ) ? __( 'Credit', SAMYAR_TEXT_DOMAIN ) : __( 'Debit', SAMYAR_TEXT_DOMAIN ),
-					'amount'         => number_format($transaction->amount).' تومان ',
+					'type'           => $payment_type,
+					'amount'         => number_format($transaction->amount).' '.get_option('site_currency','IRT'),
 					'details'        => $transaction->note,
 //                    'created_by'     => get_user_by('ID', $transaction->created_by) ? '<a href="'.add_query_arg( 'user_id', $transaction->created_by, self_admin_url( 'user-edit.php')).'">'.get_user_by('ID', $transaction->created_by)->display_name . '</a>' : '-',
-					'date'           => date_i18n( 'd M Y، H:i',strtotime($transaction->created_at) )
+					'date'           => date_i18n( 'd M Y، H:i',strtotime($transaction->created_at) ),
+					'status'           => $transaction->status
 				);
 			}
 		}
@@ -138,6 +147,21 @@ class Samyar_Wallet_Transaction_Details extends WP_List_Table {
 			case 'type':
 			case 'amount':
 			case 'details':
+			case 'status':
+
+            switch ($item[ $column_name ]) {
+                case 0:
+                    return "<span style='color: #f58'>" . __("Unsuccessful", SAMYAR_TEXT_DOMAIN) . "</span>";
+                    break;
+                case 1:
+                    return "<span style='color: #7ccc77'>" . __("Successful", SAMYAR_TEXT_DOMAIN) . "</span>";
+                    break;
+                case 2:
+                    return "<span style='color: #7793cc'>" . __("Awaiting confirmation", SAMYAR_TEXT_DOMAIN) . "</span>";
+                    break;
+            }
+
+
 //            case 'created_by':
 			case 'date':
 				return $item[ $column_name ];
