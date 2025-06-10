@@ -1,0 +1,710 @@
+pre.xdebug-var-dump {
+    /*text-align: left;
+    direction: ltr;*/
+}
+
+.samyar-clearfix:after {
+    clear: both;
+    display: block;
+    content: '';
+}
+
+.samyar-settings.wrap a:focus {
+    box-shadow: none;
+}
+
+.uk-tab:before {
+    border-bottom: none !important;
+}
+
+.uk-tab > .uk-active > a {
+    border-color: #EF394E !important;
+    color: #EF394E !important;
+}
+
+.uk-tab > * > a {
+    border-bottom-color: #A4A4A4;
+}
+
+.uk-margin {
+    margin-bottom: 30px !important;
+}
+
+.uk-notification-message {
+    border: 1px solid transparent;
+}
+
+.uk-notification-message-success {
+    background: #DDF9EE !important;
+    border-color: rgba(50, 210, 150, 0.7);
+}
+
+.uk-notification-message-danger {
+    background: #FBEDEF !important;
+    border-color: rgba(240, 80, 110, 0.7);
+}
+
+.uk-form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.uk-input, .uk-select, .uk-textarea {
+    border-color: #E5E5E5 !important;
+    border-radius: 0 !important;
+}
+
+.uk-input:focus, .uk-select:focus, .uk-textarea:focus {
+    box-shadow: none !important;
+    border-color: #3498DB !important;
+}
+
+.uk-form-custom select {
+    max-width: unset;
+}
+
+.uk-checkbox {
+    background-repeat: no-repeat !important;
+    background-position-y: 2px !important;
+    border-color: #E5E5E5 !important;
+    border-radius: 0 !important;
+}
+
+.uk-checkbox:focus {
+    box-shadow: none !important;
+}
+
+.uk-checkbox:checked:before {
+    content: "" !important;
+}
+
+.uk-radio:checked {
+    background-position: -1px -1px;
+}
+
+.uk-radio:checked:before {
+    content: "" !important;
+    background-color: transparent !important;
+}
+
+.uk-radio:focus {
+    box-shadow: none !important;
+}
+
+.uk-button {
+    border-radius: 3px !important;
+    transition: 200ms !important;
+}
+
+.uk-button-primary {
+    background-color: #EF394E !important;
+}
+
+.uk-button-primary:active, .uk-button-primary:hover, .uk-button-primary:focus {
+    background-color: #ed2139;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.uk-button-primary:disabled {
+    background-color: #EF394E !important;
+    color: #FFF !important;
+    border-color: transparent !important;
+    opacity: 0.65;
+}
+
+
+.uk-button-yellow {
+    background-color: #fea000 !important;
+    border-color: #fea000;
+    color: #FFF !important;
+}
+
+.uk-button-yellow:active, .uk-button-yellow:hover, .uk-button-yellow:focus {
+    background-color: #c7ac1c;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.uk-button-yellow:disabled {
+    background-color: #ffe25a !important;
+    color: #FFF !important;
+    border-color: transparent !important;
+    opacity: 0.65;
+}
+
+
+.uk-button-secondary {
+    color: #FFF !important;
+}
+
+.uk-form-custom {
+    width: 100%;
+}
+
+.uk-form-custom .uk-button-default {
+    width: 100%;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.uk-form-custom .uk-button-default .uk-icon {
+    float: right;
+    position: relative;
+    top: 9px;
+}
+
+input[type=number].uk-input {
+    height: 40px;
+}
+
+.samyar-confirm-activation {
+    background: #EF394E;
+    color: #FFF;
+    position: relative;
+    border-radius: 2px;
+    padding: 15px 10px;
+    margin-top: 10px;
+    display: none;
+}
+
+.samyar-confirm-activation:before {
+    position: absolute;
+    content: '';
+    left: 15px;
+    top: -6px;
+    width: 0;
+    height: 0;
+    border-bottom: 6px solid #EF394E;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+}
+
+.samyar-confirm-activation .uk-icon {
+    position: relative;
+    bottom: 2px;
+}
+
+.samyar-upload-file-wrapper {
+    position: relative;
+}
+
+.samyar-upload-file-wrapper .samyar-remove {
+    position: absolute;
+    right: 5px;
+    top: 9px;
+    color: #E84393;
+}
+
+.samyar-upload-file-wrapper .samyar-url {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    color: #666E7C;
+}
+
+.samyar-upload-file-wrapper .samyar-remove + .samyar-url {
+    right: 30px;
+}
+
+#adminmenu #toplevel_page_samyar-settings .wp-menu-image img {
+    max-width: 20px;
+    position: relative;
+    bottom: 2px;
+}
+
+.widget-content .samyar-banner-item p:nth-child(1),
+.widget-content .samyar-slider-item p:nth-child(1) {
+    margin-bottom: 0;
+}
+
+.widget-content .samyar-banner-item p:nth-child(2),
+.widget-content .samyar-slider-item p:nth-child(2) {
+    margin-top: 0;
+}
+
+.widget-content .samyar-banner-item img,
+.widget-content .samyar-slider-item img {
+    max-height: 100px;
+    max-width: 100%;
+}
+
+.widget-content .samyar-banner-item:not(:last-child),
+.widget-content .samyar-slider-item:not(:last-child) {
+    border-bottom: 1px dashed #DBDBDB;
+}
+
+.taxonomy-product_brand #brand-img {
+    max-height: 64px;
+    max-width: 100%;
+}
+
+.samyar-promotion-products + .select2 {
+    width: 100% !important;
+}
+
+.samyar-dnone {
+    display: none;
+}
+
+.postbox#order-tracking .inside p:last-of-type {
+    margin-bottom: 0;
+}
+
+.samyar-amazing {
+    font-size: 16px;
+}
+
+.samyar-amazing.active {
+    color: #EF394E;
+}
+
+.samyar-amazing.inactive {
+    color: #AAA;
+}
+
+.samyar-amazing.future {
+    color: #3ABEE0;
+}
+
+.samyar-amazing {
+    display: block;
+    text-indent: -9999px;
+    position: relative;
+    height: 1em;
+    width: 1em;
+    margin: 0 auto;
+}
+
+.samyar-amazing:before {
+    font-family: Dashicons;
+    speak: none;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    text-indent: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    content: "\f313";
+}
+
+td.amazing.column-amazing {
+    text-align: center;
+}
+
+.samyar-settings a {
+    color: #000;
+}
+
+.samyar-settings a:hover {
+    text-decoration: none;
+}
+
+.samyar-settings .uk-grid {
+    margin-left: 0;
+}
+
+.samyar-settings .samyar-description {
+    color: #898989;
+    margin: 7px 0 15px 0;
+}
+
+.samyar-settings .samyar-description a {
+    color: #898989 !important;
+}
+
+.samyar-settings .samyar-description .uk-icon {
+    margin-right: 3px;
+    position: relative;
+    bottom: 2px;
+    color: #F56640;
+}
+
+.samyar-settings .samyar-side-menu {
+    padding-left: 0;
+}
+
+.samyar-settings .samyar-side-menu > .uk-card-default {
+    box-shadow: none;
+}
+
+.samyar-settings .samyar-side-menu .uk-card {
+    background: transparent;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item {
+    padding: 0;
+    margin: 0;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a {
+    text-decoration: none;
+    color: #121116;
+    display: block;
+    padding: 20px 10px;
+    border-left: 3px solid transparent;
+    transition: 200ms;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a.samyar-active, .samyar-settings .samyar-side-menu .samyar-menu-item a:hover {
+    border-left-color: #EF394E;
+    background: #FFF;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a.samyar-active .samyar-menu-title, .samyar-settings .samyar-side-menu .samyar-menu-item a.samyar-active .samyar-menu-icon, .samyar-settings .samyar-side-menu .samyar-menu-item a:hover .samyar-menu-title, .samyar-settings .samyar-side-menu .samyar-menu-item a:hover .samyar-menu-icon {
+    color: #EF394E;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a:focus {
+    box-shadow: none;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item .samyar-menu-icon {
+    float: right;
+    color: #878D93;
+    position: relative;
+    top: 8px;
+    transition: 200ms;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item .samyar-menu-icon svg {
+    width: 26px;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item .samyar-menu-title {
+    font-weight: bold;
+}
+
+.samyar-settings .samyar-side-menu .samyar-menu-item .samyar-menu-description {
+    color: #72777C;
+    margin-top: 5px;
+}
+
+.samyar-settings .samyar-side-menu .samyar-theme-name {
+    padding-bottom: 20px;
+    color: #EF394E;
+}
+
+.samyar-settings .samyar-side-menu .samyar-theme-name .samyar-theme-name {
+    padding-bottom: 6px;
+    position: relative;
+    display: inline-block;
+    top: 6px;
+}
+
+.samyar-settings .samyar-side-menu .samyar-theme-name .samyar-version {
+    color: #7F7F7F;
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 90%;
+}
+
+.samyar-settings .samyar-side-menu .samyar-theme-name img {
+    margin-right: 10px;
+    max-width: 36px;
+    position: relative;
+    top: 3px;
+    float: left;
+}
+
+.samyar-settings .samyar-settings-content {
+    padding-left: 0;
+}
+
+.samyar-settings .samyar-settings-content > .uk-card-default {
+    box-shadow: none;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area {
+    display: none;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area.samyar-active {
+    display: block;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title {
+    border-bottom: 1px solid #DDD;
+    height: 66px;
+    line-height: 66px;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title .samyar-title-icon {
+    display: inline-block;
+    border-radius: 2px;
+    width: 56px;
+    height: 56px;
+    color: #EF394E;
+    background: rgba(239, 57, 78, 0.25);
+    position: relative;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title .samyar-title-icon:before {
+    content: '';
+    position: absolute;
+    width: 56px;
+    height: 2px;
+    bottom: -10px;
+    left: 0;
+    background: #EF394E;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title .samyar-title-icon .uk-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title .samyar-title-icon .uk-icon svg {
+    width: 26px;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-settings-title strong {
+    position: relative;
+    bottom: 19px;
+    margin-left: 17px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-area .samyar-scripts {
+    font-family: Courier New;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-slider .uk-margin .samyar-slide-item:not(:last-of-type) {
+    border-bottom: 1px dashed #E5E5E5;
+}
+
+.samyar-settings .samyar-settings-content .samyar-item {
+    position: relative;
+}
+
+.samyar-settings .samyar-settings-content .samyar-item .samyar-actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.samyar-settings .samyar-settings-content .samyar-item .samyar-actions .move, .samyar-settings .samyar-settings-content .samyar-item .samyar-actions .remove {
+    color: #E5E5E5;
+}
+
+.samyar-settings .samyar-settings-content .samyar-item .samyar-actions .move {
+    cursor: move;
+}
+
+.samyar-settings .samyar-settings-content .samyar-item .samyar-actions .remove {
+    cursor: pointer;
+}
+
+.samyar-settings .samyar-settings-content .samyar-social-network-item,
+.samyar-settings .samyar-settings-content .samyar-order-status-item {
+    padding-top: 20px;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-footer .uk-margin .samyar-social-network-item:not(:last-of-type) {
+    border-bottom: 1px dashed #E5E5E5;
+}
+
+.samyar-settings .samyar-settings-content .samyar-settings-order-tracking .uk-margin .samyar-order-status-item:not(:last-of-type) {
+    border-bottom: 1px dashed #E5E5E5;
+}
+
+.samyar-settings .samyar-settings-content .samyar-save .loader {
+    display: none;
+    margin-left: 7px;
+}
+
+.samyar-settings .samyar-settings-info.samyar-active + .samyar-save {
+    display: none;
+}
+
+.samyar-settings .samyar-settings-info .samyar-version {
+    margin: 10px 0;
+}
+
+.samyar-settings .samyar-settings-info .samyar-other-products {
+    border-top: 1px solid #DDD;
+    margin-top: 30px;
+}
+
+.samyar-settings .samyar-settings-info .samyar-other-products > .samyar-title {
+    margin: 30px 0;
+}
+
+.samyar-clipboard {
+    cursor: pointer;
+}
+
+.srs-item {
+    margin-bottom: 20px !important;
+}
+
+.srs-item .uk-card-header {
+    position: relative;
+}
+
+.srs-item .uk-card-header .srs-discount {
+    background: #EF394E;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.srs-item .uk-card-body {
+    padding: 20px 10px;
+}
+
+.srs-item .uk-card-body .srs-title {
+    height: 40px;
+}
+
+.srs-item .uk-card-body .srs-price {
+    color: #F56640;
+}
+
+/*
+.samyar-settings-area {
+    .CodeMirror {
+        border: 1px solid #DDD;
+    }
+    .CodeMirror-gutter.CodeMirror-linenumbers {
+        width: 29px !important;
+    }
+    .CodeMirror-linenumber.CodeMirror-gutter-elt {
+        width: 21px !important;
+    }
+    .CodeMirror-sizer {
+        margin-left: 46px !important;
+    }
+    .CodeMirror-gutter-wrapper.CodeMirror-activeline-gutter {
+        left: -46px !important;
+    }
+}*/
+body > pre.xdebug-var-dump {
+    padding-left: 175px;
+}
+
+
+.samyar-settings-api .status {
+    display: inline-block;
+    margin-left: 1em;
+    padding: 3px 6px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.samyar-settings-api .status.positive {
+    background-color: #32cd32;
+}
+
+.samyar-settings-api .status.negative {
+    background-color: red
+}
+
+.samyar-settings-api .status.neutral {
+    background: gray
+}
+
+
+.samyar-order-status {
+    display: -webkit-inline-box;
+    display: inline-flex;
+    line-height: 2.5em;
+    color: #777;
+    background: #e5e5e5;
+    border-radius: 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    margin: -.25em 0;
+    cursor: inherit !important;
+    white-space: nowrap;
+    max-width: 100%;
+    padding: 0 5px;
+}
+
+
+.samyar-order-status.status-completed {
+    background: #c8d7e1;
+    color: #2e4453;
+}
+
+.samyar-order-status.status-completed {
+    background: #c8d7e1;
+    color: #2e4453;
+}
+
+.samyar-order-status.status-on-hold {
+    background: #f8dda7;
+    color: #94660c
+}
+
+.samyar-order-status.status-failed {
+    background: #eba3a3;
+    color: #761919
+}
+
+.samyar-order-status.status-processing {
+    background: #c6e1c6;
+    color: #5b841b
+}
+
+.samyar-order-status.status-trash {
+    background: #eba3a3;
+    color: #761919
+}
+
+.column-actions .wallet-manage::after {
+    font-family: Dashicons;
+    font-weight: 400;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    text-indent: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    content: "\f111";
+    margin: 0;
+}
+
+.column-actions .wallet-view::after {
+    font-family: Dashicons;
+    font-weight: 400;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    text-indent: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    content: "\f177";
+    margin: 0;
+}
+
+.new-option {
+    font-size: 12px;
+    color: #E24610;
+    padding-right: 6px;
+}
+
+.uk-alert {
+    border-radius: 5px;
+}
+
+.backup-textarea,.import-textarea,.import-file{
+    display: none;
+}

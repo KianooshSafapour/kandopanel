@@ -1,0 +1,7 @@
+{
+    "require": {
+        "10quality/php-data-model": "^1.0",
+        "10quality/wp-query-builder": "^1.0",
+        "morilog/jalali": "3.*"
+    }
+}

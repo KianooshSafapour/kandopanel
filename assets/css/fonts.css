@@ -1,0 +1,66 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: 300;
+    font-display: block;
+    src: url("../fonts/fontawesome/fontawesome/fa-light-300.woff2") format("woff2"), url("../fonts/fontawesome/fontawesome/fa-light-300.woff") format("woff");
+}
+
+@font-face {
+    font-family: 'FontAwesomeBrands';
+    font-style: normal;
+    font-weight: 300;
+    font-display: block;
+    src: url("../fonts/fontawesome/fontawesome/fa-brands-400.woff2") format("woff2"), url("../fonts/fontawesome/fontawesome/fa-brands-400.woff") format("woff");
+}
+
+@font-face {
+    font-family: 'FontAwesomeRegular';
+    font-style: normal;
+    font-weight: 300;
+    font-display: block;
+    src:  url("../fonts/fontawesome/fontawesome/fa-regular-400.woff2") format("woff2"), url("../fonts/fontawesome/fontawesome/fa-regular-400.woff") format("woff");
+}
+
+.fa, .fas, .fal {
+    font-family: 'FontAwesome' !important;
+    font-weight: 300;
+    font-style: unset;
+}
+
+.fab {
+    font-family: 'FontAwesomeBrands' !important;
+    font-weight: 400;
+    font-style: unset;
+}
+
+.far {
+    font-family: 'FontAwesomeRegular' !important;
+    font-weight: 400;
+    font-style: unset;
+}
+
+@font-face {
+    font-family: 'IRANSans';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/iransans/woff/IRANSansX-Bold.woff') format('woff'),
+    url('../fonts/iransans/woff2/IRANSansX-Bold.woff2') format('woff2');
+    -moz-font-feature-settings: "ss02";
+    -webkit-font-feature-settings: "ss02";
+    font-feature-settings: "ss02";
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'IRANSans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/iransans/woff/IRANSansX-Regular.woff') format('woff'),
+    url('../fonts/iransans/woff2/IRANSansX-Regular.woff2') format('woff2');
+    -moz-font-feature-settings: "ss02";
+    -webkit-font-feature-settings: "ss02";
+    font-feature-settings: "ss02";
+    font-display: block;
+}

@@ -1,0 +1,30 @@
+<?php
+include( 'kandopanelController.php' );
+include( 'settingsController.php' );
+include( 'providerController.php' );
+include( 'cronController.php' );
+include( 'socialController.php' );
+include( 'categoryController.php' );
+include( 'serviceController.php' );
+include( 'orderController.php' );
+include( 'refillController.php' );
+include( 'databaseController.php' );
+include( 'paymentController.php' );
+include( 'walletController.php' );
+include( 'commentController.php' );
+include( 'userController.php' );
+include( 'smsController.php' );
+include( 'ticketController.php' );
+include( 'apiController.php' );
+include( 'notificationController.php' );
+include( 'emailController.php' );
+include( 'logController.php' );
+include( 'productsController.php' );
+include( 'couponController.php' );
+include( 'packageController.php' );
+include( 'reportController.php' );
+include( 'ureportController.php' );
+include( 'updateController.php' );
+include( 'authController.php' );
+include( 'currencyController.php' );
+

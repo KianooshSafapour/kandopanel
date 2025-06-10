@@ -1,0 +1,1517 @@
+<div class="samyar-settings wrap" style="margin: 10px 42px 5px 20px;">
+    <div class="uk-grid-match" uk-grid>
+        <div class="samyar-settings-content uk-width-4-4@m">
+            <div class="uk-card uk-card-default uk-card-body">
+
+                <div class="samyar-settings-area samyar-settings-change-log" style="display:block">
+                    <h3 class="samyar-settings-title">
+                        <span class="samyar-title-icon"><span uk-icon="info"></span></span>
+                        <strong><?php _e('Change Log', SAMYAR_TEXT_DOMAIN); ?></strong>
+                    </h3>
+                    <style>
+                        .uk-list-bullet > li.change::before {
+                            background-image: none;
+                        }
+                        .uk-list-bullet > li.change span{
+                            background: #2da281;
+                            position: relative;
+                            right: -25px;
+                        }
+                        .uk-list-bullet > li.change span.green{
+                            background: #2da281;
+                        }
+
+                        .uk-list-bullet > li.change span.red{
+                            background: #cd2121;
+                            margin-top: 10px;
+                        }
+                    </style>
+                    <div class="samyar-other-products uk-overflow-auto">
+
+                        <h5 class="samyar-title">نسخه 26.3 (1403/08/29)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>بخش افزایش اعتبار تغییر کرده و نمایش درگاه ها به صورت لیست در اومده و به محصول انتخاب درگاه تومانی و یا دلاری فیلد مربوط به افزایش اعتبار تغییر میکنه و اگر درگاه دلاری هست دلار و اگر تومانی هست باید تومان وارد کنه (قیت دلار رو از بخش تنظیمات ارز می خونه و دیگه در تنظیمات درگاه پرداخت و جدا نیست)</li>
+                            <li>از این پس می تونید در بخش تنظیمات کندوپنل -> عمومی -> نمایش تنها برند کاری کنید که در بخش نمایش برندها تنها آیکون نشون بده و عنوان ها نمایش داده نشه</li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل مخفی شدن منوها در صورت تغییر</li>
+                            <li>سرعت لود بخش داشبرد بهبود پیدا کرد</li>
+
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 26.2 (1403/08/23)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل امنیتی</li>
+                            <li>حل مشکل ترجمه ها در ورژن جدید (6.7) وردپرس</li>
+                            <li>حل مشکل در بخش کرون جاب</li>
+                            <li>حل مشکلات گزارش داده شد</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 26.1 (1403/08/14)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>از این پس برای بهبود امنیت برای تغییر در کیف پول کاربر(افزایش،کاهش و تنظیم اعتبار)، مدیر باید رمز عبور خود را نیز وارد نماید</li>
+                            <li>حل مشکلات گزارش داده شد</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 26 (1403/08/13)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل مهم امنیتی</li>
+                            <li>از این پس می تونید آپلود در بش تیکت ها رو غیرفعال کنید(تنظیمات کندوپنل->تنظیمات تیکت)</li>
+                            <li>از این پس در بخش آپلود تنها میتوان تصاویر رو آپلود کرد و بقیه فرمت ها به دلایل امنیتی غیرفعال شد</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 25.9 (1403/08/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل مهم امنیتی</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.8 (1403/08/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.7 (1403/08/06)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید قالب پنل کاربر و مدیر رو از بخش تنظیمات  و متفاوت تعیین کنید</li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.6 (1403/08/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 25.5 (1403/08/02)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل refill</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.4 (1403/08/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در بخش تنظیمات</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.2 (1403/08/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 25.1 (1403/07/29)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل پرداخت در برخی درگاه ها</li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 25 (1403/07/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این به بعد برای راحتی کاربر وقتی کاربر سفارشش ثبت شده به صورت پیشفرض دسته و سرویسی که در اون سفارش ثبت شده مجددا انتخاب خواهد شد</li>
+                            <li>اضافه شدن آیکون ایکس و تردز (knd icon-x and knd icon-threads)</li>
+                            <li>امکان تغییر زبان در ویرایش پروفایل کاربر قرار گرفت</li>
+                            <li>امکان افزودن نرخ دلخواه به کندوپنل اضافه شد</li>
+                            <li>ویژگی چندزبانه به کندوپنل اضافه شد</li>
+                            <li>امکان افزودن پشتیبان و مشخص کردن سطح دسترسی به سیستم اضافه شد</li>
+                            <li>از این پس در ویرایش سفارش می تونید علت لغو سفارش کاربر رو بهش اعلام کنید. این پیام زیر وضعیت نمایش داده خواهد شد</li>
+                            <li>از این پس با شورتکد [kando_service id=10] می توانید مثلا تنها یک سرویس با شناسه 10 را در برگه نمایش دهید(عدد 10 مثال هست و باید شناسه سرویس را جایگزین 10 کنید)</li>
+                            <li>امکان افزودن آیکون به دسته هم اضافه شد(این آیکون کنار نام دسته در لیست سرویس ها نمایش داده خواهد شد)</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل چند مشکل امنیتی</li>
+                            <li>حل مشکلی در نوع کامنت دلخواه</li>
+                            <li>حل مشکلی در فرم سفارش سریع</li>
+                            <li>در بخش ویرایش سرویس انواع لینک حمع و جور شد</li>
+                            <li>حل مشکل گوگل کپچا برای ورود با کد یکبار مصرف</li>
+                            <li>حل مشکل اعداد فارسی در ورود و ثبت نام</li>
+                            <li>اصلاح المنتور پکیج 2</li>
+                            <li>اصلاح بولد کردن نوشته در وبلاگ</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 24.2 (1403/06/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل امنیتی مهم</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 24.1 (1403/03/14)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل گزارش شده</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 24 (1403/03/13)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>بخش ورود و ثبت نام بازنویسی شد</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>بهبود امنیت سایت</li>
+
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 23.3 (1403/02/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>از این پس می توانید کش سرویس ها برای api رو از بخش تنظیمات->عمومی-> فعالسازی کش برای لیست سرویسها فعال نمایید(توضیحات در همون بخش داده شده)</li>
+
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 23.2 (1403/02/26)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>باگ گزارش داده شده</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 23.1 (1403/02/26)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>باگ گزارش داده شده</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 23 (1403/02/26)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلی در کرون جاب</li>
+                            <li>از این پس می تونید کاری کنید که فایل های تیکت در رسانه های وردپرس درج بشه(تنظیمات کندوپنل -> عمومی -> فعالسازی آپلود ضمیمه ها در رسانه های وردپرس)</li>
+                            <li>بهبود امنیت قالب</li>
+                            <li>بهبود سرعت دریافت خدمات از api برای مشتریان شما</li>
+                            <li>اضافه شدن پنل ملی پیامک</li>
+                            <li>اضافه شدن پنل sms.ir</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 22.9.1 (1403/12/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل مهم</li>
+                            <li>از این پس نام کاربری اینستاگرام نام کاربری با الگوی (@morteza) هم قبول میکنه</li>
+                            <li>حل مشکل گزارش داده شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 22.9 (1402/12/20)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس کنار وضعیت هر سفارش نمایش داده شده که وضعیت چند دقیقه پیش بررسی شده</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در بررسی وضعیت های تکی</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 22.8 (1402/12/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در بررسی وضعیت های تکی</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 22.7 (1402/12/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل باگ گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 22.6 (1402/12/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل باگ گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 22.5 (1402/12/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل ورود با کپچا</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 22.4 (1402/12/16)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مورد در سفارش های در دست اقدام</li>
+                            <li>حل مشکل از کار افتادن آپدیت خودکار</li>
+                            <li>باگی در بخش کرون جاب اصلاح شد</li>
+                            <li>حل مشکل در بررسی اعتبار برخی لینک شبکه های اجتماعی</li>
+                            <li>حل خطای سفارش رایگان در api</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 22.3 (1402/12/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ گزارش شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 22 (1402/12/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>آسان نصب قالب اضافه شد و حالا می توانید با چند کلیک سایت رو نصب کنید</li>
+                            <li>هدر ساز و فوتر ساز به قالب اضافه شد</li>
+                            <li>تغییرات قالب از تنظیمات کندوپنل به زیر منوی تنظیمات کندوپنل اضافه شد</li>
+                            <li>امکان بک آپ گیری از تنظیمات کندوپنل اضافه شد</li>
+                            <li>سیستم بررسی لینک به کندوپنل اضافه شد(تنظیمات در ویرایش و افزودن دسته و سرویس)</li>
+                            <li>اضافه شدن آیکون های شبکه های اجتماعی(آپارات،سرورش،گپ،ایتا،روبیکا،بله) لیست آیکون ها در بخش افزودن برند اضافه شده</li>
+                            <li>صفحه بندی برای بررسی وضعیت های تکی اضافه شد(با این سیستم دیگه سفارش ها منتشر نمی مونن که بقیه تکمیل بشن و بعد نوبت بهشون برسه)</li>
+                            <li>از این پس نیاز به نصب هیچ شمسی ساز نیست و خود کندوپنل تاریخ ها رو به شمسی تغییر خواهد داد(می تونید در بخش تنظیمات کندوپنل -> عمومی -> فعال کردن تبدیل به تاریخ شمسی غیر فعال/فعال کنید)</li>
+                            <li>همچنین از این پس می تونید در پیشخوان ورئدپرس بخش تنظیمات -> عمومی فرمت تاریخ رو به دلخواه تغییر بدین</li>
+                            <li>از این پس می توانید سفارش  و تراکنش ها رو تا یک روز مشخص نگه دارید و بقیه رو پاکسازی کنید (تنظیمات کندوپنل -> پاکسازی جزیی اطلاعات)</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلی در بخش api </li>
+                            <li>حل مشکلی در بخش کرون جاب </li>
+                            <li>حل مشکل خطای کپچا برای از لغو سفارش </li>
+                            <li>حل مشکل کرون جاب بررسی وضعیت اشتراک ها </li>
+                            <li>حل مشکل خطاهای مربوط به حذف افزونه شمسی ساز در قالب </li>
+                            <li>حل مشکل عدم نمایش تقویم در نوع اشتراک در مدال </li>
+                            <li>حل مشکلات مربوط به اشتراک </li>
+                            <li>حل مشکلات مربوط به نوع اشتراک </li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 21 (1402/10/26)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>کرون جاب مخصوص سفارش های drepfeed اضافه شد و جداگانه باید به کرون جاب های هاست اضافه کنید</li>
+                            <li>کرون جاب مخصوص سفارش های subscriptions اضافه شد و جداگانه باید به کرون جاب های هاست اضافه کنید</li>
+                            <li>از این پس در api اگر سفارشی تکراری (بررسی تکراری بودن از روی تعداد و لینک و شناسه سرویس خواهد بود) بود و پشت هم ارسال شد بهش میگه که این سفارش تکراری هست</li>
+                            <li>از این پس تایید قوانین و مقررات در بخش افزودن هم اضافه شد</li>
+                            <li>پشتیبانی از سرویس با نوع Poll و Comment Replies و Invites from Groups هم اضافه شد</li>
+                            <li>دو آیتم posts و old_posts هم به نوع سرویس subscriptions اضافه شد</li>
+                            <li>متغیر های ,[service_min],[service_max],[service_price] برای اطلاعیه تلگرام فعالسازی و غیر فعالسازی سرویس اضافه شد و می تونید ازشون در متن پیام استفاده کنید</li>
+                            <li>از این پس می تونید در بخش ایمیل سفارش ارسالی به مدیر شماره همراه کاربر رو هم با متغیر [mobile-number] قرار بدین</li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>تغییرات کوچک در بخش پرداخت </li>
+                            <li>حل موارد مربوط به سفارش های چند بخشی </li>
+                            <li>حل یک مشکل در درگاه آقای پرداخت</li>
+                            <li>حل یک مشکل در گوگل کپچا</li>
+                            <li>حل مشکل نمایش خطای "برای ارسال سفارش رایگان ابتدا باید حساب خود را به مبلغ فلان شارژ کنید" برای زمانی که سرویس رایگان هست و کاربر هم اعتبارش رو شارژ کرده</li>
+                            <li>حل مشکل عدم نمایش تصویر پروفایل دلخواه(اونی که در پروفایل کاربر یا مدیر انتخاب کرده) در بخش تیکت ها</li>
+                            <li>حل مشکل اینکه در ویرایش سفارش همیشه نوع سفارش رو دستی می نوشت</li>
+                            <li>جهت جلوگیری هر سوء استفاده ای کلید api کاربر برای مدیر هم مخفی شد و کاربر می تونه در پروفایل خودش هر بار یک کلید جدید ایجاد کنه و کلید قبلی مخفی خواهد بود</li>
+                            <li>حل مشکل تغییر کیبرد از عددی به نوشتاری در وارد کردن کد تایید ورود</li>
+                            <li>حل مشکل زیر رفتن پاپ اپ تایید اطلاعیه ها به صورت خوانده شده</li>
+                            <li>حل مشکل استفاده چندین شورتکد دسته خاص در یک برگه</li>
+                            <li>حل مشکل عدم نمایش توضیحات دسته در فرم ارسال سفارش</li>
+                            <li>دیگه دسته هایی که سرویس فعال ندارند رو در فرم ارسال سفارش نشون نمیده</li>
+                            <li>حل برخی یاگ های گزارش شده کاربران</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 20 (1402/09/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید سفارش های در دست انجام و در حال پردازش رو هم به صورت گروهی تغییر وضعیت بدین</li>
+                            <li>از این پس می توانید مشخص کنید (تنظیمات کندوپنل->سفارش->حداکثر مبلغ سفارش برای ارسال به api ) که اگر مبلغ یک سفارش از مبلغ خاصی بالا رفت منتظر اقدام شما باشد و به api ارسال نکنه</li>
+                            <li>از این پس می توانید مشخص کنید که آیا میخواهید در همگامسازی حداقل و حداکثر و قطره چکانی به روز شود یا خیر (در بخش همگامسازی هر ارائه دهنده و در بخش تنظیمات کندوپنل->همگامسازی برای همگامسازی خودکار)</li>
+                            <li>از این پس می توانید برای کاربر اعتبار خاصی رو تنظیم کنید برای این مورد به کیف پول مراجعه کنید کاربر رو پیدا کنید و به تنظیماتش برید و نوع رو تنظیم وجه انتخاب کنید</li>
+
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ امنیتی</li>
+                            <li>حذف فاصله از اول و آخر لینک ارسالی کاربر</li>
+                            <li>از ابن پس در ویرایش ارائه دهنده می تونید نرخ دلخواه برای هر ارائه دهنده رو صفر هم بزارید و اگر صفر گذاشتین یعنی هیچ سودی روش کشیده نمیشه و به قیمت خرید به کاربر نمایش میده (اگر میخواین اعمال نشه خالی بزارید)</li>
+                            <li>حل مشکل در فرم سفارش سریع</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 19.4 (1402/09/13)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>درگاه پی پینگ به درگاه ها اضافه شد</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در مرتبسازی منوها</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 19.3 (1402/08/22)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حذف فونت های اضافی و نصف کردن حجم قالب</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 19.2 (1402/08/20)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در بازیابی رمز عبور</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 19.1 (1402/08/16)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل عدم نمایش دکمه جبران ریزش</li>
+                            <li>حل مشکل در بازیابی رمز عبور</li>
+                            <li>از این پس کاربر می تواند فاصله زمانی در سفارش قطره ای رو به دلخواه (در دقیقه) انتخاب کند</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 19 (1402/08/10)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس مدیر میتواند برای پاسخ تیکت های خود امضا اضافه کند(در بخش ویرایش پروفایل می تونید امضا رو مشخص کنید) این متن زیر هر پاسخی که به کاربر می دهید نمایش داده خواهد شد </li>
+                            <li>نمایش اطلاعیه سایدبار به کندوپنل اضافه شد (در حال حاضر تنها برای ارسال و پاسخ های تیکت کاربرد داره)</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>از این پس در ویرایش سفارش می تونید انتخاب کنید که در صورت لغو یک سفارش مبلغ به کیف پول برگشت بخوره یا نخوره</li>
+                            <li>گوگل کپچا ورژن 2 جایگزین ورژن 3 شد(قبل از فعالسازی مجددا برای گوگل کپچا 2 باید کلید و رمز تهیه کنید و در تنظیمات تنظیم کنید و ثبث فعال کنید)</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 18.7 (1402/08/02)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>هماهنگ شده با ورژن 2 افزونه گیفت کارت</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 18.6 (1402/07/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مورد در کرون جاب</li>
+                            <li>حل مشکل در سفارش چند بخشی (قطره ای)</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 18.5 (1402/06/27)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مورد در درگاه زیبال</li>
+                            <li>تغییر نوع input رمز پیامک به password</li>
+                            <li>امکان افزودن کامنت دلخواه به تعداد بالا (قبلا محدودیت داشت و تا حدودی میشد ثبت کرد)</li>
+                            <li>از این به بعد اگر سرویس به صورت دستی اضافه کنید بعد از زدن بر روی دکمه ارسال و ثبت موفقیت آمیز به صورت خودکار به آپدیت سرویس خواهد رفت</li>
+                            <li>حل یک مورد در بخش کرون جاب</li>
+                            <li>از این پس در پیشخوان وردپرس سفارش های دستی به صورت جداگانه در آمار سفارشات نمایش داده میشه و اگر سفارش دستی موجود باشه چشمک زن میشه که به سرعت متوجه بشین</li>
+                            <li>از این پس می تونید با یک کلیک کامنت های دلخواهی که قبلا وارد کردین رو کپی کنید و مجددا استفاده کنید</li>
+                            <li>حل باگ های جزیی</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 18.3 (1402/05/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل باگ در کرون جاب</li>
+                            <li>حل باگ در صفحه گزارش کرون جاب</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 18.2 (1402/05/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>زمان اتصال به ارائه دهنده رو از 15 ثانیه به 45 ثانیه تغییر دادیم (مربوط به خطا cURL error 28: Operation timed out after 15001 milliseconds with 0 bytes received) </li>
+                            <li>از این پس اگر از قفل شدن کرون جاب 10 دقیقه گذشته بود خود سیستم قفلش رو باز میکنه</li>
+                            <li>حل باگ های جزیی</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 18.1 (1402/05/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ در بخش کرون جاب </li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 18 (1402/05/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل باگ در بخش کرون جاب </li>
+                            <li>حل مشکل قفل ماندن کرون جاب ها </li>
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس از تو سایت خودتون می تونید وضعیت سفارش در ارائه دهنده رو بررسی کنید (روبروی هر سفارش یک دکمه بررسی وضعیت سفارش در ارائه دهنده اضافه شده) </li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 17.9 (1402/05/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ جزیی </li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 17.8 (1402/04/31)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل گزارش شده در بخش ریفیل </li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 17.7 (1402/04/31)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>هماهنگی با افزونه فروش گیفت کارت </li>
+                            <li>حل باگ ارسال سفارش انبوه </li>
+                            <li>حل یک مورد در نمایش دکمه ریفیل </li>
+                            <li>حل مشکل به روز نشدن وضعیت های ریفیل </li>
+                            <li>از این پس اگر زمان حدودی انجام سفارش محاسبه نشده بود و یا غیر فعال بود در توضیحات سرویس نمایش داده نخواهد شد</li>
+                            <li>حل مشکل محاسبه هدیه، زمانی که وضعیت سفارش به صورت نیمه تمام هست</li>
+                            <li>بهبود امنیت بیشتر</li>
+                            <li>حذف سرویس ها با انتخاب به صفحه لیست سرویس ها اضافه شد</li>
+                        </ul>
+
+
+
+                        <h5 class="samyar-title">نسخه 17.6 (1402/04/14)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل در بروزرسانی خدمات </li>
+                        </ul>
+
+
+
+                        <h5 class="samyar-title">نسخه 17.5 (1402/04/10)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل در عدم ناسازگاری با افزونه شماره مجازی</li>
+                            <li>حل یک مشکل در بروزرسانی خدمات </li>
+                            <li>حل مشکل عدم نمایش لوگو ریکپچا ورژن 3</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 17.4 (1402/04/03)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک مشکل در بخش کرون جاب</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 17.3 (1402/03/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ در بررسی سفارش رایگان</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 17.2 (1402/03/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل یک باگ در ورود</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 17.1 (1402/03/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>هماهنگی با افزونه شماره مجازی</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 17 (1402/03/22)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>هماهنگی با افزونه شماره مجازی</li>
+                            <li>حل مشکل در فروش بسته نمایندگی</li>
+                            <li>حل مشکل در حذف سفارش</li>
+                            <li>محدودیت ip برای سفارش رایگان اعمال شد</li>
+                            <li>حل مشکلات مربوط به رند کردن قیمت</li>
+                            <li>حل مشکل خراب شدن لینک ها در توضیحات سرویس</li>
+                            <li>حل باگ های کوچک</li>
+
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید فعال کنید که اگر کاربر به مقدار فلان مبلغ شارژ حساب انجام داد بتونه سفارش رایگان ثبت کنه(تنظیمات کندوپنل -> سفارش -> فعالسازی شارژ قبل از ارسال سفارش رایگان)</li>
+                            <li>گزارش هر سرویس اضافه شده (روبروی هر سرویس دکمه گزارش سرویس اضافه شده است)</li>
+                            <li>از این پس اگر کاربر وارد شده و سفارش موفقیت آمیز بود به صفحه ارسال سفارش هدایت خواهد شد (سرعت ثبت سفارش بالاتر میره)</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 16.5 (1402/02/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل قیمت نمایندگی ها</li>
+                            <li>حل مشکل ریدایرکت بعد از ورود در حالت رمز یک بار مصرف</li>
+                            <li>رفع باگ های گزارش شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 16.4 (1402/02/12)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل متفاوت بودن قیمت ها در api</li>
+                            <li>حل مشکل در ویرایش پروفایل</li>
+                            <li>حل مشکل در فیلتر سرویس ها</li>
+                            <li>حل مشکل ترتیب سرویس ها در برخی قسمت ها</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 16.3 (1402/02/09)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در ارسال اطلاعیه های ارسال سفارش و ارسال سفارش دستی برای تلگرام (افزونه ربات اطلاع رسانی تلگرام رو هم بروزرسانی کنید)</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 16.2 (1402/02/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در بخش ویرایش سرویس</li>
+                            <li>حل مشکل ساعت لغو سفارش در پنل کاربری 1 و قالب کوبا(افزونه قالب کوبا رو آپدیت کنید)</li>
+                            <li>حل یک مشکل در بخش api</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 16.1 (1402/02/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل عدم نمایش تعداد تیکت ها در منو</li>
+                            <li>مشکل عدم بازگشت وجه در کرون جاب حل شد</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 16 (1402/02/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس در بخش ارائه دهندگان می توانید برای هر ارائه دهنده که ویژگی بررسی وضعیت گروهی را پشتیبانی میکند این ویژگی رو فعال نمایید (دقت داشته باشید که یک کرون جاب جدید برای این مورد به بخش کرون جاب ها اضافه شده که باید بر روی هر 5 دقیقه یک بار تنظیم نمایید)</li>
+                            <li>از این پس می توانید برای هر ارائه دهنده نرخ دلخواه تعیین نمایید</li>
+                            <li>از این پس می توانید در بخش تنظیمات کندوپنل -> سرویس ها رند کردن قیمت سرویس ها را فعال نمایید</li>
+                            <li>از این پس می توانید در پیشخوان وردپرس زیر منوی تنظیمات وردپرس بر روی گزارش کرون جاب بزنید و وضعیت اجرای کرون جاب هاتون رو ببینید</li>
+                            <li>اضافه شدن دکمه های ارائه دهندگان فعال و غیر فعال در بخش ارائه دهندگان</li>
+                            <li>از این پس می توانید در بخش تنظیمات احراز هویت بخش استایل تصاویر پس زمینه صفحه ورود و ثبت نام رو تغییر بدین</li>
+                            <li>از این پس می توانید در پیشخوان وردپرس زیر تنظیمات کندوپنل ، تنظیمات منو ، منوهایی کاربری رو مرتب، فعال و غیر فعال کنید </li>
+                            <li>از این پس می توانید وضعیت پرداخت ها رو تغییر بدین</li>
+                            <li>اضافه شدن دکمه های سرویس های فعال و غیر فعال در بخش سرویس ها</li>
+                            <li>از این پس می تونید به صورت همگانی وضعیت های سرویس ها رو غیرفعال و فعال کنید</li>
+                            <li>ارسال پیامک خوش آمدگویی به تنظیمات پیامک اضافه شد</li>
+                            <li>ارسال پیامک نام کاربری و رمز عبور به کاربر مهمان وقتی که سایت سفارشی ثبت کرد به تنظیمات پیامک اضافه شد</li>
+                            <li>از این پس سرویس های رایگان آپدیت (هم در آپدیت خودکار و هم در دستی) نخواهند شد</li>
+                            <li>جدا شدن اطلاعیه های سفارش های دستی و api در پیامک ، ایمیل و تلگرام(در افزونه اطلاع رسانی تلگرام)</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلی در درگاه زرین پال</li>
+                            <li>حل مشکل در نمایش اطلاعیه ها</li>
+                            <li>از این پس کاربرانی که به api شما وصل هستند با 6 برابر، سرعت بیشتر، لیست سرویس ها را دریافت خواهند کرد</li>
+                            <li>از این پس می توانید لیست کاربرانی را که برای آنها نرخ دلخواه تنظم کرده اید در بخش کاربران ببینید</li>
+                            <li>از این پس می توانید لیست کاربرانی را که برای آنها سرویس خاصی را غیر فعال کرده اید در بخش کاربران ببینید</li>
+                            <li>حل مشکلی در refill</li>
+                            <li>از این پس هر کاربر می تونه در 1 دقیقه 20 درخواست ثبت سفارش از api ارسال کنه (این ویژگی مصرف منابع شما رو به صورت بسیار خوبی بهبود خواهد داد و همچنین از ارسال سفارشات تکراری جلوگیری خواهد شد)</li>
+                            <li>از این پس سرعت لود صفحه نمایش خدمات بسیار بالاتر خواهد بود</li>
+                            <li>آمار سال قبل به گزارشات اضافه شد</li>
+                            <li>باگ های سفارش رایگان برطرف شد</li>
+                            <li>از این پس تنها کاربران وارد شده امکان ثبت سفارش رایگان خواهند داشت</li>
+                            <li>از این پس کاربران ،امکان ثبت سفارش رایگان، از طریق api ،را نخواهند داشت و البته سرویس های رایگان از لیست سرویس های api حذف شدند</li>
+                            <li>تعمیر و بهبود بخش جستجو و فیلتر سرویس ها</li>
+                            <li>مشکل تاریخ در لغو سفارش اصلاح شد</li>
+                            <li>بهبود بخش تراکنش ها</li>
+                        </ul>
+
+
+
+                        <h5 class="samyar-title">نسخه 15.1 (1401/11/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل گزارش شده</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 15 (1401/11/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل در نمایش زمان حدودی</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 14.9 (1401/11/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>در بخش نمایش سرویس ها سرعت نمایش لیست سرویس ها بهبود پیدا کرد</li>
+                            <li>از این پس می تونید از بخش تنظیمات کندو پنل -> سرویس ها -> نمایش دکمه سفارش برای کاربران وارد نشده ، دکمه سفارش برای کاربران وارد نشده را غیر فعال یا فعال کنید</li>
+                            <li>حل یک مشکل در بخش گوگل کپتچا</li>
+                            <li>از این پس برای بهبود سرعت محاسبه زمان تقریبی انجام سفارش هر 6 ساعت محاسبه خواهند شد</li>
+
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 14.8 (1401/10/22)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>ترجمه برخی موارد</li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 14.7 (1401/10/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>انتخاب درگاه پیشفرض به بخش تنظیمات درگاه->عمومی اضافه شد</li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل ذخیره نشدن درصد هدیه در ویرایش سفارش</li>
+                            <li>حل مشکلات گزارش داده شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 14.6 (1401/10/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>از این پس می توانید در بخش تنظیمات کندو پنل-> سرویس ها نمایش زمان تقریبی انجام سفارش رو غیر فعال کنید</li>
+                            <li>امنیت بخش ارسال سفارش رایگان بهبود پیدا کرد</li>
+                            <li>برای امنیت بیشتر از این پس، کاربران شما، نمی توانند از بخش سفارش انبوه، سفارش رایگان ثبت نمایند</li>
+                            <li>حل مشکل غیر فعال شدن جبران ریزش در آپدیت خودکار </li>
+                            <li>حل باگ کوچک در زمان جبران ریزش </li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 14.5 (1401/10/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>مدت زمان برای پر کردن مجدد برای هر سرویس اضافه شد</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکلاتی مربوط به پر کردن مجدد</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 14.4 (1401/10/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>حل مشکل بروزرسانی خودکار</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 14.3 (1401/10/06)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>نمایش جستجو در بخش سرویس ها برای کاربران هم قرار داد شد</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 14 (1401/10/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید در تنظیمات -> سفارش حداکثر تعداد سفارش برای ارسال به api را مشخص کنید و اگر تعداد بیشتر شد به api ارسال نمی شود و منتظر اقدام شما خواهد ماند</li>
+                            <li>از این پس می توانید در تنظیمات -> سفارش -> درصد هدیه ، درصد هدیه برای اضافه کردن به تعداد اضافه کنید، در ویرایش هر سرویس هم قرار داده شده</li>
+                            <li>ویژگی refill یا پر کردن مجددا به کندو پنل اضافه شده</li>
+                            <li>در api در لیست سرویس ها برند هم اضافه شد</li>
+                            <li>زمان حدودی تکمیل سفارش اضافه شد(میانگین زمان بر اساس 10 آخرین سفارش تکمیل شده در مقدار 1000 است. و از زمانی که به ورژن 13.2 آپدیت می کنید محاسبه میشه)</li>
+                            <li>ترتیب به درگاه های پرداخت اضافه شد</li>
+
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>عدم نمایش تعداد تیکت های در انتظار پاسخ تعمیر شد</li>
+                            <li>بخش اطلاعیه ها تعمیر شد</li>
+                            <li>باگ در بخش انتخاب برند حل شد</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 13.1 (1401/09/23)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل عدم نمایش برندها در پنل کاربری 1</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 13 (1401/09/23)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>بخش برند ها اضافه شد(این برندها در بالای ارسال سفارش قرار می گیرند و کاربر با کلیک بر روی اون برند فقط سرویس های اون برند رو می بینه)</li>
+                            <li>از این پس می توانید در بخش تنظیمات -> داشبرد گزینه بروزرسانی ها رو غیر فعال کنید</li>
+
+                            <li class="change"><span class="uk-badge red">بهبود:</span></li>
+                            <li>نمایش اطلاعیه ها در داشبرد تغییر کرد</li>
+                            <li>از این پس در ویرایش سفارش می تونید سفارش رو به هر وضعیتی خواستید تغییر بدین</li>
+                            <li>بخش تنظیمات بهبود یافت</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12.6 (1401/06/12)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل مشکل گزارش شده </li>
+
+                        </ul>
+                        <h5 class="samyar-title">نسخه 12.5 (1401/06/10)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل یک مشکل در همگامسازی خدمات </li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12.4 (1401/06/09)</h5>
+                        <ul class="uk-list uk-list-bullet">
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل یک مشکل در فرم ارسال سفارش </li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12.3 (1401/06/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>بهبود رابط کاربری بخش ارسال سفارش</li>
+                            <li>از این پس اگر فعالسازی نمایندگی در پنل غیر فعال باشه در داشبرد نوع کاربر رو نمایش نمیده و همچنین در منوهای کاربر خرید بسته های نمایندگی نشون نمیده</li>
+                            <li>اضافه شدن شورتکد [show_user_credit] برای نمایش اعتبار کاربر</li>
+                            <li>از این پس می توانید میزان هزینه کاربر رو در بخش تنظیمات کندو پنل -> داشبرد غیر فعال کنید</li>
+
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل مشکل ارسال  تکراری اطلاعیه های غیر فعال شدن سرویس در کانال تلگرام </li>
+                            <li>حل مشکل در بخش بروزرسانی همگانی</li>
+                            <li>حل مشکل در بخش پروفایل کاربر</li>
+                            <li>حل مشکل در بخش بررسی کد تخفیف</li>
+                            <li>حل مشکل در بروزرسانی سرویس</li>
+                            <li>به علت آپدیت اخیر اینستاگرام دکمه بررسی لینک دیگه کار نمیکنه و به همین علت تا راه حل مناسبی پیدا بشه حذف شد</li>
+                            <li>حل مشکلات گزارش شده</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12.2 (1401/05/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید همه بسته های خریداری شده توسط کاربران رو به صورت یکجا پاکسازی کنید.(تنظیمات کندو پنل -> پاکسازی اطلاعات->پاکسازی همه بسته های خریداری شده کاربران)</li>
+                            <li>از این پس می توانید جلوگیری از ثبت سفارش برای لینک تکراری رو غیر فعال کنید (تنظیمات کندو پنل -> سفارش ->فعالسازی جلوگیری از ارسال سفارش تکراری برای لینک یکسان)</li>
+                            <li>از این پس اگر سرویس به صورت دستی هم اضافه شد اطلاعیه آن ثبت خواهد شد</li>
+                            <li>از این پس می توانید در قالب پیام تلگرام افزایش یا کاهش قیمت از تگ های زیر هم استفاده کنید (,[service_min],[service_max],[category_name])</li>
+                            <li>از این پس نام دسته هم در بروزرسانی ها خدمات نمایش میده</li>
+
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل برخی مشکلات گزارش شده در بخش آپدیت ها</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12.1 (1401/05/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>از این پس می توانید همه اطلاعیه های تغییر قیمت رو از بخش (تنظیمات کندو پنل -> پاکسازی اطلاعات->پاکسازی اطلاعیه های تغییر قیمت) به صورت یک جا پاکسازی کنید.</li>
+
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل مشکل ارسال پیام های غیر فعالسازی تکراری در اطلاعیه های قیمت</li>
+                            <li>حل مشکل قیمت های اشتباه در صورت دلاری بودن قیمت در اطلاعیه های قیمت</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 12 (1401/05/20)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li class="change"><span class="uk-badge green">امکانات جدید:</span></li>
+                            <li>امکان غیر فعال کردن سفارش انبوه فراهم شد(تنظیمات کندو پنل -> سفارش)</li>
+                            <li>در بخش تنظیمات کندوپنل -> عمومی برخی موارد غیر ضروری حذف شد</li>
+                            <li>محدودیت حداقل و حداکثر مبلغ به کوپن تخفیف اضافه شد.</li>
+                            <li>از این پس می توانید که سرویس (هایی) رو برای کاربر خاص غیر فعال کنید(پیشخوان وردپرس -> کاربران -> روبری هر کاربر در ستون دلخواه -> دکمه غیر فعالسازی سرویس).</li>
+                            <li>فیلتر سرویس ها در صفحه نمایش سرویس ها اضافه شد</li>
+                            <li>جستجوی سفارشات با استفاده از شناسه سرویس اضافه شد</li>
+                            <li>از این پس شما و کاربران می توانند اطلاعیه های تغییرات قیمت در سایت شما رو ببینند(در منوی کاربری بخش بروزرسانی ها)</li>
+                            <li>از این پس می توانید روی پرداخت ها مالیات اضافه کنید</li>
+                            <li>تعداد سرویس در هر دسته به جدول دسته ها اضافه شد</li>
+                            <li>از این پس می تونید گزینه یادداشت برای مدیر رو فعال و یا غیر فعال کنید(تنظیمات کندوپنل -> سفارش)</li>
+                            <li>از این پس اگر کاربری کندوپل داشت و از طریق API به سایت شما سفارشی ارسال کرد دامنه کاربر نیز ذخیره خواهد شد و در بخش سفارشات نمایش داده خواهد شد(باید هر دو کندو پنل و همچنین ورژن 12 به بالا باشن و برای بقیه که کندوپنل ندارند می تونن آدرس سایت خودشون رو در ویرایش پروفایل وارد کنن)</li>
+                            <li>لینک API نیز کنار کلید api در پروفایل کاربر قرار داده شد</li>
+                            <li>از این پس اگر کاربری سفارشی برای یک لینک ثبت کرد که هنوز وضعیت آن تکمیل نشده باشد اجازه ثبت سفارش مجددا برای آن لینک نخواهد داد(از خطاهای مربوط به لینک تکراری جلوگیری خواهد کرد)</li>
+                            <li>از این پس اگر مدیر تیکتی برای کاربر ایجاد کرد به کاربر تیکت ارسال میشه (پترنش رو باید در بخش پترن های پیامک اضافه کنید)</li>
+                            <li>از این پس برای امنیت بیشتر، کد یک بار مصرف ها بعد از 10 دقیقه منقضی خواهند شد</li>
+                            <li>از این پس می توانید قیمت محصولات رو به صورت دست جمعی تغییر بدین(در منوها بروزرسانی دسته جمعی)</li>
+                            <li>از این پس کاربران شما می توانند در ویرایش پروفایل تصویر دلخواه خودشان را انتخاب نمایند</li>
+                            <li>از این پس می توانید در بخش تنظیمات کندو پنل -> پاکسازی اطلاعات قیمت دلخواه هر سرویس رو که وارد کردن به صورت یک جا پاکسازی کنید تا بتونید از نرخ های عمومی استفاده کنید</li>
+                            <li>روبروی هر سفارش آیکون تیکت اضافه شد که کاربر با یک کلیک بتونه برای اون سفارش تیکت ثبت کنه</li>
+                            <li>از این پس می توانید در بسته های نمایندگی خریداری شده بر اساس کاربر جستجو نمایید</li>
+                            <li>درگاه پرداخت وندار (vandar.io) نیز اضافه شد</li>
+
+                            <li class="change"><span class="uk-badge red">تعمیرات:</span></li>
+                            <li>حل مشکل کد تایید در تلفن های همراه</li>
+                            <li>حل مشکل عدم نمایش ایموجی ها در لیست سرویس ها</li>
+                            <li>حل مشکل جستجوی بخش وبلاگ</li>
+                            <li>حل مشکل عدم نمایش قیمت نمایندگی ها در حالت پاپ آپ برای شورتکد دسته سرویس</li>
+                            <li>حل مشکل عدم اعمال نمایندگی بعد از خرید بسته</li>
+                            <li>در صفحه مطلب وبلاگ چون آیکون های اشتراک گذاری باعث مشکل پرش صفحه می شدند حالتشون از لغزنده به ثابت تغییر کرد</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 11.2 (1401/03/10)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل در ارسال سفارش رایگان</li>
+                            <li>حل مشکل درگاه نکست پی</li>
+                            <li>برای امنیت بیشتر در بقیه درگاه ها تغییراتی اعمال شد</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 11.1 (1401/03/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل لایسنس با بازار وردپرس</li>
+                            <li>تعمیر منوی موبایل</li>
+                            <li>حل خطای گوگل برای برد کرامپ (با افزونه رنک مث هماهنگ شد) </li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 11 (1401/02/09)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل وسط چین نبودن منوی موبایل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.9 (1401/02/08)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک باگ کوچک مربوط به افزونه گردونه شانس(آپدیت کنید)</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.8 (1401/02/06)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل در صفحه ورود و ثبت نام</li>
+                            <li>خرید بسته نمایندگی تعمیر و اضافه شد</li>
+                            <li>از این پس اعتبار کاربر قبل از شارژ حساب درج خواهد شد</li>
+                            <li>حل مشکل لینک در هشدارها</li>
+                            <li>فونت اطلاعیه بالا در گوشی همراه کوچکتر شد</li>
+                            <li>حل مشکلی در گزارش سفارشات</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.7 (1401/02/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بروزرسانی ارائه دهنده</li>
+                            <li>حل یک مشکل در اطلاعیه های تغییر وضعیت</li>
+                            <li>حل مشکل در کدهای تایید موقع ورود در برخی سایت ها</li>
+                            <li>حل یک مورد در بخش بسته ها</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.6 (1401/01/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل در سفارش انبوه</li>
+                            <li>حل برخی مشکلات گزارش شده</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.5 (1401/01/24)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل در سفارش رایگان</li>
+                            <li>حل مشکل در سفارش رایگان از طریق api</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.4 (1401/01/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل سرویس های رایگان</li>
+                            <li>حل یک خطا</li>
+                            <li>حل مورد در کرون جاب بروزرسانی خدمات</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.3 (1401/01/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مورد کوچک</li>
+                            <li>حل غیر فعال نشدن منوی موبایل در پنل کاربری 2</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 10.2 (1401/01/16)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>کلید api در بخش همگامسازی هم به صورت ستاره شد</li>
+                            <li>مشکل گوگل کپچا حل شد و می تونید فعال کنید</li>
+                            <li>از این پس می توانید در بخش تنظیمات کندو پنل -> عمومی -> فعالسازی منوی کاربری مخصوص موبایل منوی مخصوص موبایل رو فعال یا غیر فعال کنید</li>
+                            <li>فعال کردن بررسی شماره همراه های افغانستان به جای شماره های ایران برای کاربران افغانستانی(تنظیمات کندو -> پیامک -> تنظیمات اضافه)</li>
+                            <li>شورتکد نمایش دسته خاص تعمیر شد</li>
+                            <li>عدم نمایش شماره همراه در درگاه های بانکی برای کاربران وارد نشده حل شد</li>
+                            <li>حل مشکل خطای -> پرداختی برای این سفارش یافت نشد</li>
+                            <li>حل مشکل در لینک های صفحه بندی</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10.1 (1401/01/14)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل قیمت های سرویس(مشکل از قیمت های نمایندگی بود که در حال حاضر غیر فعال شده تا راه حل مناسب پیدا بشه و در چند روز آینده آپدیت برای این مورد انجام میشه)</li>
+                            <li>خرید بسته های نمایندگی در حال حاضر غیر فعال شد</li>
+                            <li>حل مشکل کارت به کارت</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 10 (1401/01/13)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>مشکلی در پاک کردن ارائه دهنده حل شد</li>
+                            <li>اضافه شدن خرید پنل نمایندگی</li>
+                            <li>اضافه شدن قابلیت ایجاد کد تخفیف</li>
+                            <li>تغییرات کلی در بخش ورود و ثبت نام</li>
+                            <li>اضافه شدن امکان ورود با رمز عبور یک بار مصرف</li>
+                            <li>همگامسازی خودکار تعمیر شد(توجه: به بخش تنظیمات کندو پنل مراجعه کرده و کرون جاب بروزرسانی خودکار را کپی کرده و در کرون جاب هاست با بازه ی زمانی هر 12 ساعت یا هر 24 ساعت یک بار تنظیم
+                                نمایید)
+                            </li>
+                            <li>شناسه تیکت به لیست تیکت ها اضافه شد</li>
+                            <li>ارسال آنی سفارش، در زمان انتظار برای لغو سفارش، اضافه شد</li>
+                            <li>از این پس می توانید سربرگ خود را با المنتور طراحی و برای قالب قرار بدین(تنظیمات کندوپنل -> عمومی -> انتخاب سربرگ)</li>
+                            <li>از این پس کلید api برای امنیت بیشتر در ویرایش ارائه دهنده، مخفی خواهد بود</li>
+                            <li>از این پس می توانید در بخش اطلاعیه ها هشدار هم بسازید و در صفحات دلخواه(داشبرد،افزودن اعتبار و ...) قرار دهید</li>
+                            <li>از این پس کاربران(در پیشخوان وردپرس) به صورت پیشفرض بر اساس تاریخ عضویت مرتب سازی شده اند</li>
+                            <li>از این پس آی پی کاربر بعد از ورود ثبت خواهد شد</li>
+                            <li>پاکسازی اطلاعات قسمت های(سفارشات، سرویس ها،تیکت ها،دسته هاو...) مختلف برای امنیت بیشتر به تنظیمات کندو پنل منتقل شد(تنظیمات کندوپنل -> پاکسازی اطلاعات)</li>
+                            <li>حل مشکل محاسبه هزینه و سود در حالتی که وضعیت سفارش نیمه تمام می شد</li>
+                            <li>از این به بعد می توانید که در بخش تنظیمات کندوپنل->سفارش->فعالسازی شارژ کیف پول قبل از ارسال سفارش ، فعال کنید تا کاربران مجبور باشند قبل از ارسال سفارش، کیف پول خود را شارژ
+                                نمایند
+                            </li>
+                            <li>اصلاح بخش انتخاب آیکون و فاوآیکون در بخش تنظیمات عمومی کندو پنل</li>
+                            <li>حل مشکل نمایش تصاویر به صورت گالری در نوشته ها</li>
+                            <li>ارسال سفارش انبوه به کندوپنل اضافه شد.</li>
+                            <li>امکان کپی کردن لینک سفارش با یک کلیک اضافه شد.</li>
+                            <li>بخش پرداخت ها بازنویسی شد</li>
+                            <li>از این پس برای دیدن تراکنش های هر سفارش باید روبروی هر سفارش بر روی تاریخچه تراکنش ها کلیک کنید</li>
+                            <li>از این پس در بخش تراکنش ها فقط تراکنش های مربوط به افزودن اعتبار نمایش داده خواهد شد</li>
+                            <li>حل مشکل دیر لود شدن داشبرد در برخی هاست ها</li>
+                            <li>از این پس اگر نوع سرویس package باشد در توصیحات حداقل و حداکثر رو نشون نمیده و فقط قیمت رو نشون میده</li>
+                            <li>از این پس قیمت بسته های ساخته شده با المنتور(در حال حاضر بسته شماره 1) به صورت خودکار به روز می شوند و نیاز به ویرایش دستی نیست (قیمت با تخفیف حذف شد)</li>
+                            <li>از این پس می توانید در متن خوش آمد گویی داشبرد لینک و تصویر هم بگذارید</li>
+                            <li>اصلاح بررسی لینک پست اینستاگرام</li>
+                            <li>از این پس می توانید در سفارش های خطا و در دست انجام وضعیت سفارش ها رو به صورت گروهی تغییر یا حذف کنید</li>
+                            <li>برد کرامپ یا نان ریزه به پست های وبلاگ اضافه شد</li>
+                            <li>از این پس با شورتکد [samyar_services cat=150] می توانید مثلا تنها سرویس ها در دسته با شناسه 150 را در برگه نمایش دهید(عدد 150 مثال هست و باید شناسه دسته را جایگزین 150 کنید)</li>
+                            <li>از این پس اگر وضعیت سفارش به مدت 24 ساعت بروزرسانی نشود در بخش سفارشات و داشبرد به شما اطلاع داده خواهد شد تا مشکلی در روند آپدیت وضعیت سفارشات رخ ندهد</li>
+                            <li>تنظیمات مرتب سازی سرویس (تنظیمات کندوپنل->سفارشات) به کندو پنل اضافه شد. در افزودن/ویرایش سرویس می تونید مرتب سازی رو انجام بدین</li>
+                            <li>دریافت گزارشات به همراه نمودار (7روز گذشته،ماه فعلی،ماه قبلی، کل سال) به کندو پنل اضافه شده (در پیشخوان وردپرس->تنظیمات کندوپنل->زیر منوی گزارشات)</li>
+                            <li>مشکل عدم نمایش ایموجی ها در لیست سفارشات برطرف شد</li>
+                            <li>امکان افزودن ایموجی (ایموجی پیکر) در عنوان سرویس اضافه شد</li>
+                            <li>از این پس اگر لینک به این صورت به سمت صفحه ثبت سفارش ارسال کنید موارد به صورت خودکار جایگزین خواهد شد توجه: مقادیر رو باید تغییر بدین و این مثال
+                                هست(<?php echo htmlentities('https://yoursite.ir/dashboard/?action=orders&section=new&cat_id=1&service_id=10&link=https://instagram.com/farstheme/&quantity=1000'); ?>)
+                            </li>
+                            <li>از این پس می توانید تنظیم کنید که کاربر بعد از ورود ، ثبت نام و خروج به چه لینکی هدایت شود (تنظیمات کندو پنل->تایید هویت)</li>
+                            <li>از این پس می توانید کل سیستم پیامک رو در تنظیمات پیامک غیر فعال کنید(تنظیمات کندوپنل->تنظیمات پیامک)</li>
+                            <li>اضافه شدن ارز افغانی برای استفاده کاربران عزیز افغانستانی</li>
+                            <li>امکان افزودن نرخ دلخواه برای هر کاربر اضافه شد(در بخش کاربران،دکمه ای به نام نرخ دلخواه روبروی هر کاربر اضافه شده)</li>
+                            <li>فونت کم حجم ایران سنس جایگزین فونت قبلی شد</li>
+                            <li>فرم های فیلتر مخفی شدن و با زدن بر روی دکمه فیلتر نمایش داده میشه(جهت بهبود در صفحه موبایل)</li>
+                            <li>مشکل عدم نمایش اطلاعیه هدر در پنل کاربری 2 حل شد</li>
+                            <li>درگاه به پرداخت ملت اضافه شد(تست نشده)</li>
+                            <li>تعمیر جامپ لینک های سایت</li>
+                            <li>منو مخصوص موبایل(نمایش تنها در موبایل) در فوتر اضافه شد</li>
+                            <li>گزارش کاربران با بیشترین شارژ کرده به سیستم اضافه شده((در پیشخوان وردپرس->تنظیمات کندوپنل->زیر منوی گزارشات))</li>
+                            <li>از این پس می توانید برای سرویس های رایگان محدودیت ایجاد نمایید (در افزودن/ویرایش سرویس)</li>
+                            <li>دکمه مشاوره قبل از خرید به دلیل ناکارآمد بودن حذف شد</li>
+                            <li>قابلیت جستجو در سرویس اضافه شد</li>
+                            <li>ارسال اطلاع رسانی های ایمیلی نیز اضافه شد(تنظیمات کندوپنل -> ایمیل)</li>
+                            <li>سرویس های محبوب به دلیل سنگینی که در داشبرد به وجود اورده بود فعلا برداشته شد تا راه حل مناسبی براش پیدا بشه</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 9.3 (1400/09/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>اضافه شدن نمایش موجودی کیف پول پنل کاربری 2</li>
+                            <li>حل مشکل خارج شدن جدول ها از کادر، در موبایل</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 9.2 (1400/09/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل مودال ها(پاپ آپ ها) در پنل کاربری جدید</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 9.1 (1400/09/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مورد در بخش پنل کاربری جدید</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 9 (1400/09/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>پنل کاربری جدید اضافه شد (در بخش تنظیمات کندو->پیشخوان می توانید پنل کاربری مد نظر خود را انتخاب کنید)</li>
+                            <li>حل مشکل عدم نمایش تاریخ در تراکنش ها</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.9.2 (1400/09/12)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل کوچک در بخش ثبت نام</li>
+                            <li>هماهنگی با افزونه زیر مجموعه گیری کندو پنل</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 8.9.1 (1400/09/04)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با افزونه گردونه شانس کندوپنل</li>
+                            <li>حل مشکل ارسال نشدن پیامک در تغییر وضعیت سفارش به صورت دستی</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.9 (1400/09/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با افزونه فروش شماره مجازی کندوپنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.8 (1400/08/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>رفع یک مشکل با افزونه ربات اطلاع رسانی کندو پنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.7 (1400/08/24)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با ورژن 1.3 افزونه ربات اطلاعرسانی کندوپنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.6 (1400/08/22)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با ورژن 1.1 افزونه احراز هویت کندوپنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.5 (1400/08/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با افزونه احراز هویت کندوپنل</li>
+                            <li>حل مشکل کپی نشدن لینک وضعیت کرون جاب</li>
+                            <li>اضافه شدن تعداد کامنت و ویو در نمایش پست اینستاگرام</li>
+                            <li>حل مشکل در هم رفتگی اطلاعات تماس در پاپ آپ درخواست مشاوره</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.4 (1400/08/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل لینک های کرون جاب</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 8.3 (1400/08/18)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>اضافه شدن امنیت کرون جاب (حتما به بخش تنظیمات کندو -> کرون جاب برید و توضیحات رو بخونید)</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.2 (1400/08/15)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل ارسال کامنت سفارشی</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8.1 (1400/08/11)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>گوگل کپچا ورژن 3 به کندو پنل اضافه شد(تنظیمات کندوپنل->تایید هویت->فعالسازی گوگل کپچا )</li>
+                            <li>متاسفانه متوجه شدیم که برخی از ارائه دهندگان از بررسی وضعیت ها به صورت گروهی پشتیبانی نمی کنن و برای همین در بخش کرون جاب این مورد رو به عهده خودتون گذاشتیم(حتما توضیحاتی که در
+                                تنظیمات سیستم->کرون جاب هست رو بخونید)
+                            </li>
+                            <li>حل مشکل تغییر نکردن زمان تاخیر برای انصراف سفارش</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 8 (1400/08/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>یک خبر خوب، راه حلی برای بررسی لینک های اینستاگرام پیدا شد (حتما توضیحات رو در بخش تنظیمات کندو->سفارش بخونید و حتما تنظیماتش رو انجام بدین)</li>
+                            <li>بررسی لینک پست اینستاگرام و IGTV نیز اضافه شد(قابل توجه: ما برای نمایش تصاویر پروفایل و پست ها مجبور شدیم که آنها را در هاست شما دانلود و ذخیره کنیم ولی نگران نباشید هر 24 ساعت یک
+                                بار
+                                همه فایل ها پاک خواهند شد)
+                            </li>
+                            <li>از این پس می توانید تعداد فالوور و دنبال شونده را برای لینک پروفایل و تعداد لایک ها را برای پست ها در هر سفارش ذخیره کرد(تنظیمات->سفارش->فعالسازی ذخیره اطلاعات از اینستاگرام در
+                                هنگام
+                                ثبت سفارش از روی لینک)
+                            </li>
+                            <li>از این پس می توانید به کاربر زمانی (بین 5 تا 30 دقیقه) برای لغو سفارش خود دهید(تنظیمات کندوپنل->سفارش->فعالسازی تاخیر برای ارسال سفارش به ارائه دهنده)</li>
+                            <li>ثبت سفارش سریع برای مهمان(کاربر وارد نشده) با دکمه سبد خرید، در لیست سرویس ها ، اضافه شد (از این پس کاربران مهمان بدون نیاز به انتخاب دسته و یا سرویس سریع تر سفارش خود را ثبت
+                                کنن)
+                            </li>
+                            <li>از این پس می توانید لینک سایت ارائه دهنده را نیز در افزودن و ویرایش ارائه دهنده وارد کنید و برای دسترسی سریعتر برای شارژ حساب خود در سایت ارائه دهنده استفاده نمایید</li>
+                            <li>از این پس وضعیت سفارش ها هر 5 دقیقه یک بار بررسی می شود(توصیه ما این هست که اگر در حال حاضر بر روی 1 دقیقه یک بار هست به تنظیمات->مدیریت کرون جاب ها->رویدادهای کرون ->ویرایش
+                                samyar_status_cron برید و بر روی 5 دقیقه یک بار تنظیم کنید)
+                            </li>
+                            <li>از این پس ، درخواست بررسی وضعیت ها به تعداد ارائه دهندگان اجرا خواهد شد(قبلا اگر 100 سفارش بود 100 درخواست ارسال میشد) و با اینکار بار روی هاست شما، بسیار کاهش پیدا کرد(و دیگر در
+                                تعداد محدودیتی نیست و تنظیمات این بخش برداشته شد)
+                            </li>
+                            <li>از این پس می توانید در بخش همگامسازی ارائه دهنده، عنوان ها و یا توضیحات سرویس را نیز به دلخواه خود، به روز نمایید</li>
+                            <li>اصلاح موجودی کل ارائه دهندگان(دلار به تومان تبدیل نمی شد)</li>
+                            <li>حل مشکل فعال شدن سرویس غیر فعال، بعد از همگامسازی با ارائه دهنده</li>
+                            <li>اصلاح ارسال پیام اطلاع رسانی در تلگرام وقتی پرداخت با کیف پول انجام می شود (مخصوص افزونه ربات اطلاع رسانی تلگرام)</li>
+                            <li>افزودن دکمه ارسال سفارش و رفتن به لیست سفارشات در پرداخت های موفق (جهت راحتی کاربر بعد از خرید)</li>
+                            <li>دریافت لیست سفارشات به صورت کاربر مهمان تعمیر شد</li>
+                            <li>عدم نمایش پیام موفقیت آمیز بودن ثبت نام بدون کد تایید،اصلاح شد</li>
+                            <li>در بخش کیف پول شناسه کاربر هم اضافه شد</li>
+                            <li>امکان بن کردن کاربر به سیستم اضافه شد(در پیشخوان وردپرس کاربران->ویرایش کاربر)</li>
+                            <li>از این پس می توانید افزونه های جدید کندو پنل رو از بخش تنظیمات کندو-> اطلاعات و افزونه ببینید</li>
+
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7.5 (1400/07/28)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>هماهنگی با افزونه اطلاع رسانی تلگرام کندو پنل</li>
+                            <li>رفع اشکال در نمایش تیکت های مدیر به کاربر</li>
+                            <li>رفع اشکال کوچک در همگامسازی و افزودن خدمات جدید</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7.4 (1400/07/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>امکان غیر فعال کردن دکمه بررسی لینک اضافه شد (تنظیمات کندو->سفارش->فعالسازی دکمه بررسی لینک در ارسال سفارش)</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7.3 (1400/07/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بخش حذف سفارش</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7.2 (1400/07/24)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک خطا در بخش API</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7.1 (1400/07/24)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>اصلاح نمایش قیمت نمایندگی با آیکون+پاپ آپ</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 7 (1400/07/24)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>از این پس می توانید ارسال کد تایید پیامک هنگام ثبت نام را غیر فعال کنید(تنظیمات کندوپنل->تایید هویت)</li>
+                            <li>از این پس می توانید ارسال کد تایید پیامک هنگام ثبت سفارش مهمان را غیر فعال کنید(تنظیمات کندوپنل->تایید هویت)</li>
+                            <li>امکان بررسی لینک پروفایل اینستاگرام اضافه شد(آزمایشی)</li>
+                            <li>تصاویر پس زمینه به صفحه ورود ثبت نام جداگانه اضافه شد</li>
+                            <li>از این پس می توانید تاریخ آخرین همگامسازی ارائه دهنده را در لیست ارائه دهندگان ببینید</li>
+                            <li>از این پس می توانید همگامسازی خودکار برای هر ارائه دهنده فعال کنید (بخش ارائه دهندگان) با این کار هر 24 ساعت قیمت اصلی و حداکثر و حداقل تعداد و اعتبار شما در ارائه دهنده به صورت
+                                خودکار
+                                به روز رسانی خواهد شد
+                            </li>
+                            <li>امکان تعریف سرویس به صورت رایگان اضافه شد(توجه: محدودیت ندارد و کاربر می تواند هر لحظه سفارش بده)</li>
+                            <li>امکان تفکیک بر اساس نمایندگی در بخش کاربران وردپرس اضافه شد</li>
+                            <li>آمار تعداد نمایندگی ها به پیشخوان اضافه شد</li>
+                            <li>ارسال تیکت از مدیر به کاربران اضافه شد</li>
+                            <li>محبوب ترین خدمات به داشبرد اضافه شد</li>
+                            <li>از این پس می توانید قیمت نمایندگی ها را در جدول سرویس ها نمایش دهید(تنظیمات: تنظیمات کندو پنل->نمایندگی و سودها)</li>
+                            <li>درگاه پرداخت نکست پی اضافه شد</li>
+                            <li>درگاه پرداخت آقای پرداخت اضافه شد</li>
+                            <li>از این پس اگر کاربر مهمان وارد حساب کاربری خود شده و به بخش نمایش های سفارش مهمان بره می تونه سفارش های خودش رو ببینه و نیاز به ورود شماره همراه و کد تایید نیست</li>
+                            <li>حل مشکل ترتیب دسته ها در افزودن و ویرایش سرویس</li>
+                            <li>از این پس می توانید اطلاعیه ها را حذف کنید</li>
+                            <li>حل مشکل ارسال پیامک به همه مدیران</li>
+                            <li>حل مشکل صفحه بندی تیکت ها</li>
+                            <li>شناسه سرویس در ارائه دهنده در لیست سرویس ها اضافه شد</li>
+                            <li>حل برخی مشکلات گزارش شده</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 6.5 (1400/07/02)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل پاپ آپ ورود و ثبت نام</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 6.4 (1400/07/01)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>صفحه 404 اضافه شد</li>
+                            <li> حل یک مشکل در بخش api</li>
+                            <li>حل یک مشکل در کامنت دلخواه</li>
+                            <li>حل عدم نمایش لیست کامنت ها در سفارش های کامنت دلخواه</li>
+                            <li>بهبود ظاهر بررسی پرداخت</li>
+                            <li>حل مشکل ذخیره نشدن قیمت های اعشاری در ویرایش سرویس</li>
+                            <li>حل مشکل انتخاب نشدن نوع سرویس در افزودن سرویس</li>
+                            <li>حل مشکل صفر نشان دادن قیمت های اعشاری برای نرخ های پایین دلاری (مثال: 0.036 -> 0 دلار) در لیست خدمات ارائه دهنده (اصلاح شده بعد از آپدیت: 0/036 دلار)</li>
+                            <li> حل برخی مشکلات گزارش شده</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 6.3 (1400/06/25)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li> حل یک مشکل در بخش api</li>
+                            <li>حل مشکل تاریخ تیکت ها</li>
+                            <li>حل مشکل در بخش کارت به کارت</li>
+                            <li>از این پس طریقه ثبت سفارش در سفارش مشخص هست (API یا سایت)</li>
+                            <li>اصلاح دکمه حذف همه سفارش ها</li>
+                            <li>اصلاح ظاهر جزییات سفارش</li>
+                            <li>حل مشکلات گزارش شده</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 6.2 (1400/06/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در جستجوی تراکنش ها</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 6.1 (1400/06/20)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل در سفارش آنی</li>
+                            <li>حل مشکل در پیگیری سفارش های کاربر مهمان</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 6 (1400/06/19)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>امکان کارت به کارت به افزودن اعتبار اضافه شد(تنظیمات اطلاعات حساب در بخش تنظیمات کندو->درگاه ها->کارت به کارت)</li>
+                            <li>کم حجم کردن فایل های کندو پنل</li>
+                            <li>از این پس می توانید فعال کنید که اگر از طریق api نیز سفارشی ثبت شد برای مدیر پیامک ارسال شود</li>
+                            <li>بهبود سفارش آنی و گرفتن خطا در صورت فیلد خالی</li>
+                            <li>جستجوی سفارش بر اساس ارائه دهنده هم اضافه شد</li>
+                            <li>از این پس می توانید در تنظیمات کندو->سفارش شروع شناسه سفارش های سایت رو تعیین کنید</li>
+                            <li>تغییر کلمه انصراف به لغو در سفارشات برای راحتی فهم کاربر</li>
+                            <li>اضافه شدن شورتکد [show_user_total] برای نمایش تعداد کاربران سایت</li>
+                            <li>اضافه شدن شورتکد [show_orders_total] برای نمایش تعداد سفارش های کامل شده سایت</li>
+                            <li>اضافه شدن شورتکد [show_answered_tickets_total] برای نمایش تعداد تیکت های بسته شده سایت</li>
+                            <li>اضافه شدن شورتکد [show_services_total] برای نمایش تعداد سرویس های فعال سایت</li>
+                            <li>از این پس اعداد فارسی و عربی در ورود به صورت خودکار به انگلیسی تغییر خواهند کرد و مشکلات ورود با موبایل که در برخی کاربران وجود داشت حل شده</li>
+                            <li>بهبود درگاه زرین پال</li>
+                            <li>بهبود فیلتر تراکنش ها</li>
+                            <li>لینک سفارش مربوط به هر تراکنش در بخش توضیحات تراکنش قرار گرفت</li>
+                            <li>حل برخی مشکلات ورود و ثبت نام</li>
+                            <li>حل مشکل عدم ارسال پیامک بعد از پرداخت از کیف پول</li>
+                            <li>بهبود بخش بازیابی رمز عبور</li>
+                            <li>حل مشکل در لیست سفارش های کاربر</li>
+                            <li>حل برخی مشکلات وبلاگ</li>
+                            <li>حل یک مشکل در صفحه ورود</li>
+                            <li>حل مشکل ناموفق بودن برخی پرداخت ها</li>
+                            <li>بهبود بخش افزودن سرویس به صورت دستی</li>
+                            <li>اضافه شدن شناسه سفارش به بخش افزودن تیکت</li>
+                            <li>بهبود نمایش اطلاعات کاربر در بخش نمایش تیکت</li>
+                            <li>بهبود صفحه افزایش موجودی</li>
+                            <li>حل مشکل باز و بسته شدن منو کاربری بعد از کلیک</li>
+                            <li>تعداد تیکت های در انتظار پاسخ، به منو داشبرد، کنار تیکت اضافه شد</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5.6 (1400/06/12)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل جزیی</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 5.5 (1400/06/09)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بسته شماره 2 المنتور</li>
+                            <li>بهبود امنیت کرون جاب</li>
+                            <li>نمایش هزینه و سود در هر سفارش</li>
+                            <li>جستجوی سفارش بر اساس نام کاربری</li>
+                            <li>اضافه شدن جستجو بر اساس شماره همراه در لیست کاربران وردپرس</li>
+                            <li>اضافه شدن گزینه سفارش های کاربر کنار هر کاربر در لیست کاربران وردپرس</li>
+                            <li>حل مشکل عدم محاسبه هزینه و سود در سفارش های ارسالی از api</li>
+                            <li>حل یک مورد در لیست تراکنش ها</li>
+
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5.4 (1400/06/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بخش api</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5.3 (1400/06/07)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بخش بسته ها</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5.2 (1400/06/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل ترتیب برای لیست سرویس ها</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5.1 (1400/06/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل ترتیب برای لیست سرویس ها در ارسال سفارش</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 5 (1400/06/04)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>شورتکد [send_order_wizard] برای ثبت سفارش چند مرحله ای اضافه شد(<a href="<?= SAMYAR_DIR_IMG . '/document/form-wizard.png' ?>">تصویر</a>)</li>
+                            <li>اضافه شدن 2 عدد المنت مخصوص المنتور برای ساخت سفارش بسته ای (<a href="<?= SAMYAR_DIR_IMG . '/document/pack1.png' ?>">تصویر بسته 1</a>)(<a
+                                    href="<?= SAMYAR_DIR_IMG . '/document/pack2.png' ?>">تصویر بسته 2</a>)
+                            </li>
+                            <li>قابلیت جستجوی سفارش برای کاربر اضافه شد</li>
+                            <li>حل مشکل ذخیره نشدن نوع سرویس در اضافه کردن سرویس</li>
+                            <li>حل مشکل حالت موبایل صفحه ورود و ثبت نام جداگانه</li>
+                            <li>گزارشات کرون جاب به لوگ های وردپرس اضافه شد</li>
+                            <li>از این پس سفارشات پرداخت نشده در لیست همه سفارشات قرار نمی گیرد(ولی با باز زدن بر روی وضعیت پرداخت نشده ها می تونید همه اون ها را با هم مشاهده کنید)</li>
+                            <li>از این پس تنها سفارشات با وضعیت های (در دست انجام،پرداخت نشده،خطا) رو می شود حذف کرد</li>
+                            <li>فونت سلکت باکس ها برای ارسال سفارش بزرگتر شد</li>
+                            <li>مرتب سازی سرویس ها از قیمت پایین به بالا انجام شد</li>
+                            <li>امکان پرداخت مجدد برای سفارش های پرداخت نشده اضافه شد</li>
+                            <li>امکان پرداخت مجدد برای پرداخت های بانکی ناموفق(برای کاربران وارد شده)</li>
+                            <li>اضافه شدن منو کاربری در هدر موبایل(وقتی بر روی تصویر آواتار کلیک کنید منو ظاهر می شود)</li>
+                            <li>از این پس در لیست سرویس ها با زدن به روی علامت سبد خرید به صورت خودکار به صفحه ارسال سفارش وارد شده و دسته و سرویس مورد نظر انتخاب میگردد(برای کاربرا وارد شده)</li>
+                            <li>از این پس می توانید تایید سفارش رو به دلخواه در تنظیمات سفارش در تنظیمات کندو پنل فعال و یا غیر فعال کنید</li>
+                            <li>رفع برخی مشکلات گزارش شده در ظاهر قالب</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 4 (1400/05/27)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>اضافه شدن صفحه ورود و ثبت نام جداگانه(بعد از آپدیت بعد از آدرس خود login وارد نمایید (ex:domain.com/login))</li>
+                            <li>امکان ویرایش و حذف پیام های تیکت، اضافه شد</li>
+                            <li>حل مشکل کندی در محاسبه قیمت در فرم ارسال سفارش</li>
+                            <li>اصلاح محاسبه میزان هزینه کاربر در پیشخوان</li>
+                            <li>از این پس اگر ارائه دهنده ای را غیر فعال کنید سرویس های آن نمایش داده نخواهد شد</li>
+                            <li>از این پس اگر ارائه دهنده ای سفارش تکمیل نشده ای داشت قابل حذف شدن نیست</li>
+                            <li>از این پس اگر ارائه دهنده ای حذف شود همه سرویس های آن ارائه دهنده نیز حذف خواهند شد</li>
+                            <li>نمایش دکمه ورود و ثبت نام در هدر موبایل</li>
+                            <li>نمایش دکمه ثبت سفارش در هدر بعد از ورود کاربر</li>
+                            <li>اضافه شدن افزونه WP Dark Mode برای حالت شب در آسان نصب (برای نصب به پیشخوان وردپرس افزونه ها -> افزون برید و WP Dark Mode رو جستجو و نصب کنید )</li>
+                        </ul>
+
+
+                        <h5 class="samyar-title">نسخه 3.2 (1400/05/23)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل یک مشکل در بخش تیکت ها</li>
+                            <li>حل مشکل اضافه کردن سرویس از لیست خدمات در بخش ارائه دهندگان</li>
+                            <li>حل مشکل ارسال پیامک های تکراری در صورت اتمام اعتبار کاربر در api</li>
+                            <li>حل مشکل پیامک تغییر وضعیت سفارش به کاربر</li>
+                            <li>حل مشکل نمایش وضعیت خطا برای کاربر</li>
+                            <li>از این پس می توانید به صورت آنی ارائه دهنده،دسته و یا سرویس را غیر فعال کنید</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 3.1 (1400/05/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>حل مشکل پرداخت با کیف پول</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 3 (1400/05/21)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>اضافه شدن شورتکد [send_order_form] برای افزودن فرم سفارش در هر مکانی</li>
+                            <li>اضافه شدن شورتکد [orders_list] برای افزودن فرم دریافت لیست سفارشات در هر مکانی</li>
+                            <li>اضافه شدن قابلیت سفارش بدون ورود</li>
+                            <li>اضافه شدن فیلتر بر اساس درگاه در بخش تراکنش ها</li>
+                            <li>آمار سفارشات برای مدیر و کاربران در داشبرد اضافه شد</li>
+                            <li>ارسال مجدد همه سفارش هایی که در وضعیت خطا دارند به صورت گروهی یا تکی</li>
+                            <li>اضافه شدن افزونه یوزر سوییچ برای ورود به جای کاربر دلخواه با یک کلیک</li>
+                            <li>حل مشکل برچسب روی بنر تلگرام و اینستاگرام در صفحه نمایش مقاله</li>
+                            <li>اضافه کردن امکان غیر فعالسازی دکمه مشاوره قبل از خرید گوشه راست سایت</li>
+                            <li>حل اختلال با ووکامرس</li>
+                            <li>مشکل نمایش توضیحات سرویس اصلاح شد</li>
+                            <li>صفحه بندی سفارش ها و تراکنش ها اصلاح شد</li>
+                            <li>اصلاح در بخش پیامک ها</li>
+                            <li>اصلاح api</li>
+                            <li>برخی باگ ها گزارش شده اصلاح شد</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 2 (1400/05/17)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>قرار دادن نمایش آخرین خطای پنل پیامک در تنظیمات</li>
+                            <li>اضافه شده تاریخ به پرداخت ها</li>
+                            <li>دکمه افزودن اعتبار در پیشخوان</li>
+                            <li>اضافه شدن اطلاعات کاربر در نمایش تیکت</li>
+                            <li>از این پس می توانید پیام خوش آمد گویی در پیشخوان رو غیر فعال کنید</li>
+                            <li>اطلاعیه ثبت نام کاربر جدید به قالب های پیامک اضافه شد</li>
+                            <li>اطلاعیه شارژ کیف پول توسط کاربر به قالب های پیامک اضافه شد</li>
+                            <li>اطلاعیه تکمیل شدن سفارش به کاربر به قالب های پیامک اضافه شد</li>
+                            <li>اطلاعیه کم بودن اعتبار کاربر استفاده کننده از api به قالب های پیامک اضافه شد</li>
+                            <li>حداقل و حداکثر میزان برای شارژ کیف پول به تنظیمات اضافه شد</li>
+                            <li>حل مشکل عدم اضافه شدن شماره همراه به دفترچه تلفن</li>
+                            <li>حل مشکل جستجوها با موبایل</li>
+                            <li>حل مشکل نمایش دسته و یا سرویس غیر فعال برای کاربر</li>
+                            <li>حل مشکل نرفتن سفارشات به بخش خطا</li>
+                            <li>حل مشکل عدم ثبت نام کاربر در درگاه آیدی پی</li>
+                            <li>حل مشکل ارتباط با اسمارت پنل</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 1.2 (1400/05/10)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>شورتکد [samyar_services_list] برای نمایش لیست همه سرویس ها اضافه شد</li>
+                            <li>شورتکد [samyar_services] برای نمایش لیست سرویس ها به صورت انتخاب دسته اضافه شد</li>
+                            <li>از این پس اولین درگاه به صورت پیشفرض انتخاب میشه و کاربر نیاز نیست انتخاب کنه</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 1.1 (1400/05/09)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>از این پس بازیابی رمز عبور می تواند به صورت ارسال رمز عبور به شماره همراه و یا ایمیل صورت بگیرد</li>
+                            <li>حل مشکل در اطلاعیه</li>
+                        </ul>
+
+                        <h5 class="samyar-title">نسخه 1 (1400/05/05)</h5>
+                        <ul class="uk-list uk-list-bullet">
+                            <li>انتشار نسخه اولیه</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

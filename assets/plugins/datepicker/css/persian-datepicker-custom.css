@@ -1,0 +1,89 @@
+.datepicker-container:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #4611a7;
+    position: absolute;
+    top: -6px;
+    left: 6px;
+}
+.datepicker-plot-area {
+    border:0 none;
+    padding: 0;
+    margin-top: 1px;
+    width: 250px;
+    min-width: 250px;
+}
+.datepicker-plot-area .datepicker-navigator {
+    background: #4611a7;
+    color: #fff;
+}
+.datepicker-plot-area .datepicker-navigator .pwt-btn {
+    color: #fff;
+}
+.datepicker-plot-area .datepicker-day-view .month-grid-box {
+    margin: 0;
+}
+.datepicker-plot-area .datepicker-day-view .month-grid-box .header {
+    background: #4611a7;
+}
+.datepicker-plot-area .datepicker-day-view .month-grid-box .header .header-row-cell {
+    color: #fff;
+}
+.datepicker-plot-area .datepicker-navigator .pwt-btn-next, .datepicker-plot-area .datepicker-navigator .pwt-btn-switch, .datepicker-plot-area .datepicker-navigator .pwt-btn-prev {
+    background-color: transparent;
+}
+/*.datepicker-plot-area .datepicker-navigator .pwt-btn.pwt-btn-prev ,
+.datepicker-plot-area .datepicker-navigator .pwt-btn.pwt-btn-next {
+    font-size: 0px;
+}
+
+.datepicker-plot-area .datepicker-navigator .pwt-btn.pwt-btn-next:before ,
+.datepicker-plot-area .datepicker-navigator .pwt-btn.pwt-btn-prev:before {
+    font-family: 'fontello';
+    content: '\e9f2';
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.datepicker-plot-area .datepicker-navigator .pwt-btn.pwt-btn-next:before {
+    content: '\e9f1';
+}*/
+.datepicker-plot-area .datepicker-day-view .table-days td {
+    border: 1px solid #e6e6e6;
+    width: 30px;
+    height: 30px;
+    padding: 0 4px;
+}
+.datepicker-plot-area .datepicker-day-view .table-days td span {
+    background-color: transparent!important;
+}
+
+.datepicker-plot-area .datepicker-day-view .table-days td.today ,
+.datepicker-plot-area .datepicker-day-view .table-days td.selected {
+    background-color: #4611a7;
+    border-color: #4611a7;
+}
+.datepicker-plot-area .datepicker-day-view .table-days td:hover {
+    background: #eee;
+    cursor: pointer;
+    color:#333!important;
+}
+.datepicker-plot-area .toolbox {
+    margin-bottom: 5px;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+    background: #4611a7;
+}
+.datepicker-plot-area .toolbox .pwt-btn-calendar {
+    position: relative;
+}
+.datepicker-plot-area .toolbox .calendar-switch-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}

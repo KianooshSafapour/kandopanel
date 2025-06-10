@@ -1,0 +1,68 @@
+.samyar-settings .samyar-side-menu .samyar-theme-name img {
+  margin-right: 0;
+  float: right;
+  margin-left: 10px;
+  max-width: 42px; }
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a {
+  border-left: none;
+  border-right: 3px solid transparent; }
+
+.samyar-settings .samyar-side-menu .samyar-menu-item a.samyar-active,
+.samyar-settings .samyar-side-menu .samyar-menu-item a:hover {
+  border-right-color: #EF394E; }
+
+.samyar-settings .samyar-settings-content {
+  padding-right: 0; }
+
+.samyar-settings .samyar-side-menu .samyar-menu-item .samyar-menu-icon {
+  float: left; }
+
+.samyar-settings .samyar-description .uk-icon {
+  margin-right: 0;
+  margin-left: 3px; }
+
+.uk-form-custom .uk-button-default {
+  text-align: right; }
+
+.uk-form-custom .uk-button-default .uk-icon {
+  float: left; }
+
+.samyar-upload-file-wrapper .samyar-remove {
+  left: auto;
+  right: 5px; }
+
+.samyar-upload-file-wrapper .samyar-remove + .samyar-url {
+  right: 30px;
+  left: unset; }
+
+.samyar-confirm-activation:before {
+  left: auto;
+  right: 15px; }
+
+.samyar-settings .samyar-settings-content .samyar-save .loader {
+  margin-left: 0;
+  margin-right: 5px;
+  position: relative;
+  left: -10px;
+  top: 7px;
+}
+
+
+#samyar-add-shortcode-modal .loader{
+  display: none;
+}
+
+#samyar-mce-add-shortcode-form .samyar-remove{
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+#samyar-mce-add-shortcode-form .samyar-url{
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+.column-code{
+  direction: rtl;
+}
